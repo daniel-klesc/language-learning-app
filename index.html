@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Language Learning App - MVP</title>
+    <title>Language Learning App - Adaptive Version</title>
     <style>
         * {
             margin: 0;
@@ -32,7 +32,7 @@
 
         .header {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
 
         h1 {
@@ -41,27 +41,82 @@
             margin-bottom: 10px;
         }
 
-        .stats {
+        .time-estimate {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .daily-goal {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .goal-header {
             display: flex;
-            justify-content: space-around;
-            margin-bottom: 30px;
-            padding: 15px;
-            background: #f8f9fa;
-            border-radius: 10px;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .goal-title {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .goal-numbers {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .goal-progress {
+            background: rgba(255,255,255,0.3);
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .goal-progress-fill {
+            background: white;
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        .goal-details {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
         }
 
         .stat {
             text-align: center;
+            padding: 15px 10px;
+            background: #f8f9fa;
+            border-radius: 10px;
         }
 
         .stat-value {
-            font-size: 24px;
+            font-size: 20px;
             font-weight: bold;
             color: #667eea;
         }
 
         .stat-label {
-            font-size: 12px;
+            font-size: 11px;
             color: #666;
             margin-top: 5px;
         }
@@ -69,7 +124,7 @@
         .language-selector {
             display: flex;
             gap: 10px;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
 
         .language-btn {
@@ -80,12 +135,137 @@
             border-radius: 8px;
             cursor: pointer;
             transition: all 0.3s;
+            font-size: 14px;
         }
 
         .language-btn.active {
             background: #667eea;
             color: white;
             border-color: #667eea;
+        }
+
+        .session-options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .session-btn {
+            padding: 20px;
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .session-btn:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+        }
+
+        .session-btn .words {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .session-btn .time {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .session-btn .badge {
+            display: inline-block;
+            background: #28a745;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 11px;
+            margin-top: 5px;
+        }
+
+        .session-btn.recommended {
+            position: relative;
+        }
+        
+        /* Development Console Styles */
+        .dev-console {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 400px;
+            max-height: 300px;
+            background: rgba(0, 0, 0, 0.9);
+            color: #00ff00;
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            padding: 10px;
+            border-radius: 8px;
+            overflow-y: auto;
+            z-index: 9999;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        }
+        
+        .dev-console-header {
+            color: #ffff00;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #333;
+        }
+        
+        .dev-log {
+            margin: 2px 0;
+            padding: 2px;
+        }
+        
+        .dev-log.error {
+            color: #ff6b6b;
+        }
+        
+        .dev-log.success {
+            color: #51cf66;
+        }
+        
+        .dev-log.info {
+            color: #339af0;
+        }
+        
+        .dev-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 5px 10px;
+            background: #333;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 11px;
+            z-index: 9998;
+        }
+
+        .continue-session {
+            width: 100%;
+            padding: 15px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-bottom: 10px;
+            transition: all 0.3s;
+        }
+
+        .continue-session:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
         }
 
         .card {
@@ -98,6 +278,31 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
+        }
+
+        .session-progress {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .session-progress-text {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .pause-btn {
+            padding: 5px 15px;
+            background: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
         }
 
         .word {
@@ -157,9 +362,14 @@
             transition: transform 0.2s, box-shadow 0.2s;
         }
 
-        button:hover {
+        button:hover:not(:disabled) {
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
         }
 
         .btn-primary {
@@ -204,43 +414,109 @@
             display: none;
         }
 
-        .start-screen {
-            text-align: center;
-            padding: 40px 0;
-        }
-
-        .start-screen h2 {
-            margin-bottom: 20px;
-            color: #333;
-        }
-
         .no-cards {
             text-align: center;
             padding: 40px;
             color: #666;
         }
 
-        .progress-bar {
-            width: 100%;
-            height: 6px;
-            background: #e9ecef;
-            border-radius: 3px;
+        .achievement {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
             margin-bottom: 20px;
-            overflow: hidden;
+            animation: slideIn 0.5s ease;
         }
 
-        .progress-fill {
-            height: 100%;
+        @keyframes slideIn {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .achievement-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .achievement-desc {
+            font-size: 14px;
+            opacity: 0.95;
+        }
+
+        .history {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .history-title {
+            font-size: 14px;
+            font-weight: bold;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #e9ecef;
+            font-size: 13px;
+        }
+
+        .history-item:last-child {
+            border-bottom: none;
+        }
+
+        .quick-action {
+            display: inline-block;
+            padding: 8px 16px;
             background: #667eea;
-            border-radius: 3px;
-            transition: width 0.3s;
+            color: white;
+            border-radius: 20px;
+            text-decoration: none;
+            font-size: 14px;
+            margin-right: 10px;
+            cursor: pointer;
+            border: none;
+        }
+
+        .quick-action:hover {
+            background: #5a67d8;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>🎯 Language Learning</h1>
+            <h1>🎯 Smart Language Learning</h1>
+            <div class="time-estimate" id="time-estimate">Daily goal: ~15 minutes</div>
+        </div>
+
+        <!-- Daily Goal Card -->
+        <div class="daily-goal">
+            <div class="goal-header">
+                <span class="goal-title">Today's Goal</span>
+                <span class="goal-numbers" id="goal-progress">0/8</span>
+            </div>
+            <div class="goal-progress">
+                <div class="goal-progress-fill" id="goal-bar" style="width: 0%"></div>
+            </div>
+            <div class="goal-details">
+                <span id="words-new">New: 0/3</span>
+                <span id="words-review">Review: 0/5</span>
+                <span id="time-spent">Time: 0 min</span>
+            </div>
         </div>
 
         <div class="stats">
@@ -249,8 +525,8 @@
                 <div class="stat-label">Day Streak</div>
             </div>
             <div class="stat">
-                <div class="stat-value" id="cards-due">0</div>
-                <div class="stat-label">Cards Due</div>
+                <div class="stat-value" id="total-learned">0</div>
+                <div class="stat-label">Words Learned</div>
             </div>
             <div class="stat">
                 <div class="stat-value" id="accuracy">0%</div>
@@ -259,22 +535,55 @@
         </div>
 
         <div class="language-selector">
-            <button class="language-btn active" data-pair="cs-vi">🇨🇿 Czech → 🇻🇳 Vietnamese</button>
-            <button class="language-btn" data-pair="vi-zh">🇻🇳 Vietnamese → 🇨🇳 Chinese</button>
-            <button class="language-btn" data-pair="vi-en">🇻🇳 Vietnamese → 🇬🇧 English</button>
+            <button class="language-btn active" data-pair="cs-vi">🇨🇿→🇻🇳</button>
+            <button class="language-btn" data-pair="vi-zh">🇻🇳→🇨🇳</button>
+            <button class="language-btn" data-pair="vi-en">🇻🇳→🇬🇧</button>
         </div>
 
-        <div class="progress-bar">
-            <div class="progress-fill" id="progress" style="width: 0%"></div>
+        <!-- Start Screen with Session Options -->
+        <div id="start-screen">
+            <div id="continue-session-btn" class="hidden">
+                <button class="continue-session" onclick="continueSession()">
+                    📚 Continue Session (<span id="remaining-words">0</span> words left)
+                </button>
+            </div>
+
+            <div class="session-options">
+                <div class="session-btn" onclick="startSession(1)">
+                    <div class="words">1</div>
+                    <div class="time">~1 min</div>
+                    <span class="badge">Quick</span>
+                </div>
+                <div class="session-btn recommended" onclick="startSession(3)">
+                    <div class="words">3</div>
+                    <div class="time">~3 min</div>
+                    <span class="badge">Recommended</span>
+                </div>
+                <div class="session-btn" onclick="startSession(5)">
+                    <div class="words">5</div>
+                    <div class="time">~5 min</div>
+                </div>
+                <div class="session-btn" onclick="startSession(0)">
+                    <div class="words">All</div>
+                    <div class="time" id="all-time">~8 min</div>
+                </div>
+            </div>
+
+            <div class="history">
+                <div class="history-title">Today's Sessions</div>
+                <div id="session-history"></div>
+            </div>
         </div>
 
-        <div id="start-screen" class="start-screen">
-            <h2>Ready to learn?</h2>
-            <p style="margin-bottom: 20px; color: #666;">You have <span id="due-count">0</span> cards to review today</p>
-            <button class="btn-primary" onclick="startSession()">Start Learning Session</button>
-        </div>
-
+        <!-- Study Screen -->
         <div id="study-screen" class="hidden">
+            <div class="session-progress">
+                <span class="session-progress-text">
+                    Word <span id="current-word-num">1</span> of <span id="total-words">3</span>
+                </span>
+                <button class="pause-btn" onclick="pauseSession()">Pause & Save</button>
+            </div>
+
             <div class="card">
                 <div class="category" id="category"></div>
                 <div class="word" id="word"></div>
@@ -293,102 +602,212 @@
             </div>
         </div>
 
-        <div id="complete-screen" class="hidden no-cards">
-            <h2>🎉 Session Complete!</h2>
-            <p style="margin: 20px 0;">Great job! You've reviewed all cards for today.</p>
-            <p style="margin-bottom: 20px;">Accuracy: <span id="final-accuracy">0</span>%</p>
-            <button class="btn-primary" onclick="backToStart()">Back to Home</button>
+        <!-- Complete Screen -->
+        <div id="complete-screen" class="hidden">
+            <div id="achievement" class="achievement hidden">
+                <div class="achievement-title">🎉 Goal Achieved!</div>
+                <div class="achievement-desc">You've completed your daily goal!</div>
+            </div>
+            
+            <div class="no-cards">
+                <h2>Session Complete!</h2>
+                <p style="margin: 20px 0;">
+                    Words practiced: <strong id="session-words">0</strong><br>
+                    Accuracy: <strong id="session-accuracy">0%</strong><br>
+                    Time: <strong id="session-time">0</strong> minutes
+                </p>
+                <button class="btn-primary" onclick="backToStart()">Continue Learning</button>
+                <button class="btn-secondary" onclick="finishForToday()" style="margin-top: 10px;">Finish for Today</button>
+            </div>
         </div>
     </div>
 
+    <!-- Development Console (Toggle this for production) -->
+    <button class="dev-toggle hidden" id="dev-toggle" onclick="toggleDevConsole()">Show Dev Console</button>
+    <div class="dev-console hidden" id="dev-console">
+        <div class="dev-console-header">🔧 Development Console</div>
+        <div id="dev-logs"></div>
+    </div>
+
     <script>
-        // Vocabulary Database
+        // ============= DEVELOPMENT MODE TOGGLE =============
+        // Set this to false for production
+        const DEV_MODE = true;
+        
+        // Development console logging
+        function devLog(message, type = 'info') {
+            if (!DEV_MODE) return;
+            
+            const timestamp = new Date().toLocaleTimeString();
+            console.log(`[${timestamp}] ${message}`);
+            
+            const logDiv = document.getElementById('dev-logs');
+            if (logDiv) {
+                const logEntry = document.createElement('div');
+                logEntry.className = `dev-log ${type}`;
+                logEntry.textContent = `[${timestamp}] ${message}`;
+                logDiv.insertBefore(logEntry, logDiv.firstChild);
+                
+                // Keep only last 50 logs
+                while (logDiv.children.length > 50) {
+                    logDiv.removeChild(logDiv.lastChild);
+                }
+            }
+        }
+        
+        function toggleDevConsole() {
+            const console = document.getElementById('dev-console');
+            const toggle = document.getElementById('dev-toggle');
+            if (console.classList.contains('hidden')) {
+                console.classList.remove('hidden');
+                toggle.textContent = 'Hide Dev Console';
+                showVocabularyStatus();
+            } else {
+                console.classList.add('hidden');
+                toggle.textContent = 'Show Dev Console';
+            }
+        }
+        
+        function showVocabularyStatus() {
+            if (!DEV_MODE) return;
+            
+            const data = loadProgress();
+            const now = Date.now();
+            const vocabSet = vocabulary[currentLanguagePair] || [];
+            
+            devLog('=== VOCABULARY STATUS ===', 'success');
+            devLog(`Current Language Pair: ${currentLanguagePair}`, 'info');
+            
+            let newCount = 0, dueCount = 0, futureCount = 0;
+            
+            vocabSet.forEach(card => {
+                const progress = data.progress?.[currentLanguagePair]?.[card.id];
+                if (!progress) {
+                    newCount++;
+                    devLog(`ID ${card.id}: "${card.word}" - NEW (never seen)`, 'info');
+                } else {
+                    const daysUntilReview = Math.ceil((progress.nextReview - now) / 86400000);
+                    if (progress.nextReview <= now) {
+                        dueCount++;
+                        devLog(`ID ${card.id}: "${card.word}" - DUE NOW (Level ${progress.level})`, 'success');
+                    } else {
+                        futureCount++;
+                        devLog(`ID ${card.id}: "${card.word}" - Due in ${daysUntilReview} days (Level ${progress.level})`, 'info');
+                    }
+                }
+            });
+            
+            devLog(`Summary: ${newCount} new, ${dueCount} due, ${futureCount} future`, 'success');
+            devLog(`Daily Progress: ${data.dailyProgress?.new || 0}/${dailyGoal.new} new, ${data.dailyProgress?.review || 0}/${dailyGoal.review} review`, 'info');
+        }
+        
+        // Initialize dev mode
+        if (DEV_MODE) {
+            window.addEventListener('load', () => {
+                document.getElementById('dev-toggle').classList.remove('hidden');
+                devLog('Development mode enabled', 'success');
+                devLog('Set DEV_MODE = false for production', 'info');
+            });
+        }
+        // Vocabulary Database (same as before but organized by difficulty)
         const vocabulary = {
             'cs-vi': [
-                // Common words - Czech to Vietnamese
-                { id: 1, word: 'ahoj', translation: 'xin chào', romanization: 'sin chào', category: 'greetings' },
-                { id: 2, word: 'děkuji', translation: 'cảm ơn', romanization: 'cảm ơn', category: 'greetings' },
-                { id: 3, word: 'ano', translation: 'vâng', romanization: 'vâng', category: 'basics' },
-                { id: 4, word: 'ne', translation: 'không', romanization: 'không', category: 'basics' },
-                { id: 5, word: 'voda', translation: 'nước', romanization: 'nước', category: 'food' },
-                { id: 6, word: 'chléb', translation: 'bánh mì', romanization: 'bánh mì', category: 'food' },
-                { id: 7, word: 'jeden', translation: 'một', romanization: 'một', category: 'numbers' },
-                { id: 8, word: 'dva', translation: 'hai', romanization: 'hai', category: 'numbers' },
-                { id: 9, word: 'tři', translation: 'ba', romanization: 'ba', category: 'numbers' },
-                { id: 10, word: 'čtyři', translation: 'bốn', romanization: 'bốn', category: 'numbers' },
-                { id: 11, word: 'pět', translation: 'năm', romanization: 'năm', category: 'numbers' },
-                { id: 12, word: 'rodina', translation: 'gia đình', romanization: 'gia đình', category: 'family' },
-                { id: 13, word: 'matka', translation: 'mẹ', romanization: 'mẹ', category: 'family' },
-                { id: 14, word: 'otec', translation: 'bố', romanization: 'bố', category: 'family' },
-                { id: 15, word: 'dům', translation: 'nhà', romanization: 'nhà', category: 'basics' },
-                { id: 16, word: 'škola', translation: 'trường học', romanization: 'trường học', category: 'basics' },
-                { id: 17, word: 'kniha', translation: 'sách', romanization: 'sách', category: 'basics' },
-                { id: 18, word: 'přátelé', translation: 'bạn bè', romanization: 'bạn bè', category: 'people' },
-                { id: 19, word: 'láska', translation: 'tình yêu', romanization: 'tình yêu', category: 'emotions' },
-                { id: 20, word: 'práce', translation: 'công việc', romanization: 'công việc', category: 'basics' }
+                // High frequency / Easy
+                { id: 1, word: 'ahoj', translation: 'xin chào', romanization: 'sin chào', category: 'greetings', difficulty: 1 },
+                { id: 2, word: 'děkuji', translation: 'cảm ơn', romanization: 'cảm ơn', category: 'greetings', difficulty: 1 },
+                { id: 3, word: 'ano', translation: 'vâng', romanization: 'vâng', category: 'basics', difficulty: 1 },
+                { id: 4, word: 'ne', translation: 'không', romanization: 'không', category: 'basics', difficulty: 1 },
+                { id: 5, word: 'voda', translation: 'nước', romanization: 'nước', category: 'food', difficulty: 1 },
+                // Medium frequency
+                { id: 6, word: 'chléb', translation: 'bánh mì', romanization: 'bánh mì', category: 'food', difficulty: 2 },
+                { id: 7, word: 'jeden', translation: 'một', romanization: 'một', category: 'numbers', difficulty: 1 },
+                { id: 8, word: 'dva', translation: 'hai', romanization: 'hai', category: 'numbers', difficulty: 1 },
+                { id: 9, word: 'tři', translation: 'ba', romanization: 'ba', category: 'numbers', difficulty: 1 },
+                { id: 10, word: 'čtyři', translation: 'bốn', romanization: 'bốn', category: 'numbers', difficulty: 2 },
+                // Lower frequency
+                { id: 11, word: 'pět', translation: 'năm', romanization: 'năm', category: 'numbers', difficulty: 2 },
+                { id: 12, word: 'rodina', translation: 'gia đình', romanization: 'gia đình', category: 'family', difficulty: 2 },
+                { id: 13, word: 'matka', translation: 'mẹ', romanization: 'mẹ', category: 'family', difficulty: 1 },
+                { id: 14, word: 'otec', translation: 'bố', romanization: 'bố', category: 'family', difficulty: 1 },
+                { id: 15, word: 'dům', translation: 'nhà', romanization: 'nhà', category: 'basics', difficulty: 1 },
+                { id: 16, word: 'škola', translation: 'trường học', romanization: 'trường học', category: 'basics', difficulty: 2 },
+                { id: 17, word: 'kniha', translation: 'sách', romanization: 'sách', category: 'basics', difficulty: 2 },
+                { id: 18, word: 'přátelé', translation: 'bạn bè', romanization: 'bạn bè', category: 'people', difficulty: 2 },
+                { id: 19, word: 'láska', translation: 'tình yêu', romanization: 'tình yêu', category: 'emotions', difficulty: 3 },
+                { id: 20, word: 'práce', translation: 'công việc', romanization: 'công việc', category: 'basics', difficulty: 2 }
             ],
             'vi-zh': [
-                // Vietnamese to Chinese
-                { id: 21, word: 'xin chào', translation: '你好', romanization: 'nǐ hǎo', category: 'greetings' },
-                { id: 22, word: 'cảm ơn', translation: '谢谢', romanization: 'xiè xie', category: 'greetings' },
-                { id: 23, word: 'một', translation: '一', romanization: 'yī', category: 'numbers' },
-                { id: 24, word: 'hai', translation: '二', romanization: 'èr', category: 'numbers' },
-                { id: 25, word: 'ba', translation: '三', romanization: 'sān', category: 'numbers' },
-                { id: 26, word: 'nước', translation: '水', romanization: 'shuǐ', category: 'food' },
-                { id: 27, word: 'cơm', translation: '米饭', romanization: 'mǐ fàn', category: 'food' },
-                { id: 28, word: 'gia đình', translation: '家庭', romanization: 'jiā tíng', category: 'family' },
-                { id: 29, word: 'mẹ', translation: '妈妈', romanization: 'mā ma', category: 'family' },
-                { id: 30, word: 'bố', translation: '爸爸', romanization: 'bà ba', category: 'family' }
+                { id: 21, word: 'xin chào', translation: '你好', romanization: 'nǐ hǎo', category: 'greetings', difficulty: 1 },
+                { id: 22, word: 'cảm ơn', translation: '谢谢', romanization: 'xiè xie', category: 'greetings', difficulty: 1 },
+                { id: 23, word: 'một', translation: '一', romanization: 'yī', category: 'numbers', difficulty: 1 },
+                { id: 24, word: 'hai', translation: '二', romanization: 'èr', category: 'numbers', difficulty: 1 },
+                { id: 25, word: 'ba', translation: '三', romanization: 'sān', category: 'numbers', difficulty: 1 },
+                { id: 26, word: 'nước', translation: '水', romanization: 'shuǐ', category: 'food', difficulty: 1 },
+                { id: 27, word: 'cơm', translation: '米饭', romanization: 'mǐ fàn', category: 'food', difficulty: 2 },
+                { id: 28, word: 'gia đình', translation: '家庭', romanization: 'jiā tíng', category: 'family', difficulty: 2 },
+                { id: 29, word: 'mẹ', translation: '妈妈', romanization: 'mā ma', category: 'family', difficulty: 1 },
+                { id: 30, word: 'bố', translation: '爸爸', romanization: 'bà ba', category: 'family', difficulty: 1 }
             ],
             'vi-en': [
-                // Vietnamese to English
-                { id: 31, word: 'xin chào', translation: 'hello', romanization: '', category: 'greetings' },
-                { id: 32, word: 'cảm ơn', translation: 'thank you', romanization: '', category: 'greetings' },
-                { id: 33, word: 'một', translation: 'one', romanization: '', category: 'numbers' },
-                { id: 34, word: 'hai', translation: 'two', romanization: '', category: 'numbers' },
-                { id: 35, word: 'ba', translation: 'three', romanization: '', category: 'numbers' },
-                { id: 36, word: 'nước', translation: 'water', romanization: '', category: 'food' },
-                { id: 37, word: 'bánh mì', translation: 'bread', romanization: '', category: 'food' },
-                { id: 38, word: 'gia đình', translation: 'family', romanization: '', category: 'family' },
-                { id: 39, word: 'nhà', translation: 'house', romanization: '', category: 'basics' },
-                { id: 40, word: 'trường học', translation: 'school', romanization: '', category: 'basics' }
+                { id: 31, word: 'xin chào', translation: 'hello', romanization: '', category: 'greetings', difficulty: 1 },
+                { id: 32, word: 'cảm ơn', translation: 'thank you', romanization: '', category: 'greetings', difficulty: 1 },
+                { id: 33, word: 'một', translation: 'one', romanization: '', category: 'numbers', difficulty: 1 },
+                { id: 34, word: 'hai', translation: 'two', romanization: '', category: 'numbers', difficulty: 1 },
+                { id: 35, word: 'ba', translation: 'three', romanization: '', category: 'numbers', difficulty: 1 },
+                { id: 36, word: 'nước', translation: 'water', romanization: '', category: 'food', difficulty: 1 },
+                { id: 37, word: 'bánh mì', translation: 'bread', romanization: '', category: 'food', difficulty: 1 },
+                { id: 38, word: 'gia đình', translation: 'family', romanization: '', category: 'family', difficulty: 1 },
+                { id: 39, word: 'nhà', translation: 'house', romanization: '', category: 'basics', difficulty: 1 },
+                { id: 40, word: 'trường học', translation: 'school', romanization: '', category: 'basics', difficulty: 2 }
             ]
         };
 
         // App State
         let currentLanguagePair = 'cs-vi';
         let currentSession = [];
+        let pausedSession = null;
         let currentCardIndex = 0;
         let sessionStats = {
             correct: 0,
-            total: 0
+            total: 0,
+            startTime: null,
+            wordsCompleted: []
         };
         let isAnswerShown = false;
+        let dailyGoal = {
+            new: 3,
+            review: 5,
+            completed: { new: 0, review: 0 },
+            adaptiveFactor: 1.0
+        };
 
         // Local Storage Keys
         const STORAGE_KEY = 'languageApp';
 
         // Initialize App
         function initApp() {
+            devLog('Initializing app...', 'info');
             loadProgress();
+            updateDailyGoal();
             updateStats();
             setupEventListeners();
-            updateDueCards();
+            checkPausedSession();
+            updateSessionHistory();
+            devLog('App initialized successfully', 'success');
         }
 
         // Setup Event Listeners
         function setupEventListeners() {
-            // Language selector buttons
             document.querySelectorAll('.language-btn').forEach(btn => {
                 btn.addEventListener('click', function() {
                     document.querySelectorAll('.language-btn').forEach(b => b.classList.remove('active'));
                     this.classList.add('active');
                     currentLanguagePair = this.dataset.pair;
-                    updateDueCards();
+                    updateDailyGoal();
+                    checkPausedSession();
                 });
             });
 
-            // Enter key to submit answer
             document.getElementById('answer').addEventListener('keypress', function(e) {
                 if (e.key === 'Enter') {
                     checkAnswer();
@@ -401,37 +820,93 @@
             const saved = localStorage.getItem(STORAGE_KEY);
             if (saved) {
                 const data = JSON.parse(saved);
-                if (data.lastStudied === new Date().toDateString()) {
-                    // Already studied today
-                    document.getElementById('streak').textContent = data.streak || 0;
-                } else if (data.lastStudied === new Date(Date.now() - 86400000).toDateString()) {
-                    // Studied yesterday - continue streak
-                    data.streak = (data.streak || 0) + 1;
-                    saveProgress(data);
-                } else {
-                    // Streak broken
-                    data.streak = 0;
+                
+                // Check if it's a new day
+                const today = new Date().toDateString();
+                if (data.lastStudied !== today) {
+                    // Reset daily progress
+                    data.dailyProgress = {
+                        new: 0,
+                        review: 0,
+                        sessions: [],
+                        timeSpent: 0
+                    };
+                    
+                    // Update streak
+                    const yesterday = new Date(Date.now() - 86400000).toDateString();
+                    if (data.lastStudied === yesterday && data.dailyProgress?.completed) {
+                        data.streak = (data.streak || 0) + 1;
+                    } else if (data.lastStudied !== yesterday) {
+                        data.streak = 0;
+                    }
+                    
+                    data.lastStudied = today;
                     saveProgress(data);
                 }
+                
+                // Load daily goal adjustments
+                if (data.adaptiveGoal) {
+                    dailyGoal = { ...dailyGoal, ...data.adaptiveGoal };
+                }
+                
                 return data;
             }
-            return { 
-                progress: {}, 
-                streak: 0, 
-                lastStudied: null,
-                accuracy: { correct: 0, total: 0 }
+            
+            // Initialize new user data
+            const newData = {
+                progress: {},
+                streak: 0,
+                lastStudied: new Date().toDateString(),
+                dailyProgress: {
+                    new: 0,
+                    review: 0,
+                    sessions: [],
+                    timeSpent: 0
+                },
+                accuracy: { correct: 0, total: 0 },
+                totalLearned: 0,
+                adaptiveGoal: dailyGoal
             };
+            saveProgress(newData);
+            return newData;
         }
 
-        // Save Progress to Local Storage
+        // Save Progress
         function saveProgress(data) {
             localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
         }
 
-        // Update Statistics Display
+        // Update Daily Goal Display
+        function updateDailyGoal() {
+            const data = loadProgress();
+            const dailyProgress = data.dailyProgress || { new: 0, review: 0 };
+            
+            // Calculate total goal and progress
+            const totalGoal = dailyGoal.new + dailyGoal.review;
+            const totalComplete = dailyProgress.new + dailyProgress.review;
+            
+            // Update displays
+            document.getElementById('goal-progress').textContent = `${totalComplete}/${totalGoal}`;
+            document.getElementById('goal-bar').style.width = `${(totalComplete / totalGoal) * 100}%`;
+            document.getElementById('words-new').textContent = `New: ${dailyProgress.new}/${dailyGoal.new}`;
+            document.getElementById('words-review').textContent = `Review: ${dailyProgress.review}/${dailyGoal.review}`;
+            document.getElementById('time-spent').textContent = `Time: ${Math.round(dailyProgress.timeSpent || 0)} min`;
+            
+            // Update time estimate
+            const remainingWords = totalGoal - totalComplete;
+            const estimatedTime = Math.max(0, remainingWords * 1);
+            document.getElementById('time-estimate').textContent = 
+                remainingWords > 0 ? `~${estimatedTime} minutes remaining today` : `Daily goal complete! 🎉`;
+            
+            // Update "All" button time
+            document.getElementById('all-time').textContent = `~${remainingWords} min`;
+        }
+
+        // Update Statistics
         function updateStats() {
             const data = loadProgress();
             document.getElementById('streak').textContent = data.streak || 0;
+            document.getElementById('total-learned').textContent = data.totalLearned || 0;
             
             if (data.accuracy && data.accuracy.total > 0) {
                 const acc = Math.round((data.accuracy.correct / data.accuracy.total) * 100);
@@ -439,60 +914,140 @@
             }
         }
 
-        // Calculate Due Cards
-        function updateDueCards() {
+        // Check for Paused Session
+        function checkPausedSession() {
             const data = loadProgress();
-            const now = Date.now();
-            let dueCount = 0;
-            
-            // Get current vocabulary set
-            const vocabSet = vocabulary[currentLanguagePair] || [];
-            
-            vocabSet.forEach(card => {
-                const cardProgress = data.progress?.[currentLanguagePair]?.[card.id];
-                if (!cardProgress) {
-                    // New card
-                    dueCount++;
-                } else {
-                    // Check if due for review
-                    if (cardProgress.nextReview <= now) {
-                        dueCount++;
-                    }
-                }
-            });
-            
-            document.getElementById('cards-due').textContent = dueCount;
-            document.getElementById('due-count').textContent = dueCount;
+            if (data.pausedSession && data.pausedSession.languagePair === currentLanguagePair) {
+                pausedSession = data.pausedSession;
+                document.getElementById('continue-session-btn').classList.remove('hidden');
+                document.getElementById('remaining-words').textContent = 
+                    pausedSession.cards.length - pausedSession.currentIndex;
+            } else {
+                document.getElementById('continue-session-btn').classList.add('hidden');
+                pausedSession = null;
+            }
         }
 
-        // Start Learning Session
-        function startSession() {
+        // Start Session with Specific Size
+        function startSession(size) {
+            devLog(`Starting session with size: ${size}`, 'info');
+            
             const data = loadProgress();
             const now = Date.now();
             currentSession = [];
             
-            // Get cards that are due
+            // Get available cards
             const vocabSet = vocabulary[currentLanguagePair] || [];
+            const newCards = [];
+            const reviewCards = [];
             
             vocabSet.forEach(card => {
                 const cardProgress = data.progress?.[currentLanguagePair]?.[card.id];
-                if (!cardProgress || cardProgress.nextReview <= now) {
-                    currentSession.push({...card});
+                if (!cardProgress) {
+                    newCards.push({...card, type: 'new'});
+                    devLog(`Found new card: ${card.word}`, 'info');
+                } else if (cardProgress.nextReview <= now) {
+                    reviewCards.push({...card, type: 'review'});
+                    devLog(`Found review card: ${card.word} (due)`, 'info');
                 }
             });
             
+            devLog(`Available: ${newCards.length} new, ${reviewCards.length} review cards`, 'info');
+            
+            // Calculate how many cards to include
+            let targetNew = 0;
+            let targetReview = 0;
+            
+            // Get already completed today
+            const completedNew = data.dailyProgress?.new || 0;
+            const completedReview = data.dailyProgress?.review || 0;
+            
+            if (size === 0) {
+                // All remaining for today
+                targetNew = Math.max(0, dailyGoal.new - completedNew);
+                targetReview = Math.max(0, dailyGoal.review - completedReview);
+                devLog(`All remaining: ${targetNew} new, ${targetReview} review`, 'info');
+            } else {
+                // Specific size session
+                let remainingSize = size;
+                
+                // First, try to fill with due review cards (up to daily limit)
+                const reviewsNeeded = Math.max(0, dailyGoal.review - completedReview);
+                targetReview = Math.min(remainingSize, reviewCards.length, reviewsNeeded);
+                remainingSize -= targetReview;
+                
+                // Then fill with new cards (up to daily limit)
+                if (remainingSize > 0) {
+                    const newNeeded = Math.max(0, dailyGoal.new - completedNew);
+                    targetNew = Math.min(remainingSize, newCards.length, newNeeded);
+                }
+                
+                // If we still need more cards and daily goals are met, add extra reviews
+                if (targetNew + targetReview < size && completedNew >= dailyGoal.new && completedReview >= dailyGoal.review) {
+                    const extraReviews = Math.min(size - targetNew - targetReview, reviewCards.length - targetReview);
+                    targetReview += extraReviews;
+                    devLog(`Adding ${extraReviews} extra review cards (daily goals already met)`, 'info');
+                }
+                
+                // If still not enough cards, add any available new cards
+                if (targetNew + targetReview < size) {
+                    const extraNew = Math.min(size - targetNew - targetReview, newCards.length - targetNew);
+                    targetNew += extraNew;
+                    devLog(`Adding ${extraNew} extra new cards to reach session size`, 'info');
+                }
+                
+                devLog(`Session will have: ${targetNew} new, ${targetReview} review`, 'info');
+            }
+            
+            // Build session
+            currentSession = [
+                ...reviewCards.slice(0, targetReview),
+                ...newCards.slice(0, targetNew)
+            ];
+            
             if (currentSession.length === 0) {
-                // No cards due
-                showCompleteScreen();
+                devLog('No cards available for session!', 'error');
+                
+                // Show a message instead of empty complete screen
+                const feedback = `
+                    <div class="no-cards">
+                        <h2>No Cards Available</h2>
+                        <p style="margin: 20px 0;">
+                            ${reviewCards.length === 0 && newCards.length === 0 ? 
+                                'All cards are scheduled for future review. Great job! Come back tomorrow.' :
+                                'You\'ve completed your daily goals! Come back tomorrow for more practice.'}
+                        </p>
+                        <p style="color: #666; font-size: 14px;">
+                            Next review: Tomorrow<br>
+                            Cards learned: ${data.totalLearned || 0}
+                        </p>
+                        <button class="btn-primary" onclick="backToStart()">Back to Home</button>
+                    </div>
+                `;
+                document.getElementById('complete-screen').innerHTML = feedback;
+                document.getElementById('start-screen').classList.add('hidden');
+                document.getElementById('complete-screen').classList.remove('hidden');
                 return;
             }
             
-            // Shuffle session cards
+            // Shuffle session
             currentSession.sort(() => Math.random() - 0.5);
+            devLog(`Starting session with ${currentSession.length} cards`, 'success');
             
-            // Reset session stats
-            sessionStats = { correct: 0, total: 0 };
+            // Initialize session
+            sessionStats = {
+                correct: 0,
+                total: 0,
+                startTime: Date.now(),
+                wordsCompleted: []
+            };
             currentCardIndex = 0;
+            
+            // Clear paused session
+            pausedSession = null;
+            const saveData = loadProgress();
+            delete saveData.pausedSession;
+            saveProgress(saveData);
             
             // Show study screen
             document.getElementById('start-screen').classList.add('hidden');
@@ -501,10 +1056,55 @@
             showCard();
         }
 
+        // Continue Paused Session
+        function continueSession() {
+            if (!pausedSession) return;
+            
+            currentSession = pausedSession.cards;
+            currentCardIndex = pausedSession.currentIndex;
+            sessionStats = pausedSession.stats;
+            
+            // Clear paused session from storage
+            const data = loadProgress();
+            delete data.pausedSession;
+            saveProgress(data);
+            pausedSession = null;
+            
+            // Show study screen
+            document.getElementById('start-screen').classList.add('hidden');
+            document.getElementById('study-screen').classList.remove('hidden');
+            
+            showCard();
+        }
+
+        // Pause Session
+        function pauseSession() {
+            const data = loadProgress();
+            
+            // Save session state
+            data.pausedSession = {
+                cards: currentSession,
+                currentIndex: currentCardIndex,
+                stats: sessionStats,
+                languagePair: currentLanguagePair
+            };
+            
+            // Update time spent
+            if (sessionStats.startTime) {
+                const timeSpent = (Date.now() - sessionStats.startTime) / 60000;
+                data.dailyProgress.timeSpent = (data.dailyProgress.timeSpent || 0) + timeSpent;
+            }
+            
+            saveProgress(data);
+            
+            // Return to home
+            backToStart();
+        }
+
         // Show Current Card
         function showCard() {
             if (currentCardIndex >= currentSession.length) {
-                showCompleteScreen();
+                completeSession();
                 return;
             }
             
@@ -517,9 +1117,9 @@
             document.getElementById('feedback').classList.add('hidden');
             isAnswerShown = false;
             
-            // Update progress bar
-            const progress = (currentCardIndex / currentSession.length) * 100;
-            document.getElementById('progress').style.width = progress + '%';
+            // Update progress display
+            document.getElementById('current-word-num').textContent = currentCardIndex + 1;
+            document.getElementById('total-words').textContent = currentSession.length;
         }
 
         // Check Answer
@@ -544,14 +1144,15 @@
                 feedback.className = 'feedback correct';
                 feedback.textContent = '✓ Correct!';
                 sessionStats.correct++;
-                updateCardProgress(card.id, true);
+                updateCardProgress(card.id, true, card.type);
             } else {
                 feedback.className = 'feedback incorrect';
                 feedback.innerHTML = `✗ Incorrect. The answer is: <strong>${card.translation}</strong>`;
-                updateCardProgress(card.id, false);
+                updateCardProgress(card.id, false, card.type);
             }
             
             sessionStats.total++;
+            sessionStats.wordsCompleted.push(card.id);
             isAnswerShown = true;
             
             // Change button text
@@ -567,7 +1168,8 @@
             feedback.innerHTML = `The answer is: <strong>${card.translation}</strong>`;
             
             sessionStats.total++;
-            updateCardProgress(card.id, false);
+            sessionStats.wordsCompleted.push(card.id);
+            updateCardProgress(card.id, false, card.type);
             isAnswerShown = true;
             
             document.querySelector('.btn-primary').textContent = 'Next Card';
@@ -580,64 +1182,189 @@
             showCard();
         }
 
-        // Update Card Progress (Simple Spaced Repetition)
-        function updateCardProgress(cardId, isCorrect) {
+        // Update Card Progress
+        function updateCardProgress(cardId, isCorrect, cardType) {
             const data = loadProgress();
+            
+            devLog(`Updating card ${cardId}: ${isCorrect ? 'CORRECT' : 'INCORRECT'} (${cardType})`, isCorrect ? 'success' : 'error');
             
             if (!data.progress) data.progress = {};
             if (!data.progress[currentLanguagePair]) data.progress[currentLanguagePair] = {};
             
             const cardProgress = data.progress[currentLanguagePair][cardId] || {
                 level: 0,
-                lastSeen: Date.now()
+                lastSeen: Date.now(),
+                timesCorrect: 0,
+                timesSeen: 0
             };
             
+            // Update statistics
+            cardProgress.timesSeen++;
             if (isCorrect) {
-                // Move to next interval
+                cardProgress.timesCorrect++;
                 cardProgress.level = Math.min(cardProgress.level + 1, 5);
             } else {
-                // Reset to beginning
-                cardProgress.level = 0;
+                cardProgress.level = Math.max(0, cardProgress.level - 1);
             }
             
             // Calculate next review time
-            const intervals = [1, 3, 7, 14, 30, 90]; // days
+            const intervals = [1, 3, 7, 14, 30, 90];
             const daysUntilNext = intervals[cardProgress.level] || 90;
             cardProgress.nextReview = Date.now() + (daysUntilNext * 86400000);
             cardProgress.lastSeen = Date.now();
             
+            devLog(`Card level: ${cardProgress.level}, Next review in ${daysUntilNext} days`, 'info');
+            
             data.progress[currentLanguagePair][cardId] = cardProgress;
+            
+            // Update daily progress
+            if (!data.dailyProgress) {
+                data.dailyProgress = { new: 0, review: 0, sessions: [], timeSpent: 0 };
+            }
+            
+            // Count this word towards daily goal (only once per day)
+            if (!sessionStats.wordsCompleted.includes(cardId) || sessionStats.wordsCompleted.filter(id => id === cardId).length === 1) {
+                if (cardType === 'new') {
+                    data.dailyProgress.new = Math.min(dailyGoal.new, (data.dailyProgress.new || 0) + 1);
+                    devLog(`Daily new words: ${data.dailyProgress.new}/${dailyGoal.new}`, 'info');
+                    
+                    // Count as learned if correct on first try
+                    if (isCorrect && cardProgress.timesSeen === 1) {
+                        data.totalLearned = (data.totalLearned || 0) + 1;
+                        devLog(`Total words learned: ${data.totalLearned}`, 'success');
+                    }
+                } else {
+                    data.dailyProgress.review = Math.min(dailyGoal.review, (data.dailyProgress.review || 0) + 1);
+                    devLog(`Daily review words: ${data.dailyProgress.review}/${dailyGoal.review}`, 'info');
+                }
+            }
             
             // Update overall accuracy
             if (!data.accuracy) data.accuracy = { correct: 0, total: 0 };
             data.accuracy.total++;
             if (isCorrect) data.accuracy.correct++;
             
-            // Update last studied date
-            data.lastStudied = new Date().toDateString();
+            saveProgress(data);
+            updateDailyGoal();
+        }
+
+        // Complete Session
+        function completeSession() {
+            const data = loadProgress();
+            
+            // Calculate session time
+            const sessionTime = sessionStats.startTime ? 
+                Math.round((Date.now() - sessionStats.startTime) / 60000) : 0;
+            
+            // Update time spent
+            data.dailyProgress.timeSpent = (data.dailyProgress.timeSpent || 0) + sessionTime;
+            
+            // Add to session history
+            if (!data.dailyProgress.sessions) data.dailyProgress.sessions = [];
+            data.dailyProgress.sessions.push({
+                time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
+                words: sessionStats.total,
+                accuracy: sessionStats.total > 0 ? Math.round((sessionStats.correct / sessionStats.total) * 100) : 0
+            });
+            
+            // Adaptive goal adjustment
+            adjustDailyGoal(data);
             
             saveProgress(data);
+            showCompleteScreen();
+        }
+
+        // Adjust Daily Goal Based on Performance
+        function adjustDailyGoal(data) {
+            const dailyProgress = data.dailyProgress;
+            const sessions = dailyProgress.sessions || [];
+            
+            // Only adjust after completing at least 2 sessions
+            if (sessions.length < 2) return;
+            
+            // Calculate average accuracy for today
+            const todayAccuracy = sessions.reduce((acc, s) => acc + s.accuracy, 0) / sessions.length;
+            
+            // Adjust goals for tomorrow
+            if (todayAccuracy > 85 && dailyProgress.new >= dailyGoal.new && dailyProgress.review >= dailyGoal.review) {
+                // Increase slightly if doing well and completing goals
+                dailyGoal.new = Math.min(10, dailyGoal.new + 1);
+                dailyGoal.review = Math.min(15, dailyGoal.review + 1);
+            } else if (todayAccuracy < 60) {
+                // Decrease if struggling
+                dailyGoal.new = Math.max(2, dailyGoal.new - 1);
+                dailyGoal.review = Math.max(3, dailyGoal.review - 1);
+            }
+            
+            // Save adjusted goals
+            data.adaptiveGoal = dailyGoal;
         }
 
         // Show Complete Screen
         function showCompleteScreen() {
+            const data = loadProgress();
+            const totalGoal = dailyGoal.new + dailyGoal.review;
+            const totalComplete = (data.dailyProgress?.new || 0) + (data.dailyProgress?.review || 0);
+            
+            // Check if daily goal achieved
+            if (totalComplete >= totalGoal) {
+                document.getElementById('achievement').classList.remove('hidden');
+            } else {
+                document.getElementById('achievement').classList.add('hidden');
+            }
+            
+            // Show session stats
+            const accuracy = sessionStats.total > 0 ? 
+                Math.round((sessionStats.correct / sessionStats.total) * 100) : 0;
+            const sessionTime = sessionStats.startTime ? 
+                Math.round((Date.now() - sessionStats.startTime) / 60000) : 0;
+            
+            document.getElementById('session-words').textContent = sessionStats.total;
+            document.getElementById('session-accuracy').textContent = accuracy + '%';
+            document.getElementById('session-time').textContent = sessionTime;
+            
+            // Show complete screen
             document.getElementById('study-screen').classList.add('hidden');
             document.getElementById('complete-screen').classList.remove('hidden');
             
-            const accuracy = sessionStats.total > 0 
-                ? Math.round((sessionStats.correct / sessionStats.total) * 100)
-                : 0;
-            document.getElementById('final-accuracy').textContent = accuracy;
-            
             updateStats();
-            updateDueCards();
+        }
+
+        // Update Session History Display
+        function updateSessionHistory() {
+            const data = loadProgress();
+            const sessions = data.dailyProgress?.sessions || [];
+            const historyDiv = document.getElementById('session-history');
+            
+            if (sessions.length === 0) {
+                historyDiv.innerHTML = '<div style="color: #999; font-size: 13px;">No sessions yet today</div>';
+                return;
+            }
+            
+            historyDiv.innerHTML = sessions.map(s => `
+                <div class="history-item">
+                    <span>${s.time}</span>
+                    <span>${s.words} words • ${s.accuracy}%</span>
+                </div>
+            `).join('');
         }
 
         // Back to Start
         function backToStart() {
+            document.getElementById('study-screen').classList.add('hidden');
             document.getElementById('complete-screen').classList.add('hidden');
             document.getElementById('start-screen').classList.remove('hidden');
-            updateDueCards();
+            
+            updateDailyGoal();
+            updateStats();
+            checkPausedSession();
+            updateSessionHistory();
+        }
+
+        // Finish for Today
+        function finishForToday() {
+            backToStart();
+            // Could add a "see you tomorrow" message here
         }
 
         // Initialize when page loads
