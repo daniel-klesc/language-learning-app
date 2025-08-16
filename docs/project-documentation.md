@@ -1,5 +1,5 @@
-# Language Learning App - Project Documentation v1.5
-*Last Updated: Current Implementation Status*
+# Language Learning App - Project Documentation v1.6
+*Last Updated: After bug fixes and development console implementation*
 
 ## 🎯 Project Overview
 
@@ -16,7 +16,7 @@ A personalized, adaptive language learning application designed for busy profess
 - **Micro-sessions**: 1-5 minute sessions that fit into busy schedules
 - **Science-based**: Spaced repetition with intervals of 1, 3, 7, 14, 30, 90 days
 
-## 📱 Current Features (Phase 1.5 Completed)
+## 📱 Current Features (Phase 1.6 Completed)
 
 ### 1. Smart Daily Goals System
 - **Default daily goal**: 3 new words + 5 review words
@@ -30,12 +30,13 @@ A personalized, adaptive language learning application designed for busy profess
 ### 2. Flexible Session Management
 - **Session sizes available**:
   - 1 word (~1 minute) - Quick practice
-  - 3 words (~3 minutes) - Recommended
+  - 3 words (~3 minutes) - Recommended (badge only, no pre-selection)
   - 5 words (~5 minutes) - Standard
   - All remaining - Complete daily goal
 - **Pauseable sessions**: Save progress mid-session and resume later
 - **Auto-save**: Progress saves after every word answered
 - **Session history**: View all sessions from current day
+- **Beyond daily goals**: Can practice extra cards after meeting goals
 
 ### 3. Spaced Repetition Algorithm
 - **Current implementation**: Simple fixed intervals
@@ -61,7 +62,19 @@ A personalized, adaptive language learning application designed for busy profess
   - Minimum: 2 new, 3 review words
   - Maximum: 10 new, 15 review words
 
-### 5. Progress Persistence
+### 5. Development Console (NEW in v1.6)
+- **Toggle button**: Bottom-right corner (DEV_MODE = true)
+- **Real-time logging**: All actions and state changes
+- **Vocabulary status display**:
+  - Card status (NEW, DUE, FUTURE)
+  - Spaced repetition levels
+  - Days until review
+  - Daily progress tracking
+- **Production mode**: Set `DEV_MODE = false` to hide
+- **Log types**: info, success, error
+- **Auto-scrolling**: Latest logs appear at top
+
+### 6. Progress Persistence
 - **Local Storage structure**:
 ```javascript
 {
@@ -96,12 +109,12 @@ A personalized, adaptive language learning application designed for busy profess
 }
 ```
 
-### 6. User Interface Elements
+### 7. User Interface Elements
 - **Home screen**:
   - Daily goal card with progress bar
   - Statistics (streak, words learned, accuracy)
   - Language pair selector
-  - Session size options
+  - Session size options (no pre-selection)
   - Today's session history
   - Continue paused session button (when applicable)
 
@@ -118,6 +131,21 @@ A personalized, adaptive language learning application designed for busy profess
   - Session statistics
   - Achievement notification (if daily goal met)
   - Continue or Finish options
+  - Special message when no cards available
+
+## 🐛 Bug Fixes in v1.6
+
+### Fixed Issues:
+1. **"Session Complete" on start**: Now properly handles when no cards are due
+2. **Session size logic**: Allows practice beyond daily goals when needed
+3. **Pre-selected recommended button**: Removed confusing visual pre-selection
+4. **Empty sessions**: Shows appropriate message when all cards scheduled for future
+
+### Session Selection Improvements:
+- Prioritizes review cards up to daily limit
+- Then adds new cards up to daily limit
+- Adds extra cards if daily goals already met
+- Clear messaging when no cards available
 
 ## 🗂️ Vocabulary Structure
 
@@ -158,6 +186,12 @@ A personalized, adaptive language learning application designed for busy profess
 - `updateCardProgress()`: Update spaced repetition data
 - `adjustDailyGoal()`: Adaptive goal modification
 - `loadProgress()`/`saveProgress()`: Local storage management
+- `devLog(message, type)`: Development console logging
+- `showVocabularyStatus()`: Display all cards' current state
+
+### Development Mode Functions
+- `toggleDevConsole()`: Show/hide development console
+- `DEV_MODE`: Boolean flag for production/development
 
 ## 📋 Known Limitations & Planned Improvements
 
@@ -203,6 +237,7 @@ A personalized, adaptive language learning application designed for busy profess
 1. Save the HTML file as `index.html`
 2. Open in any modern browser
 3. No server or dependencies required
+4. Set `DEV_MODE = true` for development console
 
 ### To Deploy
 1. **GitHub Pages** (recommended):
@@ -221,24 +256,41 @@ A personalized, adaptive language learning application designed for busy profess
 3. Specify which phase/feature to implement next
 4. AI assistant will have full context
 
+### Using Development Console
+1. Ensure `DEV_MODE = true` in code
+2. Click "Show Dev Console" button (bottom-right)
+3. View real-time logs of all operations
+4. Check vocabulary status and scheduling
+5. Set `DEV_MODE = false` for production
+
 ## 📊 Testing Checklist
 
 ### Core Functionality
-- [ ] Start each session size (1, 3, 5, all)
-- [ ] Answer correctly and incorrectly
-- [ ] Pause mid-session
-- [ ] Resume paused session
-- [ ] Complete daily goal
-- [ ] Check streak maintenance
-- [ ] Verify spaced repetition intervals
-- [ ] Test adaptive goal adjustment
+- [x] Start each session size (1, 3, 5, all)
+- [x] Answer correctly and incorrectly
+- [x] Pause mid-session
+- [x] Resume paused session
+- [x] Complete daily goal
+- [x] Check streak maintenance
+- [x] Verify spaced repetition intervals
+- [x] Test adaptive goal adjustment
+- [x] Handle no cards available scenario
+- [x] Practice beyond daily goals
 
 ### Edge Cases
-- [ ] No cards due for review
-- [ ] Switching language pairs mid-session
-- [ ] Browser refresh during session
-- [ ] Clear localStorage and restart
-- [ ] Complete all available words
+- [x] No cards due for review
+- [x] Switching language pairs mid-session
+- [x] Browser refresh during session
+- [x] Clear localStorage and restart
+- [x] Complete all available words
+- [x] Session with mix of new and review cards
+
+### Development Console Tests
+- [x] Toggle console visibility
+- [x] View vocabulary status
+- [x] Track card progress updates
+- [x] Monitor session creation
+- [x] Check logging accuracy
 
 ## 💡 Usage Instructions for Users
 
@@ -254,6 +306,7 @@ A personalized, adaptive language learning application designed for busy profess
 - Focus on accuracy over speed
 - Review words appear based on your performance
 - Let the app adapt to your learning pace
+- Practice beyond daily goals for faster progress
 
 ### Tips for Busy Schedules
 - Morning: 1 word with coffee
@@ -262,6 +315,13 @@ A personalized, adaptive language learning application designed for busy profess
 - Evening: Complete remaining goals
 - Pause anytime - progress is saved!
 
+### Understanding the System
+- **New cards**: Never seen before
+- **Review cards**: Due based on spaced repetition
+- **Daily goals**: Adaptive based on performance
+- **Session sizes**: Choose what fits your available time
+- **No pressure**: Every word counts, pause anytime
+
 ## 🔄 Version History
 
 ### v1.0 - Basic MVP
@@ -269,7 +329,7 @@ A personalized, adaptive language learning application designed for busy profess
 - Fixed 20-word sessions
 - Basic progress tracking
 
-### v1.5 - Adaptive Micro-Learning (Current)
+### v1.5 - Adaptive Micro-Learning
 - Flexible session sizes
 - Pauseable sessions
 - Daily goals system
@@ -277,12 +337,21 @@ A personalized, adaptive language learning application designed for busy profess
 - Session history
 - Improved UI/UX
 
+### v1.6 - Bug Fixes & Dev Tools (Current)
+- Fixed "session complete" bug
+- Removed confusing pre-selection
+- Added development console
+- Improved session logic for beyond-goal practice
+- Better handling of no available cards
+- Real-time debugging capabilities
+
 ## 📝 Next Steps for Developer
 
 ### Immediate Priority
-1. Test current implementation thoroughly
-2. Add more vocabulary (expand to 100+ words)
-3. Implement Phase 2 (Audio support)
+1. Test with development console active
+2. Monitor spaced repetition scheduling
+3. Add more vocabulary (expand to 100+ words)
+4. Consider implementing Phase 2 (Audio support)
 
 ### Questions to Consider
 1. Should we add more language pairs?
@@ -290,6 +359,7 @@ A personalized, adaptive language learning application designed for busy profess
 3. Should we implement user-added vocabulary?
 4. Do we need offline audio caching?
 5. When to add sentence learning?
+6. How to handle tone input methods?
 
 ## 🤝 Contributing & Support
 
@@ -299,6 +369,7 @@ A personalized, adaptive language learning application designed for busy profess
 - Maintain single-file structure for now
 - Test on mobile devices
 - Preserve localStorage structure
+- Use development console for debugging
 
 ### For Bug Reports
 Document:
@@ -307,7 +378,15 @@ Document:
 - Steps to reproduce
 - Expected vs actual behavior
 - localStorage data (if relevant)
+- Development console logs (if available)
+
+### Code Quality Guidelines
+- Set `DEV_MODE = false` before production
+- Test all session sizes
+- Verify spaced repetition intervals
+- Check adaptive goal adjustments
+- Ensure mobile responsiveness
 
 ---
 
-*This documentation represents the current state of the Language Learning App after Phase 1.5 implementation. Use this as a reference for continuing development in new conversations or with other AI assistants.*
+*This documentation represents the current state of the Language Learning App after Phase 1.6 implementation with bug fixes and development console. Use this as a reference for continuing development in new conversations or with other AI assistants.*
