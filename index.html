@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Language Learning App - Adaptive Version</title>
     <style>
         * {
@@ -28,6 +28,15 @@
             max-width: 500px;
             width: 100%;
             padding: 30px;
+        }
+
+        /* Study screen specific container for better mobile experience */
+        .container.study-mode {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - 40px);
+            max-height: 600px;
         }
 
         .header {
@@ -93,6 +102,102 @@
             justify-content: space-between;
             font-size: 14px;
             opacity: 0.9;
+        }
+
+        /* Session progress card - similar style to daily goal */
+        .session-progress-card {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .session-progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .session-progress-title {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .session-progress-numbers {
+            font-size: 20px;
+            font-weight: bold;
+            margin-right: 50px; /* Make space for pause button */
+        }
+
+        .session-progress-bar {
+            background: rgba(255,255,255,0.3);
+            height: 6px;
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+
+        .session-progress-fill {
+            background: white;
+            height: 100%;
+            border-radius: 3px;
+            transition: width 0.5s ease;
+        }
+
+        .session-progress-details {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            opacity: 0.9;
+        }
+
+        /* Beautiful pause button */
+        .pause-button {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 32px;
+            height: 32px;
+            background: rgba(255,255,255,0.25);
+            border: none;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .pause-button:hover {
+            background: rgba(255,255,255,0.35);
+            transform: scale(1.1);
+        }
+
+        .pause-icon {
+            width: 16px;
+            height: 16px;
+            position: relative;
+        }
+
+        .pause-icon::before,
+        .pause-icon::after {
+            content: '';
+            position: absolute;
+            width: 4px;
+            height: 16px;
+            background: white;
+            border-radius: 1px;
+        }
+
+        .pause-icon::before {
+            left: 3px;
+        }
+
+        .pause-icon::after {
+            right: 3px;
         }
 
         .stats {
@@ -268,64 +373,42 @@
             box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
         }
 
+        /* Improved card design for study mode */
         .card {
             background: #f8f9fa;
-            border-radius: 15px;
-            padding: 40px 20px;
+            border-radius: 12px;
+            padding: 30px 20px;
             margin-bottom: 20px;
             text-align: center;
-            min-height: 200px;
+            flex: 1;
             display: flex;
             flex-direction: column;
             justify-content: center;
-        }
-
-        .session-progress {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-            padding: 10px;
-            background: #f8f9fa;
-            border-radius: 10px;
-        }
-
-        .session-progress-text {
-            font-size: 14px;
-            color: #666;
-        }
-
-        .pause-btn {
-            padding: 5px 15px;
-            background: #6c757d;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 12px;
+            min-height: 150px;
         }
 
         .word {
-            font-size: 32px;
+            font-size: 36px;
             font-weight: bold;
             color: #333;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
         }
 
         .romanization {
-            font-size: 18px;
+            font-size: 20px;
             color: #666;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
         }
 
+        /* Less rounded category badge */
         .category {
             display: inline-block;
-            padding: 5px 15px;
+            padding: 6px 12px;
             background: #e9ecef;
-            border-radius: 20px;
+            border-radius: 6px;
             font-size: 12px;
             color: #666;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
         }
 
         .input-group {
@@ -344,6 +427,34 @@
         input:focus {
             outline: none;
             border-color: #667eea;
+        }
+
+        /* Single button design for study mode */
+        .study-button {
+            width: 100%;
+            padding: 16px;
+            font-size: 17px;
+            font-weight: bold;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: #667eea;
+            color: white;
+        }
+
+        .study-button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .study-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .study-button.next {
+            background: #28a745;
         }
 
         .buttons {
@@ -494,10 +605,32 @@
         .quick-action:hover {
             background: #5a67d8;
         }
+
+        /* Mobile optimizations for study mode */
+        @media (max-width: 480px) {
+            .container.study-mode {
+                padding: 15px;
+                height: 100vh;
+                max-height: 100vh;
+                border-radius: 0;
+            }
+            
+            .word {
+                font-size: 32px;
+            }
+            
+            .romanization {
+                font-size: 18px;
+            }
+            
+            .card {
+                padding: 20px 15px;
+            }
+        }
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="container" id="main-container">
         <div class="header">
             <h1>🎯 Smart Language Learning</h1>
             <div class="time-estimate" id="time-estimate">Daily goal: ~15 minutes</div>
@@ -577,17 +710,30 @@
 
         <!-- Study Screen -->
         <div id="study-screen" class="hidden">
-            <div class="session-progress">
-                <span class="session-progress-text">
-                    Word <span id="current-word-num">1</span> of <span id="total-words">3</span>
-                </span>
-                <button class="pause-btn" onclick="pauseSession()">Pause & Save</button>
+            <!-- Session Progress Card (like daily goal but for session) -->
+            <div class="session-progress-card">
+                <div class="pause-button" onclick="pauseSession()" title="Pause">
+                    <div class="pause-icon"></div>
+                </div>
+                <div class="session-progress-header">
+                    <span class="session-progress-title">Session Progress</span>
+                    <span class="session-progress-numbers">
+                        <span id="current-word-num">1</span>/<span id="total-words">3</span>
+                    </span>
+                </div>
+                <div class="session-progress-bar">
+                    <div class="session-progress-fill" id="session-bar" style="width: 0%"></div>
+                </div>
+                <div class="session-progress-details">
+                    <span id="session-correct">Correct: 0</span>
+                    <span id="session-accuracy">Accuracy: 0%</span>
+                </div>
             </div>
 
             <div class="card">
                 <div class="category" id="category"></div>
                 <div class="word" id="word"></div>
-                <div class="romanization" id="romanization"></div>
+                <div class="romanization" id="romanization" class="hidden"></div>
             </div>
 
             <div class="feedback hidden" id="feedback"></div>
@@ -596,10 +742,8 @@
                 <input type="text" id="answer" placeholder="Type the translation..." autocomplete="off">
             </div>
 
-            <div class="buttons">
-                <button class="btn-primary" onclick="checkAnswer()">Check Answer</button>
-                <button class="btn-secondary" onclick="skipCard()">Skip</button>
-            </div>
+            <!-- Single button that changes based on state -->
+            <button class="study-button" id="action-button" onclick="handleButtonClick()">Check Answer</button>
         </div>
 
         <!-- Complete Screen -->
@@ -613,11 +757,11 @@
                 <h2>Session Complete!</h2>
                 <p style="margin: 20px 0;">
                     Words practiced: <strong id="session-words">0</strong><br>
-                    Accuracy: <strong id="session-accuracy">0%</strong><br>
+                    Accuracy: <strong id="session-accuracy-final">0%</strong><br>
                     Time: <strong id="session-time">0</strong> minutes
                 </p>
                 <button class="btn-primary" onclick="backToStart()">Continue Learning</button>
-                <button class="btn-secondary" onclick="finishForToday()" style="margin-top: 10px;">Finish for Today</button>
+                <button class="btn-secondary" onclick="finishForToday()" style="margin-top: 10px;">Finish for Now</button>
             </div>
         </div>
     </div>
@@ -810,9 +954,19 @@
 
             document.getElementById('answer').addEventListener('keypress', function(e) {
                 if (e.key === 'Enter') {
-                    checkAnswer();
+                    handleButtonClick();
                 }
             });
+        }
+
+        // Handle the single button click (Check Answer / Next Card)
+        function handleButtonClick() {
+            const button = document.getElementById('action-button');
+            if (button.classList.contains('next')) {
+                nextCard();
+            } else {
+                checkAnswer();
+            }
         }
 
         // Load Progress from Local Storage
@@ -900,6 +1054,20 @@
             
             // Update "All" button time
             document.getElementById('all-time').textContent = `~${remainingWords} min`;
+        }
+
+        // Update Session Progress Display
+        function updateSessionProgress() {
+            if (currentSession.length === 0) return;
+            
+            const progress = ((currentCardIndex) / currentSession.length) * 100;
+            document.getElementById('session-bar').style.width = `${progress}%`;
+            document.getElementById('session-correct').textContent = `Correct: ${sessionStats.correct}`;
+            
+            const accuracy = sessionStats.total > 0 
+                ? Math.round((sessionStats.correct / sessionStats.total) * 100) 
+                : 0;
+            document.getElementById('session-accuracy').textContent = `Accuracy: ${accuracy}%`;
         }
 
         // Update Statistics
@@ -1049,6 +1217,13 @@
             delete saveData.pausedSession;
             saveProgress(saveData);
             
+            // Switch to study mode UI
+            document.getElementById('main-container').classList.add('study-mode');
+            document.querySelector('.header').classList.add('hidden');
+            document.querySelector('.daily-goal').classList.add('hidden');
+            document.querySelector('.stats').classList.add('hidden');
+            document.querySelector('.language-selector').classList.add('hidden');
+            
             // Show study screen
             document.getElementById('start-screen').classList.add('hidden');
             document.getElementById('study-screen').classList.remove('hidden');
@@ -1069,6 +1244,13 @@
             delete data.pausedSession;
             saveProgress(data);
             pausedSession = null;
+            
+            // Switch to study mode UI
+            document.getElementById('main-container').classList.add('study-mode');
+            document.querySelector('.header').classList.add('hidden');
+            document.querySelector('.daily-goal').classList.add('hidden');
+            document.querySelector('.stats').classList.add('hidden');
+            document.querySelector('.language-selector').classList.add('hidden');
             
             // Show study screen
             document.getElementById('start-screen').classList.add('hidden');
@@ -1110,7 +1292,16 @@
             
             const card = currentSession[currentCardIndex];
             document.getElementById('word').textContent = card.word;
-            document.getElementById('romanization').textContent = card.romanization || '';
+            
+            // Hide romanization initially, show only if it exists
+            const romanizationEl = document.getElementById('romanization');
+            if (card.romanization) {
+                romanizationEl.textContent = card.romanization;
+                romanizationEl.classList.add('hidden'); // Hide initially
+            } else {
+                romanizationEl.classList.add('hidden');
+            }
+            
             document.getElementById('category').textContent = card.category;
             document.getElementById('answer').value = '';
             document.getElementById('answer').focus();
@@ -1120,6 +1311,13 @@
             // Update progress display
             document.getElementById('current-word-num').textContent = currentCardIndex + 1;
             document.getElementById('total-words').textContent = currentSession.length;
+            
+            // Reset button to "Check Answer"
+            const button = document.getElementById('action-button');
+            button.textContent = 'Check Answer';
+            button.classList.remove('next');
+            
+            updateSessionProgress();
         }
 
         // Check Answer
@@ -1135,6 +1333,12 @@
             
             const isCorrect = userAnswer === correctAnswer || 
                               userAnswer === correctAnswer.replace(/\s+/g, '');
+            
+            // Show romanization when answer is checked
+            const romanizationEl = document.getElementById('romanization');
+            if (card.romanization) {
+                romanizationEl.classList.remove('hidden');
+            }
             
             // Show feedback
             const feedback = document.getElementById('feedback');
@@ -1155,30 +1359,17 @@
             sessionStats.wordsCompleted.push(card.id);
             isAnswerShown = true;
             
-            // Change button text
-            document.querySelector('.btn-primary').textContent = 'Next Card';
-        }
-
-        // Skip Card
-        function skipCard() {
-            const card = currentSession[currentCardIndex];
-            const feedback = document.getElementById('feedback');
-            feedback.classList.remove('hidden');
-            feedback.className = 'feedback incorrect';
-            feedback.innerHTML = `The answer is: <strong>${card.translation}</strong>`;
+            // Change button to "Next Card"
+            const button = document.getElementById('action-button');
+            button.textContent = currentCardIndex === currentSession.length - 1 ? 'Finish' : 'Next Card';
+            button.classList.add('next');
             
-            sessionStats.total++;
-            sessionStats.wordsCompleted.push(card.id);
-            updateCardProgress(card.id, false, card.type);
-            isAnswerShown = true;
-            
-            document.querySelector('.btn-primary').textContent = 'Next Card';
+            updateSessionProgress();
         }
 
         // Next Card
         function nextCard() {
             currentCardIndex++;
-            document.querySelector('.btn-primary').textContent = 'Check Answer';
             showCard();
         }
 
@@ -1320,12 +1511,15 @@
                 Math.round((Date.now() - sessionStats.startTime) / 60000) : 0;
             
             document.getElementById('session-words').textContent = sessionStats.total;
-            document.getElementById('session-accuracy').textContent = accuracy + '%';
+            document.getElementById('session-accuracy-final').textContent = accuracy + '%';
             document.getElementById('session-time').textContent = sessionTime;
             
             // Show complete screen
             document.getElementById('study-screen').classList.add('hidden');
             document.getElementById('complete-screen').classList.remove('hidden');
+            
+            // Remove study mode
+            document.getElementById('main-container').classList.remove('study-mode');
             
             updateStats();
         }
@@ -1355,6 +1549,13 @@
             document.getElementById('complete-screen').classList.add('hidden');
             document.getElementById('start-screen').classList.remove('hidden');
             
+            // Restore normal UI
+            document.getElementById('main-container').classList.remove('study-mode');
+            document.querySelector('.header').classList.remove('hidden');
+            document.querySelector('.daily-goal').classList.remove('hidden');
+            document.querySelector('.stats').classList.remove('hidden');
+            document.querySelector('.language-selector').classList.remove('hidden');
+            
             updateDailyGoal();
             updateStats();
             checkPausedSession();
@@ -1371,4 +1572,4 @@
         window.onload = initApp;
     </script>
 </body>
-</html>
+</html> 
