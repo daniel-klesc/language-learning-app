@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Language Learning App - Adaptive Version</title>
+    <title>Language Learning App - Adaptive Skill Levels</title>
     <style>
         * {
             margin: 0;
@@ -36,7 +36,7 @@
             display: flex;
             flex-direction: column;
             height: calc(100vh - 40px);
-            max-height: 600px;
+            max-height: 700px;
         }
 
         .header {
@@ -55,6 +55,107 @@
             font-size: 14px;
             margin-bottom: 20px;
             text-align: center;
+        }
+
+        /* Skill Level Selector */
+        .skill-selector {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .skill-selector-title {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .skill-levels {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+        }
+
+        .skill-level-btn {
+            padding: 10px 5px;
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            font-size: 12px;
+        }
+
+        .skill-level-btn.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .skill-level-btn .emoji {
+            font-size: 20px;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        /* Card Skill Indicator */
+        .card-skill-display {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 12px;
+        }
+
+        .skill-progress-bars {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .skill-bar {
+            flex: 1;
+            text-align: center;
+        }
+
+        .skill-bar-label {
+            font-size: 10px;
+            opacity: 0.9;
+            margin-bottom: 3px;
+        }
+
+        .skill-bar-track {
+            background: rgba(255,255,255,0.3);
+            height: 4px;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .skill-bar-fill {
+            background: white;
+            height: 100%;
+            transition: width 0.5s ease;
+        }
+
+        .skill-promotion {
+            background: #28a745;
+            color: white;
+            padding: 8px;
+            border-radius: 6px;
+            margin-top: 10px;
+            text-align: center;
+            font-size: 12px;
+            cursor: pointer;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
         }
 
         .daily-goal {
@@ -294,8 +395,73 @@
             margin-top: 5px;
         }
 
-        .session-btn.recommended {
-            position: relative;
+        /* Multiple Choice Layout */
+        .choice-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .choice-btn {
+            padding: 15px;
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .choice-btn:hover:not(:disabled) {
+            border-color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+        }
+
+        .choice-btn.selected {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        .choice-btn.correct {
+            border-color: #28a745;
+            background: #d4edda;
+            animation: correctPulse 0.5s;
+        }
+
+        .choice-btn.incorrect {
+            border-color: #dc3545;
+            background: #f8d7da;
+            animation: shake 0.5s;
+        }
+
+        .choice-btn.dimmed {
+            opacity: 0.5;
+        }
+
+        @keyframes correctPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .choice-text {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .choice-romanization {
+            font-size: 14px;
+            color: #666;
         }
         
         /* Development Console Styles */
@@ -400,7 +566,7 @@
             margin-bottom: 15px;
         }
 
-        /* Less rounded category badge */
+        /* Category badge */
         .category {
             display: inline-block;
             padding: 6px 12px;
@@ -498,11 +664,6 @@
             color: white;
         }
 
-        .btn-danger {
-            background: #dc3545;
-            color: white;
-        }
-
         .feedback {
             padding: 15px;
             border-radius: 10px;
@@ -519,6 +680,17 @@
         .feedback.incorrect {
             background: #f8d7da;
             color: #721c24;
+        }
+
+        .feedback.intermediate {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .feedback .correct-spelling {
+            font-size: 14px;
+            margin-top: 8px;
+            font-weight: normal;
         }
 
         .hidden {
@@ -589,23 +761,6 @@
             border-bottom: none;
         }
 
-        .quick-action {
-            display: inline-block;
-            padding: 8px 16px;
-            background: #667eea;
-            color: white;
-            border-radius: 20px;
-            text-decoration: none;
-            font-size: 14px;
-            margin-right: 10px;
-            cursor: pointer;
-            border: none;
-        }
-
-        .quick-action:hover {
-            background: #5a67d8;
-        }
-
         /* Mobile optimizations for study mode */
         @media (max-width: 480px) {
             .container.study-mode {
@@ -626,6 +781,10 @@
             .card {
                 padding: 20px 15px;
             }
+
+            .choice-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -634,6 +793,29 @@
         <div class="header">
             <h1>🎯 Smart Language Learning</h1>
             <div class="time-estimate" id="time-estimate">Daily goal: ~15 minutes</div>
+        </div>
+
+        <!-- Skill Level Selector -->
+        <div class="skill-selector">
+            <div class="skill-selector-title">Default Skill Level</div>
+            <div class="skill-levels">
+                <button class="skill-level-btn" data-level="1" onclick="setDefaultSkillLevel(1)">
+                    <span class="emoji">🌱</span>
+                    Beginner
+                </button>
+                <button class="skill-level-btn" data-level="2" onclick="setDefaultSkillLevel(2)">
+                    <span class="emoji">📘</span>
+                    Intermediate
+                </button>
+                <button class="skill-level-btn" data-level="3" onclick="setDefaultSkillLevel(3)">
+                    <span class="emoji">🎯</span>
+                    Advanced
+                </button>
+                <button class="skill-level-btn active" data-level="0" onclick="setDefaultSkillLevel(0)">
+                    <span class="emoji">🤖</span>
+                    Auto
+                </button>
+            </div>
         </div>
 
         <!-- Daily Goal Card -->
@@ -659,7 +841,7 @@
             </div>
             <div class="stat">
                 <div class="stat-value" id="total-learned">0</div>
-                <div class="stat-label">Words Learned</div>
+                <div class="stat-label">Words Mastered</div>
             </div>
             <div class="stat">
                 <div class="stat-value" id="accuracy">0%</div>
@@ -710,7 +892,7 @@
 
         <!-- Study Screen -->
         <div id="study-screen" class="hidden">
-            <!-- Session Progress Card (like daily goal but for session) -->
+            <!-- Session Progress Card -->
             <div class="session-progress-card">
                 <div class="pause-button" onclick="pauseSession()" title="Pause">
                     <div class="pause-icon"></div>
@@ -730,6 +912,35 @@
                 </div>
             </div>
 
+            <!-- Card Skill Display -->
+            <div class="card-skill-display hidden" id="card-skill-display">
+                <div>Current Level: <strong id="current-skill-level">Beginner</strong></div>
+                <div class="skill-progress-bars">
+                    <div class="skill-bar">
+                        <div class="skill-bar-label">Beginner</div>
+                        <div class="skill-bar-track">
+                            <div class="skill-bar-fill" id="beginner-progress" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-bar">
+                        <div class="skill-bar-label">Intermediate</div>
+                        <div class="skill-bar-track">
+                            <div class="skill-bar-fill" id="intermediate-progress" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-bar">
+                        <div class="skill-bar-label">Advanced</div>
+                        <div class="skill-bar-track">
+                            <div class="skill-bar-fill" id="advanced-progress" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="skill-promotion hidden" id="skill-promotion" onclick="acceptSkillPromotion()">
+                    🎉 Ready for next level! Click to try →
+                </div>
+            </div>
+
+            <!-- Card Display -->
             <div class="card">
                 <div class="category" id="category"></div>
                 <div class="word" id="word"></div>
@@ -738,11 +949,17 @@
 
             <div class="feedback hidden" id="feedback"></div>
 
-            <div class="input-group">
+            <!-- Multiple Choice Grid (for beginner) -->
+            <div class="choice-grid hidden" id="choice-grid">
+                <!-- Choices will be generated dynamically -->
+            </div>
+
+            <!-- Text Input (for intermediate/advanced) -->
+            <div class="input-group hidden" id="input-group">
                 <input type="text" id="answer" placeholder="Type the translation..." autocomplete="off">
             </div>
 
-            <!-- Single button that changes based on state -->
+            <!-- Action Button -->
             <button class="study-button" id="action-button" onclick="handleButtonClick()">Check Answer</button>
         </div>
 
@@ -766,7 +983,7 @@
         </div>
     </div>
 
-    <!-- Development Console (Toggle this for production) -->
+    <!-- Development Console -->
     <button class="dev-toggle hidden" id="dev-toggle" onclick="toggleDevConsole()">Show Dev Console</button>
     <div class="dev-console hidden" id="dev-console">
         <div class="dev-console-header">🔧 Development Console</div>
@@ -775,7 +992,6 @@
 
     <script>
         // ============= DEVELOPMENT MODE TOGGLE =============
-        // Set this to false for production
         const DEV_MODE = true;
         
         // Development console logging
@@ -831,18 +1047,22 @@
                     devLog(`ID ${card.id}: "${card.word}" - NEW (never seen)`, 'info');
                 } else {
                     const daysUntilReview = Math.ceil((progress.nextReview - now) / 86400000);
+                    const skillLevel = progress.skillLevel || 1;
+                    const skillName = ['', 'Beginner', 'Intermediate', 'Advanced'][skillLevel];
+                    
                     if (progress.nextReview <= now) {
                         dueCount++;
-                        devLog(`ID ${card.id}: "${card.word}" - DUE NOW (Level ${progress.level})`, 'success');
+                        devLog(`ID ${card.id}: "${card.word}" - DUE NOW (Level ${progress.level}, Skill: ${skillName})`, 'success');
                     } else {
                         futureCount++;
-                        devLog(`ID ${card.id}: "${card.word}" - Due in ${daysUntilReview} days (Level ${progress.level})`, 'info');
+                        devLog(`ID ${card.id}: "${card.word}" - Due in ${daysUntilReview} days (Level ${progress.level}, Skill: ${skillName})`, 'info');
                     }
                 }
             });
             
             devLog(`Summary: ${newCount} new, ${dueCount} due, ${futureCount} future`, 'success');
             devLog(`Daily Progress: ${data.dailyProgress?.new || 0}/${dailyGoal.new} new, ${data.dailyProgress?.review || 0}/${dailyGoal.review} review`, 'info');
+            devLog(`Default Skill Level: ${defaultSkillLevel === 0 ? 'Auto' : defaultSkillLevel}`, 'info');
         }
         
         // Initialize dev mode
@@ -853,22 +1073,51 @@
                 devLog('Set DEV_MODE = false for production', 'info');
             });
         }
-        // Vocabulary Database (same as before but organized by difficulty)
+
+        // ============= CONSTANTS & CONFIGURATION =============
+        
+        // Skill level constants
+        const SKILL_LEVELS = {
+            BEGINNER: 1,
+            INTERMEDIATE: 2,
+            ADVANCED: 3
+        };
+
+        const SKILL_NAMES = {
+            1: 'Beginner',
+            2: 'Intermediate', 
+            3: 'Advanced'
+        };
+
+        // Spaced repetition configuration
+        const BASE_INTERVALS = [1, 3, 7, 14, 30, 90]; // Days
+
+        // Skill level multipliers for progression
+        const SKILL_MULTIPLIERS = {
+            1: 0.5,    // Beginner: 50% progression
+            2: 0.75,   // Intermediate: 75% progression
+            3: 1.0     // Advanced: 100% progression
+        };
+
+        // Promotion thresholds
+        const PROMOTION_THRESHOLD = {
+            streak: 3,      // Consecutive correct answers
+            accuracy: 0.8   // 80% accuracy at level
+        };
+
+        // ============= VOCABULARY DATABASE =============
         const vocabulary = {
             'cs-vi': [
-                // High frequency / Easy
                 { id: 1, word: 'ahoj', translation: 'xin chào', romanization: 'sin chào', category: 'greetings', difficulty: 1 },
                 { id: 2, word: 'děkuji', translation: 'cảm ơn', romanization: 'cảm ơn', category: 'greetings', difficulty: 1 },
                 { id: 3, word: 'ano', translation: 'vâng', romanization: 'vâng', category: 'basics', difficulty: 1 },
                 { id: 4, word: 'ne', translation: 'không', romanization: 'không', category: 'basics', difficulty: 1 },
                 { id: 5, word: 'voda', translation: 'nước', romanization: 'nước', category: 'food', difficulty: 1 },
-                // Medium frequency
                 { id: 6, word: 'chléb', translation: 'bánh mì', romanization: 'bánh mì', category: 'food', difficulty: 2 },
                 { id: 7, word: 'jeden', translation: 'một', romanization: 'một', category: 'numbers', difficulty: 1 },
                 { id: 8, word: 'dva', translation: 'hai', romanization: 'hai', category: 'numbers', difficulty: 1 },
                 { id: 9, word: 'tři', translation: 'ba', romanization: 'ba', category: 'numbers', difficulty: 1 },
                 { id: 10, word: 'čtyři', translation: 'bốn', romanization: 'bốn', category: 'numbers', difficulty: 2 },
-                // Lower frequency
                 { id: 11, word: 'pět', translation: 'năm', romanization: 'năm', category: 'numbers', difficulty: 2 },
                 { id: 12, word: 'rodina', translation: 'gia đình', romanization: 'gia đình', category: 'family', difficulty: 2 },
                 { id: 13, word: 'matka', translation: 'mẹ', romanization: 'mẹ', category: 'family', difficulty: 1 },
@@ -906,7 +1155,7 @@
             ]
         };
 
-        // App State
+        // ============= APP STATE =============
         let currentLanguagePair = 'cs-vi';
         let currentSession = [];
         let pausedSession = null;
@@ -924,23 +1173,27 @@
             completed: { new: 0, review: 0 },
             adaptiveFactor: 1.0
         };
+        let defaultSkillLevel = 0; // 0 = Auto, 1-3 = Manual levels
+        let currentCardSkillLevel = 1; // Current card's skill level
+        let selectedChoiceIndex = -1; // For multiple choice
 
         // Local Storage Keys
         const STORAGE_KEY = 'languageApp';
 
-        // Initialize App
+        // ============= INITIALIZATION =============
         function initApp() {
-            devLog('Initializing app...', 'info');
+            devLog('Initializing app with skill levels...', 'info');
             loadProgress();
             updateDailyGoal();
             updateStats();
             setupEventListeners();
             checkPausedSession();
             updateSessionHistory();
+            updateSkillLevelDisplay();
             devLog('App initialized successfully', 'success');
         }
 
-        // Setup Event Listeners
+        // ============= EVENT LISTENERS =============
         function setupEventListeners() {
             document.querySelectorAll('.language-btn').forEach(btn => {
                 btn.addEventListener('click', function() {
@@ -959,7 +1212,211 @@
             });
         }
 
-        // Handle the single button click (Check Answer / Next Card)
+        // ============= SKILL LEVEL FUNCTIONS =============
+        function setDefaultSkillLevel(level) {
+            defaultSkillLevel = level;
+            updateSkillLevelDisplay();
+            
+            const data = loadProgress();
+            data.defaultSkillLevel = level;
+            saveProgress(data);
+            
+            devLog(`Default skill level set to: ${level === 0 ? 'Auto' : SKILL_NAMES[level]}`, 'info');
+        }
+
+        function updateSkillLevelDisplay() {
+            document.querySelectorAll('.skill-level-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (parseInt(btn.dataset.level) === defaultSkillLevel) {
+                    btn.classList.add('active');
+                }
+            });
+        }
+
+        function determineCardSkillLevel(cardId) {
+            const data = loadProgress();
+            const cardProgress = data.progress?.[currentLanguagePair]?.[cardId];
+            
+            if (!cardProgress) {
+                // New card - use default or beginner
+                return defaultSkillLevel === 0 ? SKILL_LEVELS.BEGINNER : defaultSkillLevel;
+            }
+            
+            // Auto mode
+            if (defaultSkillLevel === 0) {
+                // Use recommended skill level or last used
+                return cardProgress.recommendedSkillLevel || cardProgress.skillLevel || SKILL_LEVELS.BEGINNER;
+            }
+            
+            // Manual mode - use selected level
+            return defaultSkillLevel;
+        }
+
+        function updateCardSkillDisplay(cardId) {
+            const data = loadProgress();
+            const cardProgress = data.progress?.[currentLanguagePair]?.[cardId];
+            
+            if (!cardProgress || !cardProgress.skillProgress) {
+                document.getElementById('card-skill-display').classList.add('hidden');
+                return;
+            }
+            
+            document.getElementById('card-skill-display').classList.remove('hidden');
+            document.getElementById('current-skill-level').textContent = SKILL_NAMES[currentCardSkillLevel];
+            
+            // Update progress bars
+            for (let level = 1; level <= 3; level++) {
+                const stats = cardProgress.skillProgress[level] || { correct: 0, total: 0 };
+                const accuracy = stats.total > 0 ? (stats.correct / stats.total) * 100 : 0;
+                const barId = ['', 'beginner', 'intermediate', 'advanced'][level] + '-progress';
+                document.getElementById(barId).style.width = `${accuracy}%`;
+            }
+            
+            // Check for promotion
+            checkSkillPromotion(cardProgress);
+        }
+
+        function checkSkillPromotion(cardProgress) {
+            const currentStats = cardProgress.skillProgress[currentCardSkillLevel] || { streak: 0, correct: 0, total: 0 };
+            const promotionDiv = document.getElementById('skill-promotion');
+            
+            if (currentCardSkillLevel < 3 && 
+                currentStats.streak >= PROMOTION_THRESHOLD.streak && 
+                currentStats.total >= 3 &&
+                (currentStats.correct / currentStats.total) >= PROMOTION_THRESHOLD.accuracy) {
+                
+                promotionDiv.classList.remove('hidden');
+                cardProgress.recommendedSkillLevel = currentCardSkillLevel + 1;
+            } else {
+                promotionDiv.classList.add('hidden');
+            }
+        }
+
+        function acceptSkillPromotion() {
+            const card = currentSession[currentCardIndex];
+            const data = loadProgress();
+            const cardProgress = data.progress[currentLanguagePair][card.id];
+            
+            if (cardProgress && cardProgress.recommendedSkillLevel) {
+                currentCardSkillLevel = cardProgress.recommendedSkillLevel;
+                cardProgress.skillLevel = currentCardSkillLevel;
+                saveProgress(data);
+                
+                devLog(`Card ${card.id} promoted to ${SKILL_NAMES[currentCardSkillLevel]}!`, 'success');
+                document.getElementById('skill-promotion').classList.add('hidden');
+                
+                // Refresh the card display with new skill level
+                showCard();
+            }
+        }
+
+        // ============= MULTIPLE CHOICE FUNCTIONS =============
+        function generateMultipleChoice(correctCard, allCards) {
+            // Filter for good distractors
+            const distractors = allCards
+                .filter(c => c.id !== correctCard.id)
+                .sort((a, b) => {
+                    // Prioritize same category
+                    if (a.category === correctCard.category && b.category !== correctCard.category) return -1;
+                    if (b.category === correctCard.category && a.category !== correctCard.category) return 1;
+                    // Then similar difficulty
+                    const aDiff = Math.abs(a.difficulty - correctCard.difficulty);
+                    const bDiff = Math.abs(b.difficulty - correctCard.difficulty);
+                    return aDiff - bDiff;
+                })
+                .slice(0, 3);
+            
+            // Shuffle options
+            const options = [correctCard, ...distractors].sort(() => Math.random() - 0.5);
+            
+            return options.map((option, index) => ({
+                text: option.translation,
+                romanization: option.romanization,
+                isCorrect: option.id === correctCard.id,
+                index: index
+            }));
+        }
+
+        function renderMultipleChoice(options) {
+            const grid = document.getElementById('choice-grid');
+            grid.innerHTML = '';
+            grid.classList.remove('hidden');
+            
+            options.forEach((option, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'choice-btn';
+                btn.onclick = () => selectChoice(index);
+                btn.innerHTML = `
+                    <span class="choice-text">${option.text}</span>
+                    ${option.romanization ? `<span class="choice-romanization">${option.romanization}</span>` : ''}
+                `;
+                btn.dataset.index = index;
+                btn.dataset.correct = option.isCorrect;
+                grid.appendChild(btn);
+            });
+        }
+
+        function selectChoice(index) {
+            if (isAnswerShown) return;
+            
+            // Clear previous selection
+            document.querySelectorAll('.choice-btn').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            
+            // Mark new selection
+            const btn = document.querySelector(`.choice-btn[data-index="${index}"]`);
+            btn.classList.add('selected');
+            selectedChoiceIndex = index;
+        }
+
+        // ============= ANSWER VALIDATION =============
+        function normalizeAnswer(text) {
+            return text
+                .toLowerCase()
+                .normalize('NFD')  // Decompose diacritics
+                .replace(/[\u0300-\u036f]/g, '') // Remove diacritics
+                .replace(/[^a-z0-9\u4e00-\u9fff]/g, ''); // Keep alphanumeric and Chinese chars
+        }
+
+        function levenshteinDistance(str1, str2) {
+            const matrix = [];
+            for (let i = 0; i <= str2.length; i++) {
+                matrix[i] = [i];
+            }
+            for (let j = 0; j <= str1.length; j++) {
+                matrix[0][j] = j;
+            }
+            for (let i = 1; i <= str2.length; i++) {
+                for (let j = 1; j <= str1.length; j++) {
+                    if (str2.charAt(i - 1) === str1.charAt(j - 1)) {
+                        matrix[i][j] = matrix[i - 1][j - 1];
+                    } else {
+                        matrix[i][j] = Math.min(
+                            matrix[i - 1][j - 1] + 1,
+                            matrix[i][j - 1] + 1,
+                            matrix[i - 1][j] + 1
+                        );
+                    }
+                }
+            }
+            return matrix[str2.length][str1.length];
+        }
+
+        function checkIntermediateAnswer(userAnswer, correctAnswer) {
+            const normalized = normalizeAnswer(userAnswer);
+            const correct = normalizeAnswer(correctAnswer);
+            
+            // Exact match (normalized)
+            if (normalized === correct) return true;
+            
+            // Allow 1 character difference for typos
+            if (levenshteinDistance(normalized, correct) <= 1) return true;
+            
+            return false;
+        }
+
+        // ============= CORE FUNCTIONS =============
         function handleButtonClick() {
             const button = document.getElementById('action-button');
             if (button.classList.contains('next')) {
@@ -969,16 +1426,32 @@
             }
         }
 
-        // Load Progress from Local Storage
         function loadProgress() {
             const saved = localStorage.getItem(STORAGE_KEY);
             if (saved) {
                 const data = JSON.parse(saved);
                 
+                // Migrate old data to include skill levels
+                if (data.progress) {
+                    Object.keys(data.progress).forEach(lang => {
+                        Object.keys(data.progress[lang]).forEach(cardId => {
+                            const card = data.progress[lang][cardId];
+                            if (!card.skillLevel) {
+                                card.skillLevel = 1;
+                                card.skillProgress = {
+                                    1: { correct: 0, total: 0, streak: 0 },
+                                    2: { correct: 0, total: 0, streak: 0 },
+                                    3: { correct: 0, total: 0, streak: 0 }
+                                };
+                                card.recommendedSkillLevel = 1;
+                            }
+                        });
+                    });
+                }
+                
                 // Check if it's a new day
                 const today = new Date().toDateString();
                 if (data.lastStudied !== today) {
-                    // Reset daily progress
                     data.dailyProgress = {
                         new: 0,
                         review: 0,
@@ -986,7 +1459,6 @@
                         timeSpent: 0
                     };
                     
-                    // Update streak
                     const yesterday = new Date(Date.now() - 86400000).toDateString();
                     if (data.lastStudied === yesterday && data.dailyProgress?.completed) {
                         data.streak = (data.streak || 0) + 1;
@@ -996,6 +1468,11 @@
                     
                     data.lastStudied = today;
                     saveProgress(data);
+                }
+                
+                // Load saved default skill level
+                if (data.defaultSkillLevel !== undefined) {
+                    defaultSkillLevel = data.defaultSkillLevel;
                 }
                 
                 // Load daily goal adjustments
@@ -1019,44 +1496,38 @@
                 },
                 accuracy: { correct: 0, total: 0 },
                 totalLearned: 0,
-                adaptiveGoal: dailyGoal
+                adaptiveGoal: dailyGoal,
+                defaultSkillLevel: 0
             };
             saveProgress(newData);
             return newData;
         }
 
-        // Save Progress
         function saveProgress(data) {
             localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
         }
 
-        // Update Daily Goal Display
         function updateDailyGoal() {
             const data = loadProgress();
             const dailyProgress = data.dailyProgress || { new: 0, review: 0 };
             
-            // Calculate total goal and progress
             const totalGoal = dailyGoal.new + dailyGoal.review;
             const totalComplete = dailyProgress.new + dailyProgress.review;
             
-            // Update displays
             document.getElementById('goal-progress').textContent = `${totalComplete}/${totalGoal}`;
             document.getElementById('goal-bar').style.width = `${(totalComplete / totalGoal) * 100}%`;
             document.getElementById('words-new').textContent = `New: ${dailyProgress.new}/${dailyGoal.new}`;
             document.getElementById('words-review').textContent = `Review: ${dailyProgress.review}/${dailyGoal.review}`;
             document.getElementById('time-spent').textContent = `Time: ${Math.round(dailyProgress.timeSpent || 0)} min`;
             
-            // Update time estimate
             const remainingWords = totalGoal - totalComplete;
             const estimatedTime = Math.max(0, remainingWords * 1);
             document.getElementById('time-estimate').textContent = 
                 remainingWords > 0 ? `~${estimatedTime} minutes remaining today` : `Daily goal complete! 🎉`;
             
-            // Update "All" button time
             document.getElementById('all-time').textContent = `~${remainingWords} min`;
         }
 
-        // Update Session Progress Display
         function updateSessionProgress() {
             if (currentSession.length === 0) return;
             
@@ -1070,11 +1541,24 @@
             document.getElementById('session-accuracy').textContent = `Accuracy: ${accuracy}%`;
         }
 
-        // Update Statistics
         function updateStats() {
             const data = loadProgress();
             document.getElementById('streak').textContent = data.streak || 0;
-            document.getElementById('total-learned').textContent = data.totalLearned || 0;
+            
+            // Count mastered words (Advanced level with high accuracy)
+            let masteredCount = 0;
+            if (data.progress) {
+                Object.values(data.progress).forEach(langPair => {
+                    Object.values(langPair).forEach(card => {
+                        const advancedStats = card.skillProgress?.[3];
+                        if (advancedStats && advancedStats.total >= 3 && 
+                            (advancedStats.correct / advancedStats.total) >= 0.8) {
+                            masteredCount++;
+                        }
+                    });
+                });
+            }
+            document.getElementById('total-learned').textContent = masteredCount;
             
             if (data.accuracy && data.accuracy.total > 0) {
                 const acc = Math.round((data.accuracy.correct / data.accuracy.total) * 100);
@@ -1082,7 +1566,6 @@
             }
         }
 
-        // Check for Paused Session
         function checkPausedSession() {
             const data = loadProgress();
             if (data.pausedSession && data.pausedSession.languagePair === currentLanguagePair) {
@@ -1096,7 +1579,6 @@
             }
         }
 
-        // Start Session with Specific Size
         function startSession(size) {
             devLog(`Starting session with size: ${size}`, 'info');
             
@@ -1104,7 +1586,6 @@
             const now = Date.now();
             currentSession = [];
             
-            // Get available cards
             const vocabSet = vocabulary[currentLanguagePair] || [];
             const newCards = [];
             const reviewCards = [];
@@ -1113,70 +1594,51 @@
                 const cardProgress = data.progress?.[currentLanguagePair]?.[card.id];
                 if (!cardProgress) {
                     newCards.push({...card, type: 'new'});
-                    devLog(`Found new card: ${card.word}`, 'info');
                 } else if (cardProgress.nextReview <= now) {
                     reviewCards.push({...card, type: 'review'});
-                    devLog(`Found review card: ${card.word} (due)`, 'info');
                 }
             });
             
             devLog(`Available: ${newCards.length} new, ${reviewCards.length} review cards`, 'info');
             
-            // Calculate how many cards to include
             let targetNew = 0;
             let targetReview = 0;
             
-            // Get already completed today
             const completedNew = data.dailyProgress?.new || 0;
             const completedReview = data.dailyProgress?.review || 0;
             
             if (size === 0) {
-                // All remaining for today
                 targetNew = Math.max(0, dailyGoal.new - completedNew);
                 targetReview = Math.max(0, dailyGoal.review - completedReview);
-                devLog(`All remaining: ${targetNew} new, ${targetReview} review`, 'info');
             } else {
-                // Specific size session
                 let remainingSize = size;
                 
-                // First, try to fill with due review cards (up to daily limit)
                 const reviewsNeeded = Math.max(0, dailyGoal.review - completedReview);
                 targetReview = Math.min(remainingSize, reviewCards.length, reviewsNeeded);
                 remainingSize -= targetReview;
                 
-                // Then fill with new cards (up to daily limit)
                 if (remainingSize > 0) {
                     const newNeeded = Math.max(0, dailyGoal.new - completedNew);
                     targetNew = Math.min(remainingSize, newCards.length, newNeeded);
                 }
                 
-                // If we still need more cards and daily goals are met, add extra reviews
                 if (targetNew + targetReview < size && completedNew >= dailyGoal.new && completedReview >= dailyGoal.review) {
                     const extraReviews = Math.min(size - targetNew - targetReview, reviewCards.length - targetReview);
                     targetReview += extraReviews;
-                    devLog(`Adding ${extraReviews} extra review cards (daily goals already met)`, 'info');
                 }
                 
-                // If still not enough cards, add any available new cards
                 if (targetNew + targetReview < size) {
                     const extraNew = Math.min(size - targetNew - targetReview, newCards.length - targetNew);
                     targetNew += extraNew;
-                    devLog(`Adding ${extraNew} extra new cards to reach session size`, 'info');
                 }
-                
-                devLog(`Session will have: ${targetNew} new, ${targetReview} review`, 'info');
             }
             
-            // Build session
             currentSession = [
                 ...reviewCards.slice(0, targetReview),
                 ...newCards.slice(0, targetNew)
             ];
             
             if (currentSession.length === 0) {
-                devLog('No cards available for session!', 'error');
-                
-                // Show a message instead of empty complete screen
                 const feedback = `
                     <div class="no-cards">
                         <h2>No Cards Available</h2>
@@ -1187,7 +1649,7 @@
                         </p>
                         <p style="color: #666; font-size: 14px;">
                             Next review: Tomorrow<br>
-                            Cards learned: ${data.totalLearned || 0}
+                            Cards mastered: ${document.getElementById('total-learned').textContent}
                         </p>
                         <button class="btn-primary" onclick="backToStart()">Back to Home</button>
                     </div>
@@ -1223,6 +1685,7 @@
             document.querySelector('.daily-goal').classList.add('hidden');
             document.querySelector('.stats').classList.add('hidden');
             document.querySelector('.language-selector').classList.add('hidden');
+            document.querySelector('.skill-selector').classList.add('hidden');
             
             // Show study screen
             document.getElementById('start-screen').classList.add('hidden');
@@ -1231,7 +1694,6 @@
             showCard();
         }
 
-        // Continue Paused Session
         function continueSession() {
             if (!pausedSession) return;
             
@@ -1251,6 +1713,7 @@
             document.querySelector('.daily-goal').classList.add('hidden');
             document.querySelector('.stats').classList.add('hidden');
             document.querySelector('.language-selector').classList.add('hidden');
+            document.querySelector('.skill-selector').classList.add('hidden');
             
             // Show study screen
             document.getElementById('start-screen').classList.add('hidden');
@@ -1259,7 +1722,6 @@
             showCard();
         }
 
-        // Pause Session
         function pauseSession() {
             const data = loadProgress();
             
@@ -1283,7 +1745,6 @@
             backToStart();
         }
 
-        // Show Current Card
         function showCard() {
             if (currentCardIndex >= currentSession.length) {
                 completeSession();
@@ -1291,28 +1752,61 @@
             }
             
             const card = currentSession[currentCardIndex];
-            document.getElementById('word').textContent = card.word;
             
-            // Hide romanization initially, show only if it exists
+            // Determine skill level for this card
+            currentCardSkillLevel = determineCardSkillLevel(card.id);
+            devLog(`Showing card ${card.id} at ${SKILL_NAMES[currentCardSkillLevel]} level`, 'info');
+            
+            // Update skill display
+            updateCardSkillDisplay(card.id);
+            
+            // Reset UI
+            document.getElementById('word').textContent = card.word;
+            document.getElementById('category').textContent = card.category;
+            document.getElementById('feedback').classList.add('hidden');
+            isAnswerShown = false;
+            selectedChoiceIndex = -1;
+            
+            // Hide romanization initially
             const romanizationEl = document.getElementById('romanization');
             if (card.romanization) {
                 romanizationEl.textContent = card.romanization;
-                romanizationEl.classList.add('hidden'); // Hide initially
+                romanizationEl.classList.add('hidden');
             } else {
                 romanizationEl.classList.add('hidden');
             }
             
-            document.getElementById('category').textContent = card.category;
-            document.getElementById('answer').value = '';
-            document.getElementById('answer').focus();
-            document.getElementById('feedback').classList.add('hidden');
-            isAnswerShown = false;
+            // Show appropriate input method based on skill level
+            const choiceGrid = document.getElementById('choice-grid');
+            const inputGroup = document.getElementById('input-group');
+            
+            if (currentCardSkillLevel === SKILL_LEVELS.BEGINNER) {
+                // Multiple choice
+                choiceGrid.classList.remove('hidden');
+                inputGroup.classList.add('hidden');
+                
+                const vocabSet = vocabulary[currentLanguagePair] || [];
+                const options = generateMultipleChoice(card, vocabSet);
+                renderMultipleChoice(options);
+            } else {
+                // Text input for intermediate and advanced
+                choiceGrid.classList.add('hidden');
+                inputGroup.classList.remove('hidden');
+                document.getElementById('answer').value = '';
+                document.getElementById('answer').focus();
+                
+                // Update placeholder based on level
+                const placeholder = currentCardSkillLevel === SKILL_LEVELS.INTERMEDIATE ?
+                    'Type the translation (diacritics optional)...' :
+                    'Type the exact translation...';
+                document.getElementById('answer').placeholder = placeholder;
+            }
             
             // Update progress display
             document.getElementById('current-word-num').textContent = currentCardIndex + 1;
             document.getElementById('total-words').textContent = currentSession.length;
             
-            // Reset button to "Check Answer"
+            // Reset button
             const button = document.getElementById('action-button');
             button.textContent = 'Check Answer';
             button.classList.remove('next');
@@ -1320,19 +1814,72 @@
             updateSessionProgress();
         }
 
-        // Check Answer
         function checkAnswer() {
             if (isAnswerShown) {
                 nextCard();
                 return;
             }
             
-            const userAnswer = document.getElementById('answer').value.trim().toLowerCase();
             const card = currentSession[currentCardIndex];
-            const correctAnswer = card.translation.toLowerCase();
+            let isCorrect = false;
+            let feedbackMessage = '';
+            let feedbackClass = '';
             
-            const isCorrect = userAnswer === correctAnswer || 
-                              userAnswer === correctAnswer.replace(/\s+/g, '');
+            if (currentCardSkillLevel === SKILL_LEVELS.BEGINNER) {
+                // Multiple choice
+                if (selectedChoiceIndex === -1) {
+                    devLog('No choice selected', 'error');
+                    return;
+                }
+                
+                const choices = document.querySelectorAll('.choice-btn');
+                const selectedBtn = choices[selectedChoiceIndex];
+                isCorrect = selectedBtn.dataset.correct === 'true';
+                
+                // Visual feedback
+                choices.forEach(btn => {
+                    if (btn.dataset.correct === 'true') {
+                        btn.classList.add('correct');
+                    } else if (btn === selectedBtn && !isCorrect) {
+                        btn.classList.add('incorrect');
+                    } else {
+                        btn.classList.add('dimmed');
+                    }
+                    btn.disabled = true;
+                });
+                
+                feedbackMessage = isCorrect ? '✓ Correct!' : `✗ Incorrect. The answer is: <strong>${card.translation}</strong>`;
+                feedbackClass = isCorrect ? 'correct' : 'incorrect';
+                
+            } else if (currentCardSkillLevel === SKILL_LEVELS.INTERMEDIATE) {
+                // Flexible typing
+                const userAnswer = document.getElementById('answer').value.trim();
+                const correctAnswer = card.translation;
+                
+                isCorrect = checkIntermediateAnswer(userAnswer, correctAnswer);
+                
+                if (isCorrect && normalizeAnswer(userAnswer) !== normalizeAnswer(correctAnswer)) {
+                    feedbackMessage = `✓ Close enough! The exact spelling is: <strong>${correctAnswer}</strong>`;
+                    feedbackClass = 'intermediate';
+                } else if (isCorrect) {
+                    feedbackMessage = '✓ Perfect!';
+                    feedbackClass = 'correct';
+                } else {
+                    feedbackMessage = `✗ Incorrect. The answer is: <strong>${correctAnswer}</strong>`;
+                    feedbackClass = 'incorrect';
+                }
+                
+            } else {
+                // Advanced - exact match
+                const userAnswer = document.getElementById('answer').value.trim().toLowerCase();
+                const correctAnswer = card.translation.toLowerCase();
+                
+                isCorrect = userAnswer === correctAnswer || 
+                          userAnswer === correctAnswer.replace(/\s+/g, '');
+                
+                feedbackMessage = isCorrect ? '✓ Perfect!' : `✗ Incorrect. The answer is: <strong>${card.translation}</strong>`;
+                feedbackClass = isCorrect ? 'correct' : 'incorrect';
+            }
             
             // Show romanization when answer is checked
             const romanizationEl = document.getElementById('romanization');
@@ -1343,20 +1890,18 @@
             // Show feedback
             const feedback = document.getElementById('feedback');
             feedback.classList.remove('hidden');
+            feedback.className = `feedback ${feedbackClass}`;
+            feedback.innerHTML = feedbackMessage;
+            
+            // Update progress
+            updateCardProgressWithSkillLevel(card.id, isCorrect, currentCardSkillLevel, card.type);
             
             if (isCorrect) {
-                feedback.className = 'feedback correct';
-                feedback.textContent = '✓ Correct!';
                 sessionStats.correct++;
-                updateCardProgress(card.id, true, card.type);
-            } else {
-                feedback.className = 'feedback incorrect';
-                feedback.innerHTML = `✗ Incorrect. The answer is: <strong>${card.translation}</strong>`;
-                updateCardProgress(card.id, false, card.type);
             }
-            
             sessionStats.total++;
             sessionStats.wordsCompleted.push(card.id);
+            
             isAnswerShown = true;
             
             // Change button to "Next Card"
@@ -1367,44 +1912,99 @@
             updateSessionProgress();
         }
 
-        // Next Card
         function nextCard() {
             currentCardIndex++;
             showCard();
         }
 
-        // Update Card Progress
-        function updateCardProgress(cardId, isCorrect, cardType) {
+        function updateCardProgressWithSkillLevel(cardId, isCorrect, skillLevel, cardType) {
             const data = loadProgress();
             
-            devLog(`Updating card ${cardId}: ${isCorrect ? 'CORRECT' : 'INCORRECT'} (${cardType})`, isCorrect ? 'success' : 'error');
+            devLog(`Updating card ${cardId}: ${isCorrect ? 'CORRECT' : 'INCORRECT'} at ${SKILL_NAMES[skillLevel]} level (${cardType})`, isCorrect ? 'success' : 'error');
             
             if (!data.progress) data.progress = {};
             if (!data.progress[currentLanguagePair]) data.progress[currentLanguagePair] = {};
             
-            const cardProgress = data.progress[currentLanguagePair][cardId] || {
-                level: 0,
-                lastSeen: Date.now(),
-                timesCorrect: 0,
-                timesSeen: 0
-            };
+            let cardProgress = data.progress[currentLanguagePair][cardId];
             
-            // Update statistics
-            cardProgress.timesSeen++;
-            if (isCorrect) {
-                cardProgress.timesCorrect++;
-                cardProgress.level = Math.min(cardProgress.level + 1, 5);
-            } else {
-                cardProgress.level = Math.max(0, cardProgress.level - 1);
+            if (!cardProgress) {
+                // Initialize new card
+                cardProgress = {
+                    level: 0,
+                    lastSeen: Date.now(),
+                    timesCorrect: 0,
+                    timesSeen: 0,
+                    skillLevel: skillLevel,
+                    skillProgress: {
+                        1: { correct: 0, total: 0, streak: 0 },
+                        2: { correct: 0, total: 0, streak: 0 },
+                        3: { correct: 0, total: 0, streak: 0 }
+                    },
+                    recommendedSkillLevel: 1
+                };
             }
             
-            // Calculate next review time
-            const intervals = [1, 3, 7, 14, 30, 90];
-            const daysUntilNext = intervals[cardProgress.level] || 90;
-            cardProgress.nextReview = Date.now() + (daysUntilNext * 86400000);
-            cardProgress.lastSeen = Date.now();
+            // Update skill-specific statistics
+            if (!cardProgress.skillProgress) {
+                cardProgress.skillProgress = {
+                    1: { correct: 0, total: 0, streak: 0 },
+                    2: { correct: 0, total: 0, streak: 0 },
+                    3: { correct: 0, total: 0, streak: 0 }
+                };
+            }
             
-            devLog(`Card level: ${cardProgress.level}, Next review in ${daysUntilNext} days`, 'info');
+            const skillStats = cardProgress.skillProgress[skillLevel];
+            skillStats.total++;
+            
+            if (isCorrect) {
+                skillStats.correct++;
+                skillStats.streak++;
+                
+                // Apply skill multiplier to level progression
+                const multiplier = SKILL_MULTIPLIERS[skillLevel];
+                cardProgress.level = Math.min(5, cardProgress.level + multiplier);
+                cardProgress.timesCorrect++;
+                
+                devLog(`Card level increased by ${multiplier} to ${cardProgress.level}`, 'info');
+            } else {
+                skillStats.streak = 0;
+                
+                // Bigger penalty for failing at easier levels
+                const penalty = skillLevel === SKILL_LEVELS.BEGINNER ? 0.5 : 1.0;
+                cardProgress.level = Math.max(0, cardProgress.level - penalty);
+                
+                devLog(`Card level decreased by ${penalty} to ${cardProgress.level}`, 'info');
+            }
+            
+            cardProgress.timesSeen++;
+            cardProgress.lastSeen = Date.now();
+            cardProgress.skillLevel = skillLevel;
+            
+            // Calculate next review time based on fractional level
+            const effectiveLevel = Math.floor(cardProgress.level);
+            const fraction = cardProgress.level - effectiveLevel;
+            
+            let daysUntilNext;
+            if (effectiveLevel >= BASE_INTERVALS.length - 1) {
+                daysUntilNext = BASE_INTERVALS[BASE_INTERVALS.length - 1];
+            } else {
+                const lowerDays = BASE_INTERVALS[effectiveLevel];
+                const upperDays = BASE_INTERVALS[effectiveLevel + 1];
+                daysUntilNext = lowerDays + (upperDays - lowerDays) * fraction;
+            }
+            
+            cardProgress.nextReview = Date.now() + (daysUntilNext * 86400000);
+            
+            devLog(`Next review in ${Math.round(daysUntilNext)} days`, 'info');
+            
+            // Check for skill level promotion
+            if (skillStats.streak >= PROMOTION_THRESHOLD.streak && 
+                skillStats.total >= 3 &&
+                (skillStats.correct / skillStats.total) >= PROMOTION_THRESHOLD.accuracy &&
+                skillLevel < 3) {
+                cardProgress.recommendedSkillLevel = skillLevel + 1;
+                devLog(`Card ${cardId} ready for promotion to ${SKILL_NAMES[skillLevel + 1]}!`, 'success');
+            }
             
             data.progress[currentLanguagePair][cardId] = cardProgress;
             
@@ -1413,20 +2013,17 @@
                 data.dailyProgress = { new: 0, review: 0, sessions: [], timeSpent: 0 };
             }
             
-            // Count this word towards daily goal (only once per day)
+            // Count towards daily goal (only once per day per card)
             if (!sessionStats.wordsCompleted.includes(cardId) || sessionStats.wordsCompleted.filter(id => id === cardId).length === 1) {
                 if (cardType === 'new') {
                     data.dailyProgress.new = Math.min(dailyGoal.new, (data.dailyProgress.new || 0) + 1);
-                    devLog(`Daily new words: ${data.dailyProgress.new}/${dailyGoal.new}`, 'info');
                     
-                    // Count as learned if correct on first try
-                    if (isCorrect && cardProgress.timesSeen === 1) {
+                    // Count as learned if mastered at advanced level
+                    if (isCorrect && skillLevel === SKILL_LEVELS.ADVANCED && cardProgress.timesSeen === 1) {
                         data.totalLearned = (data.totalLearned || 0) + 1;
-                        devLog(`Total words learned: ${data.totalLearned}`, 'success');
                     }
                 } else {
                     data.dailyProgress.review = Math.min(dailyGoal.review, (data.dailyProgress.review || 0) + 1);
-                    devLog(`Daily review words: ${data.dailyProgress.review}/${dailyGoal.review}`, 'info');
                 }
             }
             
@@ -1439,7 +2036,6 @@
             updateDailyGoal();
         }
 
-        // Complete Session
         function completeSession() {
             const data = loadProgress();
             
@@ -1465,7 +2061,6 @@
             showCompleteScreen();
         }
 
-        // Adjust Daily Goal Based on Performance
         function adjustDailyGoal(data) {
             const dailyProgress = data.dailyProgress;
             const sessions = dailyProgress.sessions || [];
@@ -1481,17 +2076,18 @@
                 // Increase slightly if doing well and completing goals
                 dailyGoal.new = Math.min(10, dailyGoal.new + 1);
                 dailyGoal.review = Math.min(15, dailyGoal.review + 1);
+                devLog('Daily goals increased due to excellent performance!', 'success');
             } else if (todayAccuracy < 60) {
                 // Decrease if struggling
                 dailyGoal.new = Math.max(2, dailyGoal.new - 1);
                 dailyGoal.review = Math.max(3, dailyGoal.review - 1);
+                devLog('Daily goals decreased to reduce pressure', 'info');
             }
             
             // Save adjusted goals
             data.adaptiveGoal = dailyGoal;
         }
 
-        // Show Complete Screen
         function showCompleteScreen() {
             const data = loadProgress();
             const totalGoal = dailyGoal.new + dailyGoal.review;
@@ -1524,7 +2120,6 @@
             updateStats();
         }
 
-        // Update Session History Display
         function updateSessionHistory() {
             const data = loadProgress();
             const sessions = data.dailyProgress?.sessions || [];
@@ -1543,7 +2138,6 @@
             `).join('');
         }
 
-        // Back to Start
         function backToStart() {
             document.getElementById('study-screen').classList.add('hidden');
             document.getElementById('complete-screen').classList.add('hidden');
@@ -1555,6 +2149,7 @@
             document.querySelector('.daily-goal').classList.remove('hidden');
             document.querySelector('.stats').classList.remove('hidden');
             document.querySelector('.language-selector').classList.remove('hidden');
+            document.querySelector('.skill-selector').classList.remove('hidden');
             
             updateDailyGoal();
             updateStats();
@@ -1562,14 +2157,10 @@
             updateSessionHistory();
         }
 
-        // Finish for Today
         function finishForToday() {
             backToStart();
-            // Could add a "see you tomorrow" message here
         }
 
         // Initialize when page loads
         window.onload = initApp;
     </script>
-</body>
-</html> 
