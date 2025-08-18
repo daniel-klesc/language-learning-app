@@ -1926,6 +1926,7 @@
             if (!data.progress[currentLanguagePair]) data.progress[currentLanguagePair] = {};
             
             let cardProgress = data.progress[currentLanguagePair][cardId];
+            const isNewCard = !cardProgress;
             
             if (!cardProgress) {
                 // Initialize new card
@@ -2013,17 +2014,32 @@
                 data.dailyProgress = { new: 0, review: 0, sessions: [], timeSpent: 0 };
             }
             
-            // Count towards daily goal (only once per day per card)
-            if (!sessionStats.wordsCompleted.includes(cardId) || sessionStats.wordsCompleted.filter(id => id === cardId).length === 1) {
-                if (cardType === 'new') {
-                    data.dailyProgress.new = Math.min(dailyGoal.new, (data.dailyProgress.new || 0) + 1);
+            // Create a unique session ID for tracking cards in this session
+            const sessionId = sessionStats.startTime || Date.now();
+            if (!data.dailyProgress.cardsSeen) {
+                data.dailyProgress.cardsSeen = {};
+            }
+            
+            // Track if this card was already counted in today's progress
+            const cardSeenToday = data.dailyProgress.cardsSeen[cardId];
+            
+            if (!cardSeenToday) {
+                // First time seeing this card today
+                data.dailyProgress.cardsSeen[cardId] = true;
+                
+                if (isNewCard || cardType === 'new') {
+                    // This is a new card
+                    data.dailyProgress.new = Math.min(dailyGoal.new + 10, (data.dailyProgress.new || 0) + 1);
+                    devLog(`Daily new words: ${data.dailyProgress.new}/${dailyGoal.new}`, 'info');
                     
                     // Count as learned if mastered at advanced level
-                    if (isCorrect && skillLevel === SKILL_LEVELS.ADVANCED && cardProgress.timesSeen === 1) {
+                    if (isCorrect && skillLevel === SKILL_LEVELS.ADVANCED) {
                         data.totalLearned = (data.totalLearned || 0) + 1;
                     }
                 } else {
-                    data.dailyProgress.review = Math.min(dailyGoal.review, (data.dailyProgress.review || 0) + 1);
+                    // This is a review card
+                    data.dailyProgress.review = Math.min(dailyGoal.review + 10, (data.dailyProgress.review || 0) + 1);
+                    devLog(`Daily review words: ${data.dailyProgress.review}/${dailyGoal.review}`, 'info');
                 }
             }
             
@@ -2034,6 +2050,7 @@
             
             saveProgress(data);
             updateDailyGoal();
+            updateStats();
         }
 
         function completeSession() {
@@ -2093,22 +2110,25 @@
             const totalGoal = dailyGoal.new + dailyGoal.review;
             const totalComplete = (data.dailyProgress?.new || 0) + (data.dailyProgress?.review || 0);
             
-            // Check if daily goal achieved
-            if (totalComplete >= totalGoal) {
-                document.getElementById('achievement').classList.remove('hidden');
-            } else {
-                document.getElementById('achievement').classList.add('hidden');
-            }
-            
-            // Show session stats
-            const accuracy = sessionStats.total > 0 ? 
-                Math.round((sessionStats.correct / sessionStats.total) * 100) : 0;
-            const sessionTime = sessionStats.startTime ? 
-                Math.round((Date.now() - sessionStats.startTime) / 60000) : 0;
-            
-            document.getElementById('session-words').textContent = sessionStats.total;
-            document.getElementById('session-accuracy-final').textContent = accuracy + '%';
-            document.getElementById('session-time').textContent = sessionTime;
+            // Rebuild complete screen HTML to ensure all elements exist
+            const completeScreen = document.getElementById('complete-screen');
+            completeScreen.innerHTML = `
+                <div id="achievement" class="achievement ${totalComplete >= totalGoal ? '' : 'hidden'}">
+                    <div class="achievement-title">🎉 Goal Achieved!</div>
+                    <div class="achievement-desc">You've completed your daily goal!</div>
+                </div>
+                
+                <div class="no-cards">
+                    <h2>Session Complete!</h2>
+                    <p style="margin: 20px 0;">
+                        Words practiced: <strong>${sessionStats.total}</strong><br>
+                        Accuracy: <strong>${sessionStats.total > 0 ? Math.round((sessionStats.correct / sessionStats.total) * 100) : 0}%</strong><br>
+                        Time: <strong>${sessionStats.startTime ? Math.round((Date.now() - sessionStats.startTime) / 60000) : 0}</strong> minutes
+                    </p>
+                    <button class="btn-primary" onclick="backToStart()">Continue Learning</button>
+                    <button class="btn-secondary" onclick="finishForToday()" style="margin-top: 10px;">Finish for Now</button>
+                </div>
+            `;
             
             // Show complete screen
             document.getElementById('study-screen').classList.add('hidden');
