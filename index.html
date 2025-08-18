@@ -37,6 +37,7 @@
             flex-direction: column;
             height: calc(100vh - 40px);
             max-height: 700px;
+            overflow-y: auto;
         }
 
         .header {
@@ -399,18 +400,22 @@
         .choice-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            margin-bottom: 20px;
+            gap: 8px;
+            margin-bottom: 15px;
         }
 
         .choice-btn {
-            padding: 15px;
+            padding: 12px 10px;
             background: white;
             border: 2px solid #e9ecef;
             border-radius: 10px;
             cursor: pointer;
             transition: all 0.3s;
             text-align: center;
+            min-height: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
         .choice-btn:hover:not(:disabled) {
@@ -452,15 +457,15 @@
         }
 
         .choice-text {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 600;
             color: #333;
             display: block;
-            margin-bottom: 4px;
+            margin-bottom: 2px;
         }
 
         .choice-romanization {
-            font-size: 14px;
+            font-size: 12px;
             color: #666;
         }
         
@@ -543,14 +548,11 @@
         .card {
             background: #f8f9fa;
             border-radius: 12px;
-            padding: 30px 20px;
-            margin-bottom: 20px;
+            padding: 25px 20px;
+            margin-bottom: 15px;
             text-align: center;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            min-height: 150px;
+            flex-shrink: 0;
+            min-height: 120px;
         }
 
         .word {
@@ -578,13 +580,13 @@
         }
 
         .input-group {
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
         input {
             width: 100%;
-            padding: 15px;
-            font-size: 18px;
+            padding: 12px;
+            font-size: 16px;
             border: 2px solid #ddd;
             border-radius: 10px;
             transition: border-color 0.3s;
@@ -598,8 +600,8 @@
         /* Single button design for study mode */
         .study-button {
             width: 100%;
-            padding: 16px;
-            font-size: 17px;
+            padding: 14px;
+            font-size: 16px;
             font-weight: bold;
             border: none;
             border-radius: 10px;
@@ -607,6 +609,8 @@
             transition: all 0.3s;
             background: #667eea;
             color: white;
+            margin-top: auto;
+            margin-bottom: 10px;
         }
 
         .study-button:hover:not(:disabled) {
@@ -665,11 +669,12 @@
         }
 
         .feedback {
-            padding: 15px;
+            padding: 12px;
             border-radius: 10px;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             text-align: center;
             font-weight: bold;
+            font-size: 14px;
         }
 
         .feedback.correct {
@@ -764,26 +769,128 @@
         /* Mobile optimizations for study mode */
         @media (max-width: 480px) {
             .container.study-mode {
-                padding: 15px;
+                padding: 12px;
                 height: 100vh;
                 max-height: 100vh;
                 border-radius: 0;
+                margin: 0;
+            }
+
+            body {
+                padding: 0;
+            }
+            
+            .session-progress-card {
+                padding: 12px;
+                margin-bottom: 12px;
+            }
+
+            .card-skill-display {
+                padding: 8px;
+                margin-bottom: 12px;
+                font-size: 11px;
+            }
+
+            .skill-bar-label {
+                font-size: 9px;
             }
             
             .word {
-                font-size: 32px;
+                font-size: 28px;
             }
             
             .romanization {
-                font-size: 18px;
+                font-size: 16px;
             }
             
             .card {
                 padding: 20px 15px;
+                margin-bottom: 12px;
             }
 
             .choice-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+                margin-bottom: 12px;
+            }
+
+            .choice-btn {
+                padding: 10px 8px;
+                min-height: 55px;
+            }
+
+            .choice-text {
+                font-size: 14px;
+            }
+
+            .choice-romanization {
+                font-size: 11px;
+            }
+
+            .feedback {
+                padding: 10px;
+                margin-bottom: 12px;
+                font-size: 13px;
+            }
+
+            .input-group {
+                margin-bottom: 12px;
+            }
+
+            input {
+                padding: 10px;
+                font-size: 15px;
+            }
+
+            .study-button {
+                padding: 12px;
+                font-size: 15px;
+                margin-bottom: 5px;
+            }
+
+            #study-screen {
+                padding-bottom: 10px;
+            }
+
+            /* Session progress adjustments */
+            .session-progress-numbers {
+                font-size: 18px;
+                margin-right: 40px;
+            }
+
+            .pause-button {
+                width: 28px;
+                height: 28px;
+                top: 10px;
+                right: 10px;
+            }
+
+            .pause-icon {
+                width: 14px;
+                height: 14px;
+            }
+
+            .pause-icon::before,
+            .pause-icon::after {
+                width: 3px;
+                height: 14px;
+            }
+
+            /* Ensure button stays visible */
+            .container.study-mode {
+                display: flex;
+                flex-direction: column;
+            }
+
+            #study-screen {
+                display: flex;
+                flex-direction: column;
+                height: 100%;
+                min-height: 0;
+            }
+
+            .study-button {
+                flex-shrink: 0;
             }
         }
     </style>
@@ -1256,24 +1363,30 @@
             const data = loadProgress();
             const cardProgress = data.progress?.[currentLanguagePair]?.[cardId];
             
-            if (!cardProgress || !cardProgress.skillProgress) {
-                document.getElementById('card-skill-display').classList.add('hidden');
-                return;
-            }
-            
+            // Always show the skill display during study
             document.getElementById('card-skill-display').classList.remove('hidden');
             document.getElementById('current-skill-level').textContent = SKILL_NAMES[currentCardSkillLevel];
             
             // Update progress bars
             for (let level = 1; level <= 3; level++) {
-                const stats = cardProgress.skillProgress[level] || { correct: 0, total: 0 };
-                const accuracy = stats.total > 0 ? (stats.correct / stats.total) * 100 : 0;
+                let accuracy = 0;
+                
+                if (cardProgress && cardProgress.skillProgress) {
+                    const stats = cardProgress.skillProgress[level] || { correct: 0, total: 0 };
+                    accuracy = stats.total > 0 ? (stats.correct / stats.total) * 100 : 0;
+                }
+                
                 const barId = ['', 'beginner', 'intermediate', 'advanced'][level] + '-progress';
                 document.getElementById(barId).style.width = `${accuracy}%`;
             }
             
-            // Check for promotion
-            checkSkillPromotion(cardProgress);
+            // Check for promotion (only if card has progress)
+            if (cardProgress && cardProgress.skillProgress) {
+                checkSkillPromotion(cardProgress);
+            } else {
+                // Hide promotion for new cards
+                document.getElementById('skill-promotion').classList.add('hidden');
+            }
         }
 
         function checkSkillPromotion(cardProgress) {
