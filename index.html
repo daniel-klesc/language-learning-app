@@ -206,7 +206,7 @@
             opacity: 0.9;
         }
 
-        /* Session progress card - similar style to daily goal */
+        /* Session progress card */
         .session-progress-card {
             background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
             color: white;
@@ -214,6 +214,7 @@
             padding: 15px;
             margin-bottom: 20px;
             position: relative;
+            width: 100%;
         }
 
         .session-progress-header {
@@ -402,6 +403,7 @@
             grid-template-columns: repeat(2, 1fr);
             gap: 8px;
             margin-bottom: 15px;
+            width: 100%;
         }
 
         .choice-btn {
@@ -553,6 +555,7 @@
             text-align: center;
             flex-shrink: 0;
             min-height: 120px;
+            width: 100%;
         }
 
         .word {
@@ -599,7 +602,7 @@
 
         /* Single button design for study mode */
         .study-button {
-            width: 100%;
+            width: 100% !important;
             padding: 14px;
             font-size: 16px;
             font-weight: bold;
@@ -611,6 +614,13 @@
             color: white;
             margin-top: auto;
             margin-bottom: 10px;
+            display: block !important;
+            box-sizing: border-box;
+        }
+
+        .study-button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
         }
 
         .study-button:hover:not(:disabled) {
@@ -675,6 +685,7 @@
             text-align: center;
             font-weight: bold;
             font-size: 14px;
+            width: 100%;
         }
 
         .feedback.correct {
@@ -946,6 +957,22 @@
                 display: block;
             }
         }
+        
+        /* Study screen wrapper to ensure vertical layout */
+        #study-screen-wrapper {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            height: 100%;
+        }
+        
+        /* Clear any potential float or inline-block issues */
+        #study-screen::before,
+        #study-screen::after {
+            content: "";
+            display: table;
+            clear: both;
+        }
     </style>
 </head>
 <body>
@@ -1055,75 +1082,77 @@
 
         <!-- Study Screen - Completely separate -->
         <div id="study-screen" class="hidden" style="display: none;">
-            <!-- Session Progress Card -->
-            <div class="session-progress-card">
-                <div class="pause-button" onclick="pauseSession()" title="Pause">
-                    <div class="pause-icon"></div>
-                </div>
-                <div class="session-progress-header">
-                    <span class="session-progress-title">Session Progress</span>
-                    <span class="session-progress-numbers">
-                        <span id="current-word-num">1</span>/<span id="total-words">3</span>
-                    </span>
-                </div>
-                <div class="session-progress-bar">
-                    <div class="session-progress-fill" id="session-bar" style="width: 0%"></div>
-                </div>
-                <div class="session-progress-details">
-                    <span id="session-correct">Correct: 0</span>
-                    <span id="session-accuracy">Accuracy: 0%</span>
-                </div>
-            </div>
-
-            <!-- Card Skill Display -->
-            <div class="card-skill-display hidden" id="card-skill-display">
-                <div>Current Level: <strong id="current-skill-level">Beginner</strong></div>
-                <div class="skill-progress-bars">
-                    <div class="skill-bar">
-                        <div class="skill-bar-label">Beginner</div>
-                        <div class="skill-bar-track">
-                            <div class="skill-bar-fill" id="beginner-progress" style="width: 0%"></div>
-                        </div>
+            <div style="display: flex; flex-direction: column; width: 100%;">
+                <!-- Session Progress Card -->
+                <div class="session-progress-card">
+                    <div class="pause-button" onclick="pauseSession()" title="Pause">
+                        <div class="pause-icon"></div>
                     </div>
-                    <div class="skill-bar">
-                        <div class="skill-bar-label">Intermediate</div>
-                        <div class="skill-bar-track">
-                            <div class="skill-bar-fill" id="intermediate-progress" style="width: 0%"></div>
-                        </div>
+                    <div class="session-progress-header">
+                        <span class="session-progress-title">Session Progress</span>
+                        <span class="session-progress-numbers">
+                            <span id="current-word-num">1</span>/<span id="total-words">3</span>
+                        </span>
                     </div>
-                    <div class="skill-bar">
-                        <div class="skill-bar-label">Advanced</div>
-                        <div class="skill-bar-track">
-                            <div class="skill-bar-fill" id="advanced-progress" style="width: 0%"></div>
-                        </div>
+                    <div class="session-progress-bar">
+                        <div class="session-progress-fill" id="session-bar" style="width: 0%"></div>
+                    </div>
+                    <div class="session-progress-details">
+                        <span id="session-correct">Correct: 0</span>
+                        <span id="session-accuracy">Accuracy: 0%</span>
                     </div>
                 </div>
-                <div class="skill-promotion hidden" id="skill-promotion" onclick="acceptSkillPromotion()">
-                    🎉 Ready for next level! Click to try →
+
+                <!-- Card Skill Display -->
+                <div class="card-skill-display hidden" id="card-skill-display">
+                    <div>Current Level: <strong id="current-skill-level">Beginner</strong></div>
+                    <div class="skill-progress-bars">
+                        <div class="skill-bar">
+                            <div class="skill-bar-label">Beginner</div>
+                            <div class="skill-bar-track">
+                                <div class="skill-bar-fill" id="beginner-progress" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-bar-label">Intermediate</div>
+                            <div class="skill-bar-track">
+                                <div class="skill-bar-fill" id="intermediate-progress" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-bar-label">Advanced</div>
+                            <div class="skill-bar-track">
+                                <div class="skill-bar-fill" id="advanced-progress" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="skill-promotion hidden" id="skill-promotion" onclick="acceptSkillPromotion()">
+                        🎉 Ready for next level! Click to try →
+                    </div>
                 </div>
+
+                <!-- Card Display -->
+                <div class="card">
+                    <div class="category" id="category"></div>
+                    <div class="word" id="word"></div>
+                    <div class="romanization" id="romanization" class="hidden"></div>
+                </div>
+
+                <div class="feedback hidden" id="feedback"></div>
+
+                <!-- Multiple Choice Grid (for beginner) -->
+                <div class="choice-grid hidden" id="choice-grid">
+                    <!-- Choices will be generated dynamically -->
+                </div>
+
+                <!-- Text Input (for intermediate/advanced) -->
+                <div class="input-group hidden" id="input-group">
+                    <input type="text" id="answer" placeholder="Type the translation..." autocomplete="off">
+                </div>
+
+                <!-- Action Button -->
+                <button class="study-button" id="action-button" onclick="handleButtonClick()">Check Answer</button>
             </div>
-
-            <!-- Card Display -->
-            <div class="card">
-                <div class="category" id="category"></div>
-                <div class="word" id="word"></div>
-                <div class="romanization" id="romanization" class="hidden"></div>
-            </div>
-
-            <div class="feedback hidden" id="feedback"></div>
-
-            <!-- Multiple Choice Grid (for beginner) -->
-            <div class="choice-grid hidden" id="choice-grid">
-                <!-- Choices will be generated dynamically -->
-            </div>
-
-            <!-- Text Input (for intermediate/advanced) -->
-            <div class="input-group hidden" id="input-group">
-                <input type="text" id="answer" placeholder="Type the translation..." autocomplete="off">
-            </div>
-
-            <!-- Action Button -->
-            <button class="study-button" id="action-button" onclick="handleButtonClick()">Check Answer</button>
         </div>
 
         <!-- Complete Screen -->
@@ -2280,6 +2309,13 @@
             const totalGoal = dailyGoal.new + dailyGoal.review;
             const totalComplete = (data.dailyProgress?.new || 0) + (data.dailyProgress?.review || 0);
             
+            // Hide study screen
+            document.getElementById('study-screen').classList.add('hidden');
+            document.getElementById('study-screen').style.display = 'none';
+            
+            // Hide home content
+            document.getElementById('home-content').style.display = 'none';
+            
             // Rebuild complete screen HTML to ensure all elements exist
             const completeScreen = document.getElementById('complete-screen');
             completeScreen.innerHTML = `
@@ -2301,8 +2337,8 @@
             `;
             
             // Show complete screen
-            document.getElementById('study-screen').classList.add('hidden');
-            document.getElementById('complete-screen').classList.remove('hidden');
+            completeScreen.classList.remove('hidden');
+            completeScreen.style.display = 'block';
             
             // Remove study mode
             document.getElementById('main-container').classList.remove('study-mode');
