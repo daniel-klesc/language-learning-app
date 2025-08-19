@@ -699,7 +699,12 @@
         }
 
         .hidden {
-            display: none;
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
+            position: absolute !important;
+            left: -9999px !important;
         }
 
         .no-cards {
@@ -768,16 +773,48 @@
 
         /* Mobile optimizations for study mode */
         @media (max-width: 480px) {
+            .container {
+                width: 100%;
+                max-width: 100%;
+            }
+
             .container.study-mode {
                 padding: 12px;
                 height: 100vh;
                 max-height: 100vh;
                 border-radius: 0;
                 margin: 0;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: white;
+                z-index: 1000;
             }
 
             body {
                 padding: 0;
+                min-height: 100vh;
+                overflow-x: hidden;
+            }
+
+            /* Ensure hidden elements stay hidden */
+            .hidden {
+                display: none !important;
+                visibility: hidden !important;
+                opacity: 0 !important;
+                pointer-events: none !important;
+                position: absolute !important;
+                left: -9999px !important;
+            }
+            
+            /* Main container in normal mode */
+            .container:not(.study-mode) {
+                border-radius: 0;
+                min-height: 100vh;
+                padding: 20px 15px;
+                box-shadow: none;
             }
             
             .session-progress-card {
@@ -850,6 +887,8 @@
 
             #study-screen {
                 padding-bottom: 10px;
+                width: 100%;
+                height: 100%;
             }
 
             /* Session progress adjustments */
@@ -877,11 +916,6 @@
             }
 
             /* Ensure button stays visible */
-            .container.study-mode {
-                display: flex;
-                flex-direction: column;
-            }
-
             #study-screen {
                 display: flex;
                 flex-direction: column;
@@ -892,113 +926,135 @@
             .study-button {
                 flex-shrink: 0;
             }
+            
+            /* Fix overlapping screens */
+            #start-screen, #study-screen, #complete-screen {
+                position: relative;
+                width: 100%;
+            }
+            
+            /* Ensure proper screen switching */
+            #start-screen:not(.hidden) {
+                display: block;
+            }
+            
+            #study-screen:not(.hidden) {
+                display: flex;
+            }
+            
+            #complete-screen:not(.hidden) {
+                display: block;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container" id="main-container">
-        <div class="header">
-            <h1>🎯 Smart Language Learning</h1>
-            <div class="time-estimate" id="time-estimate">Daily goal: ~15 minutes</div>
-        </div>
-
-        <!-- Skill Level Selector -->
-        <div class="skill-selector">
-            <div class="skill-selector-title">Default Skill Level</div>
-            <div class="skill-levels">
-                <button class="skill-level-btn" data-level="1" onclick="setDefaultSkillLevel(1)">
-                    <span class="emoji">🌱</span>
-                    Beginner
-                </button>
-                <button class="skill-level-btn" data-level="2" onclick="setDefaultSkillLevel(2)">
-                    <span class="emoji">📘</span>
-                    Intermediate
-                </button>
-                <button class="skill-level-btn" data-level="3" onclick="setDefaultSkillLevel(3)">
-                    <span class="emoji">🎯</span>
-                    Advanced
-                </button>
-                <button class="skill-level-btn active" data-level="0" onclick="setDefaultSkillLevel(0)">
-                    <span class="emoji">🤖</span>
-                    Auto
-                </button>
-            </div>
-        </div>
-
-        <!-- Daily Goal Card -->
-        <div class="daily-goal">
-            <div class="goal-header">
-                <span class="goal-title">Today's Goal</span>
-                <span class="goal-numbers" id="goal-progress">0/8</span>
-            </div>
-            <div class="goal-progress">
-                <div class="goal-progress-fill" id="goal-bar" style="width: 0%"></div>
-            </div>
-            <div class="goal-details">
-                <span id="words-new">New: 0/3</span>
-                <span id="words-review">Review: 0/5</span>
-                <span id="time-spent">Time: 0 min</span>
-            </div>
-        </div>
-
-        <div class="stats">
-            <div class="stat">
-                <div class="stat-value" id="streak">0</div>
-                <div class="stat-label">Day Streak</div>
-            </div>
-            <div class="stat">
-                <div class="stat-value" id="total-learned">0</div>
-                <div class="stat-label">Words Mastered</div>
-            </div>
-            <div class="stat">
-                <div class="stat-value" id="accuracy">0%</div>
-                <div class="stat-label">Accuracy</div>
-            </div>
-        </div>
-
-        <div class="language-selector">
-            <button class="language-btn active" data-pair="cs-vi">🇨🇿→🇻🇳</button>
-            <button class="language-btn" data-pair="vi-zh">🇻🇳→🇨🇳</button>
-            <button class="language-btn" data-pair="vi-en">🇻🇳→🇬🇧</button>
-        </div>
-
-        <!-- Start Screen with Session Options -->
-        <div id="start-screen">
-            <div id="continue-session-btn" class="hidden">
-                <button class="continue-session" onclick="continueSession()">
-                    📚 Continue Session (<span id="remaining-words">0</span> words left)
-                </button>
+        <!-- Home Screen Content -->
+        <div id="home-content">
+            <div class="header">
+                <h1>🎯 Smart Language Learning</h1>
+                <div class="time-estimate" id="time-estimate">Daily goal: ~15 minutes</div>
             </div>
 
-            <div class="session-options">
-                <div class="session-btn" onclick="startSession(1)">
-                    <div class="words">1</div>
-                    <div class="time">~1 min</div>
-                    <span class="badge">Quick</span>
-                </div>
-                <div class="session-btn recommended" onclick="startSession(3)">
-                    <div class="words">3</div>
-                    <div class="time">~3 min</div>
-                    <span class="badge">Recommended</span>
-                </div>
-                <div class="session-btn" onclick="startSession(5)">
-                    <div class="words">5</div>
-                    <div class="time">~5 min</div>
-                </div>
-                <div class="session-btn" onclick="startSession(0)">
-                    <div class="words">All</div>
-                    <div class="time" id="all-time">~8 min</div>
+            <!-- Skill Level Selector -->
+            <div class="skill-selector">
+                <div class="skill-selector-title">Default Skill Level</div>
+                <div class="skill-levels">
+                    <button class="skill-level-btn" data-level="1" onclick="setDefaultSkillLevel(1)">
+                        <span class="emoji">🌱</span>
+                        Beginner
+                    </button>
+                    <button class="skill-level-btn" data-level="2" onclick="setDefaultSkillLevel(2)">
+                        <span class="emoji">📘</span>
+                        Intermediate
+                    </button>
+                    <button class="skill-level-btn" data-level="3" onclick="setDefaultSkillLevel(3)">
+                        <span class="emoji">🎯</span>
+                        Advanced
+                    </button>
+                    <button class="skill-level-btn active" data-level="0" onclick="setDefaultSkillLevel(0)">
+                        <span class="emoji">🤖</span>
+                        Auto
+                    </button>
                 </div>
             </div>
 
-            <div class="history">
-                <div class="history-title">Today's Sessions</div>
-                <div id="session-history"></div>
+            <!-- Daily Goal Card -->
+            <div class="daily-goal">
+                <div class="goal-header">
+                    <span class="goal-title">Today's Goal</span>
+                    <span class="goal-numbers" id="goal-progress">0/8</span>
+                </div>
+                <div class="goal-progress">
+                    <div class="goal-progress-fill" id="goal-bar" style="width: 0%"></div>
+                </div>
+                <div class="goal-details">
+                    <span id="words-new">New: 0/3</span>
+                    <span id="words-review">Review: 0/5</span>
+                    <span id="time-spent">Time: 0 min</span>
+                </div>
+            </div>
+
+            <div class="stats">
+                <div class="stat">
+                    <div class="stat-value" id="streak">0</div>
+                    <div class="stat-label">Day Streak</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value" id="total-learned">0</div>
+                    <div class="stat-label">Words Mastered</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value" id="accuracy">0%</div>
+                    <div class="stat-label">Accuracy</div>
+                </div>
+            </div>
+
+            <div class="language-selector">
+                <button class="language-btn active" data-pair="cs-vi">🇨🇿→🇻🇳</button>
+                <button class="language-btn" data-pair="vi-zh">🇻🇳→🇨🇳</button>
+                <button class="language-btn" data-pair="vi-en">🇻🇳→🇬🇧</button>
+            </div>
+
+            <!-- Start Screen with Session Options -->
+            <div id="start-screen">
+                <div id="continue-session-btn" class="hidden">
+                    <button class="continue-session" onclick="continueSession()">
+                        📚 Continue Session (<span id="remaining-words">0</span> words left)
+                    </button>
+                </div>
+
+                <div class="session-options">
+                    <div class="session-btn" onclick="startSession(1)">
+                        <div class="words">1</div>
+                        <div class="time">~1 min</div>
+                        <span class="badge">Quick</span>
+                    </div>
+                    <div class="session-btn recommended" onclick="startSession(3)">
+                        <div class="words">3</div>
+                        <div class="time">~3 min</div>
+                        <span class="badge">Recommended</span>
+                    </div>
+                    <div class="session-btn" onclick="startSession(5)">
+                        <div class="words">5</div>
+                        <div class="time">~5 min</div>
+                    </div>
+                    <div class="session-btn" onclick="startSession(0)">
+                        <div class="words">All</div>
+                        <div class="time" id="all-time">~8 min</div>
+                    </div>
+                </div>
+
+                <div class="history">
+                    <div class="history-title">Today's Sessions</div>
+                    <div id="session-history"></div>
+                </div>
             </div>
         </div>
 
-        <!-- Study Screen -->
-        <div id="study-screen" class="hidden">
+        <!-- Study Screen - Completely separate -->
+        <div id="study-screen" class="hidden" style="display: none;">
             <!-- Session Progress Card -->
             <div class="session-progress-card">
                 <div class="pause-button" onclick="pauseSession()" title="Pause">
@@ -1071,7 +1127,7 @@
         </div>
 
         <!-- Complete Screen -->
-        <div id="complete-screen" class="hidden">
+        <div id="complete-screen" class="hidden" style="display: none;">
             <div id="achievement" class="achievement hidden">
                 <div class="achievement-title">🎉 Goal Achieved!</div>
                 <div class="achievement-desc">You've completed your daily goal!</div>
@@ -1290,6 +1346,15 @@
         // ============= INITIALIZATION =============
         function initApp() {
             devLog('Initializing app with skill levels...', 'info');
+            
+            // Ensure proper initial screen state
+            document.getElementById('home-content').style.display = 'block';
+            document.getElementById('study-screen').classList.add('hidden');
+            document.getElementById('study-screen').style.display = 'none';
+            document.getElementById('complete-screen').classList.add('hidden');
+            document.getElementById('complete-screen').style.display = 'none';
+            document.getElementById('main-container').classList.remove('study-mode');
+            
             loadProgress();
             updateDailyGoal();
             updateStats();
@@ -1794,15 +1859,11 @@
             
             // Switch to study mode UI
             document.getElementById('main-container').classList.add('study-mode');
-            document.querySelector('.header').classList.add('hidden');
-            document.querySelector('.daily-goal').classList.add('hidden');
-            document.querySelector('.stats').classList.add('hidden');
-            document.querySelector('.language-selector').classList.add('hidden');
-            document.querySelector('.skill-selector').classList.add('hidden');
+            document.getElementById('home-content').style.display = 'none';
             
             // Show study screen
-            document.getElementById('start-screen').classList.add('hidden');
             document.getElementById('study-screen').classList.remove('hidden');
+            document.getElementById('study-screen').style.display = 'flex';
             
             showCard();
         }
@@ -1822,15 +1883,11 @@
             
             // Switch to study mode UI
             document.getElementById('main-container').classList.add('study-mode');
-            document.querySelector('.header').classList.add('hidden');
-            document.querySelector('.daily-goal').classList.add('hidden');
-            document.querySelector('.stats').classList.add('hidden');
-            document.querySelector('.language-selector').classList.add('hidden');
-            document.querySelector('.skill-selector').classList.add('hidden');
+            document.getElementById('home-content').style.display = 'none';
             
             // Show study screen
-            document.getElementById('start-screen').classList.add('hidden');
             document.getElementById('study-screen').classList.remove('hidden');
+            document.getElementById('study-screen').style.display = 'flex';
             
             showCard();
         }
@@ -2273,16 +2330,13 @@
 
         function backToStart() {
             document.getElementById('study-screen').classList.add('hidden');
+            document.getElementById('study-screen').style.display = 'none';
             document.getElementById('complete-screen').classList.add('hidden');
-            document.getElementById('start-screen').classList.remove('hidden');
+            document.getElementById('complete-screen').style.display = 'none';
             
             // Restore normal UI
             document.getElementById('main-container').classList.remove('study-mode');
-            document.querySelector('.header').classList.remove('hidden');
-            document.querySelector('.daily-goal').classList.remove('hidden');
-            document.querySelector('.stats').classList.remove('hidden');
-            document.querySelector('.language-selector').classList.remove('hidden');
-            document.querySelector('.skill-selector').classList.remove('hidden');
+            document.getElementById('home-content').style.display = 'block';
             
             updateDailyGoal();
             updateStats();
@@ -2295,5 +2349,27 @@
         }
 
         // Initialize when page loads
-        window.onload = initApp;
+        window.onload = function() {
+            // Force hide study and complete screens on load
+            const studyScreen = document.getElementById('study-screen');
+            const completeScreen = document.getElementById('complete-screen');
+            const homeContent = document.getElementById('home-content');
+            
+            if (studyScreen) {
+                studyScreen.classList.add('hidden');
+                studyScreen.style.display = 'none';
+            }
+            if (completeScreen) {
+                completeScreen.classList.add('hidden');
+                completeScreen.style.display = 'none';
+            }
+            if (homeContent) {
+                homeContent.style.display = 'block';
+            }
+            
+            // Remove study mode from container
+            document.getElementById('main-container').classList.remove('study-mode');
+            
+            initApp();
+        };
     </script>
