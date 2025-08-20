@@ -957,22 +957,6 @@
                 display: block;
             }
         }
-        
-        /* Study screen wrapper to ensure vertical layout */
-        #study-screen-wrapper {
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-            height: 100%;
-        }
-        
-        /* Clear any potential float or inline-block issues */
-        #study-screen::before,
-        #study-screen::after {
-            content: "";
-            display: table;
-            clear: both;
-        }
     </style>
 </head>
 <body>
@@ -1083,8 +1067,13 @@
         <!-- Study Screen - Completely separate -->
         <div id="study-screen" class="hidden" style="display: none;">
             <div style="display: flex; flex-direction: column; width: 100%;">
-                <!-- Session Progress Card -->
+                <!-- Session Progress Card with Skill Pills -->
                 <div class="session-progress-card">
+                    <div class="skill-pills">
+                        <span class="skill-pill" data-level="1" id="pill-beginner">B</span>
+                        <span class="skill-pill" data-level="2" id="pill-intermediate">I</span>
+                        <span class="skill-pill" data-level="3" id="pill-advanced">A</span>
+                    </div>
                     <div class="pause-button" onclick="pauseSession()" title="Pause">
                         <div class="pause-icon"></div>
                     </div>
@@ -1100,34 +1089,6 @@
                     <div class="session-progress-details">
                         <span id="session-correct">Correct: 0</span>
                         <span id="session-accuracy">Accuracy: 0%</span>
-                    </div>
-                </div>
-
-                <!-- Card Skill Display -->
-                <div class="card-skill-display hidden" id="card-skill-display">
-                    <div>Current Level: <strong id="current-skill-level">Beginner</strong></div>
-                    <div class="skill-progress-bars">
-                        <div class="skill-bar">
-                            <div class="skill-bar-label">Beginner</div>
-                            <div class="skill-bar-track">
-                                <div class="skill-bar-fill" id="beginner-progress" style="width: 0%"></div>
-                            </div>
-                        </div>
-                        <div class="skill-bar">
-                            <div class="skill-bar-label">Intermediate</div>
-                            <div class="skill-bar-track">
-                                <div class="skill-bar-fill" id="intermediate-progress" style="width: 0%"></div>
-                            </div>
-                        </div>
-                        <div class="skill-bar">
-                            <div class="skill-bar-label">Advanced</div>
-                            <div class="skill-bar-track">
-                                <div class="skill-bar-fill" id="advanced-progress" style="width: 0%"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="skill-promotion hidden" id="skill-promotion" onclick="acceptSkillPromotion()">
-                        🎉 Ready for next level! Click to try →
                     </div>
                 </div>
 
@@ -1300,50 +1261,167 @@
         // ============= VOCABULARY DATABASE =============
         const vocabulary = {
             'cs-vi': [
+                // Greetings & Politeness
                 { id: 1, word: 'ahoj', translation: 'xin chào', romanization: 'sin chào', category: 'greetings', difficulty: 1 },
                 { id: 2, word: 'děkuji', translation: 'cảm ơn', romanization: 'cảm ơn', category: 'greetings', difficulty: 1 },
+                { id: 41, word: 'prosím', translation: 'làm ơn', romanization: 'làm ơn', category: 'greetings', difficulty: 1 },
+                { id: 42, word: 'promiňte', translation: 'xin lỗi', romanization: 'sin lỗi', category: 'greetings', difficulty: 1 },
+                { id: 43, word: 'nashledanou', translation: 'tạm biệt', romanization: 'tạm biệt', category: 'greetings', difficulty: 1 },
+                
+                // Basics
                 { id: 3, word: 'ano', translation: 'vâng', romanization: 'vâng', category: 'basics', difficulty: 1 },
                 { id: 4, word: 'ne', translation: 'không', romanization: 'không', category: 'basics', difficulty: 1 },
-                { id: 5, word: 'voda', translation: 'nước', romanization: 'nước', category: 'food', difficulty: 1 },
-                { id: 6, word: 'chléb', translation: 'bánh mì', romanization: 'bánh mì', category: 'food', difficulty: 2 },
+                { id: 15, word: 'dům', translation: 'nhà', romanization: 'nhà', category: 'basics', difficulty: 1 },
+                { id: 16, word: 'škola', translation: 'trường học', romanization: 'trường học', category: 'basics', difficulty: 2 },
+                { id: 17, word: 'kniha', translation: 'sách', romanization: 'sách', category: 'basics', difficulty: 2 },
+                { id: 20, word: 'práce', translation: 'công việc', romanization: 'công việc', category: 'basics', difficulty: 2 },
+                { id: 44, word: 'auto', translation: 'xe hơi', romanization: 'se hơi', category: 'basics', difficulty: 1 },
+                { id: 45, word: 'město', translation: 'thành phố', romanization: 'thành phố', category: 'places', difficulty: 1 },
+                
+                // Numbers
                 { id: 7, word: 'jeden', translation: 'một', romanization: 'một', category: 'numbers', difficulty: 1 },
                 { id: 8, word: 'dva', translation: 'hai', romanization: 'hai', category: 'numbers', difficulty: 1 },
                 { id: 9, word: 'tři', translation: 'ba', romanization: 'ba', category: 'numbers', difficulty: 1 },
                 { id: 10, word: 'čtyři', translation: 'bốn', romanization: 'bốn', category: 'numbers', difficulty: 2 },
                 { id: 11, word: 'pět', translation: 'năm', romanization: 'năm', category: 'numbers', difficulty: 2 },
+                { id: 46, word: 'šest', translation: 'sáu', romanization: 'sáu', category: 'numbers', difficulty: 2 },
+                { id: 47, word: 'sedm', translation: 'bảy', romanization: 'bảy', category: 'numbers', difficulty: 2 },
+                { id: 48, word: 'osm', translation: 'tám', romanization: 'tám', category: 'numbers', difficulty: 2 },
+                { id: 49, word: 'devět', translation: 'chín', romanization: 'chín', category: 'numbers', difficulty: 2 },
+                { id: 50, word: 'deset', translation: 'mười', romanization: 'mười', category: 'numbers', difficulty: 2 },
+                
+                // Family
                 { id: 12, word: 'rodina', translation: 'gia đình', romanization: 'gia đình', category: 'family', difficulty: 2 },
                 { id: 13, word: 'matka', translation: 'mẹ', romanization: 'mẹ', category: 'family', difficulty: 1 },
                 { id: 14, word: 'otec', translation: 'bố', romanization: 'bố', category: 'family', difficulty: 1 },
-                { id: 15, word: 'dům', translation: 'nhà', romanization: 'nhà', category: 'basics', difficulty: 1 },
-                { id: 16, word: 'škola', translation: 'trường học', romanization: 'trường học', category: 'basics', difficulty: 2 },
-                { id: 17, word: 'kniha', translation: 'sách', romanization: 'sách', category: 'basics', difficulty: 2 },
+                { id: 51, word: 'syn', translation: 'con trai', romanization: 'con trai', category: 'family', difficulty: 2 },
+                { id: 52, word: 'dcera', translation: 'con gái', romanization: 'con gái', category: 'family', difficulty: 2 },
+                { id: 53, word: 'bratr', translation: 'anh/em trai', romanization: 'anh/em trai', category: 'family', difficulty: 2 },
+                { id: 54, word: 'sestra', translation: 'chị/em gái', romanization: 'chị/em gái', category: 'family', difficulty: 2 },
+                
+                // Food & Drink
+                { id: 5, word: 'voda', translation: 'nước', romanization: 'nước', category: 'food', difficulty: 1 },
+                { id: 6, word: 'chléb', translation: 'bánh mì', romanization: 'bánh mì', category: 'food', difficulty: 2 },
+                { id: 55, word: 'káva', translation: 'cà phê', romanization: 'cà phê', category: 'food', difficulty: 1 },
+                { id: 56, word: 'čaj', translation: 'trà', romanization: 'trà', category: 'food', difficulty: 1 },
+                { id: 57, word: 'pivo', translation: 'bia', romanization: 'bia', category: 'food', difficulty: 1 },
+                { id: 58, word: 'mléko', translation: 'sữa', romanization: 'sữa', category: 'food', difficulty: 1 },
+                { id: 59, word: 'maso', translation: 'thịt', romanization: 'thịt', category: 'food', difficulty: 1 },
+                { id: 60, word: 'ryba', translation: 'cá', romanization: 'cá', category: 'food', difficulty: 1 },
+                { id: 61, word: 'ovoce', translation: 'trái cây', romanization: 'trái cây', category: 'food', difficulty: 2 },
+                { id: 62, word: 'zelenina', translation: 'rau', romanization: 'rau', category: 'food', difficulty: 2 },
+                
+                // Time
+                { id: 63, word: 'dnes', translation: 'hôm nay', romanization: 'hôm nay', category: 'time', difficulty: 1 },
+                { id: 64, word: 'zítra', translation: 'ngày mai', romanization: 'ngày mai', category: 'time', difficulty: 1 },
+                { id: 65, word: 'včera', translation: 'hôm qua', romanization: 'hôm qua', category: 'time', difficulty: 1 },
+                { id: 66, word: 'ráno', translation: 'buổi sáng', romanization: 'buổi sáng', category: 'time', difficulty: 1 },
+                { id: 67, word: 'večer', translation: 'buổi tối', romanization: 'buổi tối', category: 'time', difficulty: 1 },
+                
+                // People & Emotions
                 { id: 18, word: 'přátelé', translation: 'bạn bè', romanization: 'bạn bè', category: 'people', difficulty: 2 },
                 { id: 19, word: 'láska', translation: 'tình yêu', romanization: 'tình yêu', category: 'emotions', difficulty: 3 },
-                { id: 20, word: 'práce', translation: 'công việc', romanization: 'công việc', category: 'basics', difficulty: 2 }
+                { id: 68, word: 'šťastný', translation: 'hạnh phúc', romanization: 'hạnh phúc', category: 'emotions', difficulty: 2 },
+                { id: 69, word: 'smutný', translation: 'buồn', romanization: 'buồn', category: 'emotions', difficulty: 2 },
+                
+                // Common Verbs
+                { id: 70, word: 'jít', translation: 'đi', romanization: 'đi', category: 'activities', difficulty: 1 },
+                { id: 71, word: 'přijít', translation: 'đến', romanization: 'đến', category: 'activities', difficulty: 2 },
+                { id: 72, word: 'vidět', translation: 'nhìn thấy', romanization: 'nhìn thấy', category: 'activities', difficulty: 2 },
+                { id: 73, word: 'mluvit', translation: 'nói', romanization: 'nói', category: 'activities', difficulty: 2 },
+                { id: 74, word: 'jíst', translation: 'ăn', romanization: 'ăn', category: 'activities', difficulty: 1 },
+                { id: 75, word: 'pít', translation: 'uống', romanization: 'uống', category: 'activities', difficulty: 1 }
             ],
             'vi-zh': [
+                // Greetings
                 { id: 21, word: 'xin chào', translation: '你好', romanization: 'nǐ hǎo', category: 'greetings', difficulty: 1 },
                 { id: 22, word: 'cảm ơn', translation: '谢谢', romanization: 'xiè xie', category: 'greetings', difficulty: 1 },
+                { id: 76, word: 'tạm biệt', translation: '再见', romanization: 'zài jiàn', category: 'greetings', difficulty: 1 },
+                { id: 77, word: 'xin lỗi', translation: '对不起', romanization: 'duì bù qǐ', category: 'greetings', difficulty: 1 },
+                
+                // Numbers
                 { id: 23, word: 'một', translation: '一', romanization: 'yī', category: 'numbers', difficulty: 1 },
                 { id: 24, word: 'hai', translation: '二', romanization: 'èr', category: 'numbers', difficulty: 1 },
                 { id: 25, word: 'ba', translation: '三', romanization: 'sān', category: 'numbers', difficulty: 1 },
+                { id: 78, word: 'bốn', translation: '四', romanization: 'sì', category: 'numbers', difficulty: 1 },
+                { id: 79, word: 'năm', translation: '五', romanization: 'wǔ', category: 'numbers', difficulty: 1 },
+                
+                // Food & Drink
                 { id: 26, word: 'nước', translation: '水', romanization: 'shuǐ', category: 'food', difficulty: 1 },
                 { id: 27, word: 'cơm', translation: '米饭', romanization: 'mǐ fàn', category: 'food', difficulty: 2 },
+                { id: 80, word: 'phở', translation: '越南粉', romanization: 'yuè nán fěn', category: 'food', difficulty: 2 },
+                { id: 81, word: 'bánh mì', translation: '面包', romanization: 'miàn bāo', category: 'food', difficulty: 1 },
+                { id: 82, word: 'cà phê', translation: '咖啡', romanization: 'kā fēi', category: 'food', difficulty: 1 },
+                { id: 83, word: 'trà', translation: '茶', romanization: 'chá', category: 'food', difficulty: 1 },
+                
+                // Family
                 { id: 28, word: 'gia đình', translation: '家庭', romanization: 'jiā tíng', category: 'family', difficulty: 2 },
                 { id: 29, word: 'mẹ', translation: '妈妈', romanization: 'mā ma', category: 'family', difficulty: 1 },
-                { id: 30, word: 'bố', translation: '爸爸', romanization: 'bà ba', category: 'family', difficulty: 1 }
+                { id: 30, word: 'bố', translation: '爸爸', romanization: 'bà ba', category: 'family', difficulty: 1 },
+                { id: 84, word: 'anh', translation: '哥哥', romanization: 'gē ge', category: 'family', difficulty: 2 },
+                { id: 85, word: 'em', translation: '弟弟/妹妹', romanization: 'dì di/mèi mei', category: 'family', difficulty: 2 },
+                
+                // Places
+                { id: 86, word: 'nhà', translation: '家', romanization: 'jiā', category: 'places', difficulty: 1 },
+                { id: 87, word: 'trường học', translation: '学校', romanization: 'xué xiào', category: 'places', difficulty: 1 },
+                { id: 88, word: 'bệnh viện', translation: '医院', romanization: 'yī yuàn', category: 'places', difficulty: 2 },
+                { id: 89, word: 'chợ', translation: '市场', romanization: 'shì chǎng', category: 'places', difficulty: 1 },
+                { id: 90, word: 'nhà hàng', translation: '餐厅', romanization: 'cān tīng', category: 'places', difficulty: 1 }
             ],
             'vi-en': [
+                // Greetings
                 { id: 31, word: 'xin chào', translation: 'hello', romanization: '', category: 'greetings', difficulty: 1 },
                 { id: 32, word: 'cảm ơn', translation: 'thank you', romanization: '', category: 'greetings', difficulty: 1 },
+                { id: 91, word: 'tạm biệt', translation: 'goodbye', romanization: '', category: 'greetings', difficulty: 1 },
+                { id: 92, word: 'xin lỗi', translation: 'sorry', romanization: '', category: 'greetings', difficulty: 1 },
+                { id: 93, word: 'làm ơn', translation: 'please', romanization: '', category: 'greetings', difficulty: 1 },
+                
+                // Numbers
                 { id: 33, word: 'một', translation: 'one', romanization: '', category: 'numbers', difficulty: 1 },
                 { id: 34, word: 'hai', translation: 'two', romanization: '', category: 'numbers', difficulty: 1 },
                 { id: 35, word: 'ba', translation: 'three', romanization: '', category: 'numbers', difficulty: 1 },
+                { id: 94, word: 'bốn', translation: 'four', romanization: '', category: 'numbers', difficulty: 1 },
+                { id: 95, word: 'năm', translation: 'five', romanization: '', category: 'numbers', difficulty: 1 },
+                
+                // Food & Drink
                 { id: 36, word: 'nước', translation: 'water', romanization: '', category: 'food', difficulty: 1 },
                 { id: 37, word: 'bánh mì', translation: 'bread', romanization: '', category: 'food', difficulty: 1 },
+                { id: 96, word: 'cơm', translation: 'rice', romanization: '', category: 'food', difficulty: 1 },
+                { id: 97, word: 'phở', translation: 'pho', romanization: '', category: 'food', difficulty: 1 },
+                { id: 98, word: 'cà phê', translation: 'coffee', romanization: '', category: 'food', difficulty: 1 },
+                { id: 99, word: 'trà', translation: 'tea', romanization: '', category: 'food', difficulty: 1 },
+                { id: 100, word: 'bia', translation: 'beer', romanization: '', category: 'food', difficulty: 1 },
+                
+                // Family
                 { id: 38, word: 'gia đình', translation: 'family', romanization: '', category: 'family', difficulty: 1 },
+                { id: 101, word: 'mẹ', translation: 'mother', romanization: '', category: 'family', difficulty: 1 },
+                { id: 102, word: 'bố', translation: 'father', romanization: '', category: 'family', difficulty: 1 },
+                { id: 103, word: 'anh', translation: 'older brother', romanization: '', category: 'family', difficulty: 2 },
+                { id: 104, word: 'chị', translation: 'older sister', romanization: '', category: 'family', difficulty: 2 },
+                { id: 105, word: 'em', translation: 'younger sibling', romanization: '', category: 'family', difficulty: 2 },
+                
+                // Places
                 { id: 39, word: 'nhà', translation: 'house', romanization: '', category: 'basics', difficulty: 1 },
-                { id: 40, word: 'trường học', translation: 'school', romanization: '', category: 'basics', difficulty: 2 }
+                { id: 40, word: 'trường học', translation: 'school', romanization: '', category: 'basics', difficulty: 2 },
+                { id: 106, word: 'bệnh viện', translation: 'hospital', romanization: '', category: 'places', difficulty: 1 },
+                { id: 107, word: 'sân bay', translation: 'airport', romanization: '', category: 'places', difficulty: 1 },
+                { id: 108, word: 'khách sạn', translation: 'hotel', romanization: '', category: 'places', difficulty: 1 },
+                { id: 109, word: 'nhà hàng', translation: 'restaurant', romanization: '', category: 'places', difficulty: 1 },
+                { id: 110, word: 'chợ', translation: 'market', romanization: '', category: 'places', difficulty: 1 },
+                
+                // Common Verbs
+                { id: 111, word: 'đi', translation: 'go', romanization: '', category: 'activities', difficulty: 1 },
+                { id: 112, word: 'đến', translation: 'come', romanization: '', category: 'activities', difficulty: 1 },
+                { id: 113, word: 'ăn', translation: 'eat', romanization: '', category: 'activities', difficulty: 1 },
+                { id: 114, word: 'uống', translation: 'drink', romanization: '', category: 'activities', difficulty: 1 },
+                { id: 115, word: 'ngủ', translation: 'sleep', romanization: '', category: 'activities', difficulty: 1 },
+                { id: 116, word: 'làm việc', translation: 'work', romanization: '', category: 'activities', difficulty: 2 },
+                { id: 117, word: 'học', translation: 'study', romanization: '', category: 'activities', difficulty: 1 },
+                
+                // Time
+                { id: 118, word: 'hôm nay', translation: 'today', romanization: '', category: 'time', difficulty: 1 },
+                { id: 119, word: 'ngày mai', translation: 'tomorrow', romanization: '', category: 'time', difficulty: 1 },
+                { id: 120, word: 'hôm qua', translation: 'yesterday', romanization: '', category: 'time', difficulty: 1 }
             ]
         };
 
@@ -1457,45 +1535,36 @@
             const data = loadProgress();
             const cardProgress = data.progress?.[currentLanguagePair]?.[cardId];
             
-            // Always show the skill display during study
-            document.getElementById('card-skill-display').classList.remove('hidden');
-            document.getElementById('current-skill-level').textContent = SKILL_NAMES[currentCardSkillLevel];
-            
-            // Update progress bars
-            for (let level = 1; level <= 3; level++) {
-                let accuracy = 0;
-                
-                if (cardProgress && cardProgress.skillProgress) {
-                    const stats = cardProgress.skillProgress[level] || { correct: 0, total: 0 };
-                    accuracy = stats.total > 0 ? (stats.correct / stats.total) * 100 : 0;
+            // Update skill pills
+            document.querySelectorAll('.skill-pill').forEach(pill => {
+                pill.classList.remove('active');
+                if (parseInt(pill.dataset.level) === currentCardSkillLevel) {
+                    pill.classList.add('active');
                 }
                 
-                const barId = ['', 'beginner', 'intermediate', 'advanced'][level] + '-progress';
-                document.getElementById(barId).style.width = `${accuracy}%`;
-            }
+                // Add click handler to show progress tooltip (future enhancement)
+                pill.onclick = () => {
+                    devLog(`Skill ${pill.dataset.level} clicked - future: show progress`, 'info');
+                };
+            });
             
             // Check for promotion (only if card has progress)
             if (cardProgress && cardProgress.skillProgress) {
                 checkSkillPromotion(cardProgress);
-            } else {
-                // Hide promotion for new cards
-                document.getElementById('skill-promotion').classList.add('hidden');
             }
         }
-
+        
         function checkSkillPromotion(cardProgress) {
             const currentStats = cardProgress.skillProgress[currentCardSkillLevel] || { streak: 0, correct: 0, total: 0 };
-            const promotionDiv = document.getElementById('skill-promotion');
             
             if (currentCardSkillLevel < 3 && 
                 currentStats.streak >= PROMOTION_THRESHOLD.streak && 
                 currentStats.total >= 3 &&
                 (currentStats.correct / currentStats.total) >= PROMOTION_THRESHOLD.accuracy) {
                 
-                promotionDiv.classList.remove('hidden');
                 cardProgress.recommendedSkillLevel = currentCardSkillLevel + 1;
-            } else {
-                promotionDiv.classList.add('hidden');
+                // Could show a promotion notification here
+                devLog(`Card ready for promotion to ${SKILL_NAMES[currentCardSkillLevel + 1]}!`, 'success');
             }
         }
 
@@ -2055,17 +2124,28 @@
                 const userAnswer = document.getElementById('answer').value.trim();
                 const correctAnswer = card.translation;
                 
-                isCorrect = checkIntermediateAnswer(userAnswer, correctAnswer);
+                // Check if it's close enough (without diacritics)
+                const isCloseEnough = checkIntermediateAnswer(userAnswer, correctAnswer);
                 
-                if (isCorrect && normalizeAnswer(userAnswer) !== normalizeAnswer(correctAnswer)) {
-                    feedbackMessage = `✓ Close enough! The exact spelling is: <strong>${correctAnswer}</strong>`;
-                    feedbackClass = 'intermediate';
-                } else if (isCorrect) {
+                // Check if it's exactly correct
+                const isExact = userAnswer.toLowerCase() === correctAnswer.toLowerCase();
+                
+                if (isExact) {
                     feedbackMessage = '✓ Perfect!';
                     feedbackClass = 'correct';
+                    isCorrect = true;
+                } else if (isCloseEnough) {
+                    feedbackMessage = `✓ Close enough!`;
+                    feedbackMessage += `<div class="user-answer">You typed: ${userAnswer}</div>`;
+                    feedbackMessage += `<div class="correct-spelling">Exact spelling: <strong>${correctAnswer}</strong></div>`;
+                    feedbackClass = 'partial';
+                    isCorrect = true; // Count as correct for progression
                 } else {
-                    feedbackMessage = `✗ Incorrect. The answer is: <strong>${correctAnswer}</strong>`;
+                    feedbackMessage = `✗ Incorrect.`;
+                    feedbackMessage += `<div class="user-answer">You typed: ${userAnswer}</div>`;
+                    feedbackMessage += `<div class="correct-spelling">Correct answer: <strong>${correctAnswer}</strong></div>`;
                     feedbackClass = 'incorrect';
+                    isCorrect = false;
                 }
                 
             } else {
@@ -2409,3 +2489,5 @@
             initApp();
         };
     </script>
+</body>
+</html>
