@@ -1,0 +1,253 @@
+{
+  "metadata": {
+    "id": "vi-zh-core",
+    "name": "Core Vietnamese-Chinese Vocabulary",
+    "language_pair": "vi-zh",
+    "version": "1.0",
+    "created": "2024-01-15",
+    "author": "system",
+    "description": "Essential Vietnamese to Chinese vocabulary for beginners"
+  },
+  "words": [
+    {
+      "id": 1,
+      "word": "xin chào",
+      "translation": "你好",
+      "romanization": "nǐ hǎo",
+      "category": "greetings",
+      "difficulty": 1
+    },
+    {
+      "id": 2,
+      "word": "cảm ơn",
+      "translation": "谢谢",
+      "romanization": "xiè xie",
+      "category": "greetings",
+      "difficulty": 1
+    },
+    {
+      "id": 3,
+      "word": "tạm biệt",
+      "translation": "再见",
+      "romanization": "zài jiàn",
+      "category": "greetings",
+      "difficulty": 1
+    },
+    {
+      "id": 4,
+      "word": "xin lỗi",
+      "translation": "对不起",
+      "romanization": "duì bù qǐ",
+      "category": "greetings",
+      "difficulty": 1
+    },
+    {
+      "id": 5,
+      "word": "một",
+      "translation": "一",
+      "romanization": "yī",
+      "category": "numbers",
+      "difficulty": 1
+    },
+    {
+      "id": 6,
+      "word": "hai",
+      "translation": "二",
+      "romanization": "èr",
+      "category": "numbers",
+      "difficulty": 1
+    },
+    {
+      "id": 7,
+      "word": "ba",
+      "translation": "三",
+      "romanization": "sān",
+      "category": "numbers",
+      "difficulty": 1
+    },
+    {
+      "id": 8,
+      "word": "bốn",
+      "translation": "四",
+      "romanization": "sì",
+      "category": "numbers",
+      "difficulty": 1
+    },
+    {
+      "id": 9,
+      "word": "năm",
+      "translation": "五",
+      "romanization": "wǔ",
+      "category": "numbers",
+      "difficulty": 1
+    },
+    {
+      "id": 10,
+      "word": "sáu",
+      "translation": "六",
+      "romanization": "liù",
+      "category": "numbers",
+      "difficulty": 1
+    },
+    {
+      "id": 11,
+      "word": "bảy",
+      "translation": "七",
+      "romanization": "qī",
+      "category": "numbers",
+      "difficulty": 1
+    },
+    {
+      "id": 12,
+      "word": "tám",
+      "translation": "八",
+      "romanization": "bā",
+      "category": "numbers",
+      "difficulty": 1
+    },
+    {
+      "id": 13,
+      "word": "chín",
+      "translation": "九",
+      "romanization": "jiǔ",
+      "category": "numbers",
+      "difficulty": 1
+    },
+    {
+      "id": 14,
+      "word": "mười",
+      "translation": "十",
+      "romanization": "shí",
+      "category": "numbers",
+      "difficulty": 1
+    },
+    {
+      "id": 15,
+      "word": "nước",
+      "translation": "水",
+      "romanization": "shuǐ",
+      "category": "food",
+      "difficulty": 1
+    },
+    {
+      "id": 16,
+      "word": "cơm",
+      "translation": "米饭",
+      "romanization": "mǐ fàn",
+      "category": "food",
+      "difficulty": 2
+    },
+    {
+      "id": 17,
+      "word": "phở",
+      "translation": "越南粉",
+      "romanization": "yuè nán fěn",
+      "category": "food",
+      "difficulty": 2
+    },
+    {
+      "id": 18,
+      "word": "bánh mì",
+      "translation": "面包",
+      "romanization": "miàn bāo",
+      "category": "food",
+      "difficulty": 1
+    },
+    {
+      "id": 19,
+      "word": "cà phê",
+      "translation": "咖啡",
+      "romanization": "kā fēi",
+      "category": "food",
+      "difficulty": 1
+    },
+    {
+      "id": 20,
+      "word": "trà",
+      "translation": "茶",
+      "romanization": "chá",
+      "category": "food",
+      "difficulty": 1
+    },
+    {
+      "id": 21,
+      "word": "gia đình",
+      "translation": "家庭",
+      "romanization": "jiā tíng",
+      "category": "family",
+      "difficulty": 2
+    },
+    {
+      "id": 22,
+      "word": "mẹ",
+      "translation": "妈妈",
+      "romanization": "mā ma",
+      "category": "family",
+      "difficulty": 1
+    },
+    {
+      "id": 23,
+      "word": "bố",
+      "translation": "爸爸",
+      "romanization": "bà ba",
+      "category": "family",
+      "difficulty": 1
+    },
+    {
+      "id": 24,
+      "word": "anh",
+      "translation": "哥哥",
+      "romanization": "gē ge",
+      "category": "family",
+      "difficulty": 2
+    },
+    {
+      "id": 25,
+      "word": "em",
+      "translation": "弟弟/妹妹",
+      "romanization": "dì di/mèi mei",
+      "category": "family",
+      "difficulty": 2
+    },
+    {
+      "id": 26,
+      "word": "nhà",
+      "translation": "家",
+      "romanization": "jiā",
+      "category": "places",
+      "difficulty": 1
+    },
+    {
+      "id": 27,
+      "word": "trường học",
+      "translation": "学校",
+      "romanization": "xué xiào",
+      "category": "places",
+      "difficulty": 1
+    },
+    {
+      "id": 28,
+      "word": "bệnh viện",
+      "translation": "医院",
+      "romanization": "yī yuàn",
+      "category": "places",
+      "difficulty": 2
+    },
+    {
+      "id": 29,
+      "word": "chợ",
+      "translation": "市场",
+      "romanization": "shì chǎng",
+      "category": "places",
+      "difficulty": 1
+    },
+    {
+      "id": 30,
+      "word": "nhà hàng",
+      "translation": "餐厅",
+      "romanization": "cān tīng",
+      "category": "places",
+      "difficulty": 1
+    }
+  ]
+}
