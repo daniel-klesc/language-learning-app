@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Language Learning App - Adaptive Skill Levels</title>
+    <title>Language Learning App - Smart Vocabulary System</title>
     <style>
         * {
             margin: 0;
@@ -28,6 +28,92 @@
             max-width: 500px;
             width: 100%;
             padding: 30px;
+            position: relative;
+        }
+
+        /* Settings Icon */
+        .settings-icon {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            opacity: 0.6;
+            transition: opacity 0.3s;
+            z-index: 100;
+        }
+
+        .settings-icon:hover {
+            opacity: 1;
+        }
+
+        /* Settings Menu */
+        .settings-menu {
+            position: fixed;
+            top: 0;
+            right: -300px;
+            width: 280px;
+            height: 100vh;
+            background: white;
+            box-shadow: -5px 0 20px rgba(0,0,0,0.2);
+            transition: right 0.3s ease;
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .settings-menu.open {
+            right: 0;
+        }
+
+        .settings-header {
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            display: flex;
+            justify-content: between;
+            align-items: center;
+        }
+
+        .settings-close {
+            margin-left: auto;
+            cursor: pointer;
+            font-size: 24px;
+        }
+
+        .settings-item {
+            padding: 15px 20px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .settings-item:hover {
+            background: #f8f9fa;
+        }
+
+        .settings-item-icon {
+            font-size: 20px;
+        }
+
+        /* Overlay for settings */
+        .settings-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1999;
+            display: none;
+        }
+
+        .settings-overlay.open {
+            display: block;
         }
 
         /* Study screen specific container for better mobile experience */
@@ -43,6 +129,7 @@
         .header {
             text-align: center;
             margin-bottom: 20px;
+            padding-right: 30px; /* Make space for settings icon */
         }
 
         h1 {
@@ -102,61 +189,62 @@
             margin-bottom: 4px;
         }
 
-        /* Card Skill Indicator */
-        .card-skill-display {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            color: white;
-            padding: 10px;
-            border-radius: 8px;
-            margin-bottom: 15px;
-            font-size: 12px;
-        }
-
-        .skill-progress-bars {
+        /* Skill Pills in Session */
+        .skill-pills {
+            position: absolute;
+            top: 8px;
+            left: 15px;
             display: flex;
-            gap: 8px;
-            margin-top: 8px;
+            gap: 4px;
         }
 
-        .skill-bar {
-            flex: 1;
-            text-align: center;
-        }
-
-        .skill-bar-label {
-            font-size: 10px;
-            opacity: 0.9;
-            margin-bottom: 3px;
-        }
-
-        .skill-bar-track {
+        .skill-pill {
+            width: 24px;
+            height: 24px;
+            border-radius: 12px;
             background: rgba(255,255,255,0.3);
-            height: 4px;
-            border-radius: 2px;
-            overflow: hidden;
-        }
-
-        .skill-bar-fill {
-            background: white;
-            height: 100%;
-            transition: width 0.5s ease;
-        }
-
-        .skill-promotion {
-            background: #28a745;
             color: white;
-            padding: 8px;
-            border-radius: 6px;
-            margin-top: 10px;
-            text-align: center;
-            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: bold;
             cursor: pointer;
-            animation: pulse 2s infinite;
+            transition: all 0.3s;
+            user-select: none;
         }
 
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.8; }
+        .skill-pill.active {
+            background: white;
+            color: #28a745;
+            transform: scale(1.1);
+        }
+
+        /* Long-press menu */
+        .skill-switch-menu {
+            position: fixed;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            padding: 8px 0;
+            z-index: 3000;
+            min-width: 120px;
+        }
+
+        .skill-switch-option {
+            padding: 8px 16px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: background 0.2s;
+        }
+
+        .skill-switch-option:hover {
+            background: #f0f0f0;
+        }
+
+        .skill-switch-option.current {
+            background: #e3f2fd;
+            font-weight: bold;
         }
 
         .daily-goal {
@@ -222,6 +310,7 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 12px;
+            margin-top: 20px;
         }
 
         .session-progress-title {
@@ -232,7 +321,7 @@
         .session-progress-numbers {
             font-size: 20px;
             font-weight: bold;
-            margin-right: 50px; /* Make space for pause button */
+            margin-right: 50px;
         }
 
         .session-progress-bar {
@@ -623,11 +712,6 @@
             box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
         }
 
-        .study-button:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
-        }
-
         .study-button:disabled {
             opacity: 0.5;
             cursor: not-allowed;
@@ -698,7 +782,7 @@
             color: #721c24;
         }
 
-        .feedback.intermediate {
+        .feedback.partial {
             background: #fff3cd;
             color: #856404;
         }
@@ -707,6 +791,13 @@
             font-size: 14px;
             margin-top: 8px;
             font-weight: normal;
+        }
+
+        .feedback .user-answer {
+            font-size: 13px;
+            margin-top: 5px;
+            font-weight: normal;
+            opacity: 0.9;
         }
 
         .hidden {
@@ -782,6 +873,21 @@
             border-bottom: none;
         }
 
+        /* Loading indicator */
+        .loading-indicator {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
         /* Mobile optimizations for study mode */
         @media (max-width: 480px) {
             .container {
@@ -810,7 +916,6 @@
                 overflow-x: hidden;
             }
 
-            /* Ensure hidden elements stay hidden */
             .hidden {
                 display: none !important;
                 visibility: hidden !important;
@@ -820,7 +925,6 @@
                 left: -9999px !important;
             }
             
-            /* Main container in normal mode */
             .container:not(.study-mode) {
                 border-radius: 0;
                 min-height: 100vh;
@@ -831,16 +935,6 @@
             .session-progress-card {
                 padding: 12px;
                 margin-bottom: 12px;
-            }
-
-            .card-skill-display {
-                padding: 8px;
-                margin-bottom: 12px;
-                font-size: 11px;
-            }
-
-            .skill-bar-label {
-                font-size: 9px;
             }
             
             .word {
@@ -902,7 +996,6 @@
                 height: 100%;
             }
 
-            /* Session progress adjustments */
             .session-progress-numbers {
                 font-size: 18px;
                 margin-right: 40px;
@@ -926,7 +1019,6 @@
                 height: 14px;
             }
 
-            /* Ensure button stays visible */
             #study-screen {
                 display: flex;
                 flex-direction: column;
@@ -938,13 +1030,11 @@
                 flex-shrink: 0;
             }
             
-            /* Fix overlapping screens */
             #start-screen, #study-screen, #complete-screen {
                 position: relative;
                 width: 100%;
             }
             
-            /* Ensure proper screen switching */
             #start-screen:not(.hidden) {
                 display: block;
             }
@@ -961,6 +1051,12 @@
 </head>
 <body>
     <div class="container" id="main-container">
+        <!-- Settings Icon -->
+        <svg class="settings-icon" onclick="toggleSettings()" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M12 1v6m0 6v6m4.22-13.22l-4.24 4.24m0 5.96l4.24 4.24M20 12h-6m-6 0H2m13.22 4.22l-4.24-4.24m0-5.96L6.76 2.76"></path>
+        </svg>
+
         <!-- Home Screen Content -->
         <div id="home-content">
             <div class="header">
@@ -1136,6 +1232,44 @@
         </div>
     </div>
 
+    <!-- Settings Menu -->
+    <div class="settings-menu" id="settings-menu">
+        <div class="settings-header">
+            <span style="font-size: 18px; font-weight: bold;">Settings</span>
+            <span class="settings-close" onclick="toggleSettings()">×</span>
+        </div>
+        <div class="settings-item" onclick="openVocabManager()">
+            <span class="settings-item-icon">📚</span>
+            <span>Vocabulary Manager</span>
+        </div>
+        <div class="settings-item" onclick="refreshVocabulary()">
+            <span class="settings-item-icon">🔄</span>
+            <span>Refresh Vocabulary</span>
+        </div>
+        <div class="settings-item" onclick="showStatistics()">
+            <span class="settings-item-icon">📊</span>
+            <span>Statistics</span>
+        </div>
+        <div class="settings-item" onclick="exportProgress()">
+            <span class="settings-item-icon">💾</span>
+            <span>Export Progress</span>
+        </div>
+        <div class="settings-item" onclick="resetAllData()">
+            <span class="settings-item-icon">🗑️</span>
+            <span>Reset All Data</span>
+        </div>
+    </div>
+    
+    <!-- Settings Overlay -->
+    <div class="settings-overlay" id="settings-overlay" onclick="toggleSettings()"></div>
+
+    <!-- Skill Switch Menu (appears on long-press) -->
+    <div class="skill-switch-menu hidden" id="skill-switch-menu">
+        <div class="skill-switch-option" data-level="1" onclick="switchSkillLevel(1)">🌱 Beginner</div>
+        <div class="skill-switch-option" data-level="2" onclick="switchSkillLevel(2)">📘 Intermediate</div>
+        <div class="skill-switch-option" data-level="3" onclick="switchSkillLevel(3)">🎯 Advanced</div>
+    </div>
+
     <!-- Development Console -->
     <button class="dev-toggle hidden" id="dev-toggle" onclick="toggleDevConsole()">Show Dev Console</button>
     <div class="dev-console hidden" id="dev-console">
@@ -1186,10 +1320,11 @@
             
             const data = loadProgress();
             const now = Date.now();
-            const vocabSet = vocabulary[currentLanguagePair] || [];
+            const vocabSet = vocabularyData[currentLanguagePair] || [];
             
             devLog('=== VOCABULARY STATUS ===', 'success');
             devLog(`Current Language Pair: ${currentLanguagePair}`, 'info');
+            devLog(`Total vocabulary loaded: ${vocabSet.length} words`, 'info');
             
             let newCount = 0, dueCount = 0, futureCount = 0;
             
@@ -1258,8 +1393,12 @@
             accuracy: 0.8   // 80% accuracy at level
         };
 
-        // ============= VOCABULARY DATABASE =============
-        const vocabulary = {
+        // ============= VOCABULARY DATA =============
+        // This will be replaced by external loading, but kept as fallback
+        let vocabularyData = {};
+        
+        // Fallback vocabulary (embedded)
+        const fallbackVocabulary = {
             'cs-vi': [
                 // Greetings & Politeness
                 { id: 1, word: 'ahoj', translation: 'xin chào', romanization: 'sin chào', category: 'greetings', difficulty: 1 },
@@ -1275,8 +1414,6 @@
                 { id: 16, word: 'škola', translation: 'trường học', romanization: 'trường học', category: 'basics', difficulty: 2 },
                 { id: 17, word: 'kniha', translation: 'sách', romanization: 'sách', category: 'basics', difficulty: 2 },
                 { id: 20, word: 'práce', translation: 'công việc', romanization: 'công việc', category: 'basics', difficulty: 2 },
-                { id: 44, word: 'auto', translation: 'xe hơi', romanization: 'se hơi', category: 'basics', difficulty: 1 },
-                { id: 45, word: 'město', translation: 'thành phố', romanization: 'thành phố', category: 'places', difficulty: 1 },
                 
                 // Numbers
                 { id: 7, word: 'jeden', translation: 'một', romanization: 'một', category: 'numbers', difficulty: 1 },
@@ -1284,146 +1421,259 @@
                 { id: 9, word: 'tři', translation: 'ba', romanization: 'ba', category: 'numbers', difficulty: 1 },
                 { id: 10, word: 'čtyři', translation: 'bốn', romanization: 'bốn', category: 'numbers', difficulty: 2 },
                 { id: 11, word: 'pět', translation: 'năm', romanization: 'năm', category: 'numbers', difficulty: 2 },
-                { id: 46, word: 'šest', translation: 'sáu', romanization: 'sáu', category: 'numbers', difficulty: 2 },
-                { id: 47, word: 'sedm', translation: 'bảy', romanization: 'bảy', category: 'numbers', difficulty: 2 },
-                { id: 48, word: 'osm', translation: 'tám', romanization: 'tám', category: 'numbers', difficulty: 2 },
-                { id: 49, word: 'devět', translation: 'chín', romanization: 'chín', category: 'numbers', difficulty: 2 },
-                { id: 50, word: 'deset', translation: 'mười', romanization: 'mười', category: 'numbers', difficulty: 2 },
                 
                 // Family
                 { id: 12, word: 'rodina', translation: 'gia đình', romanization: 'gia đình', category: 'family', difficulty: 2 },
                 { id: 13, word: 'matka', translation: 'mẹ', romanization: 'mẹ', category: 'family', difficulty: 1 },
                 { id: 14, word: 'otec', translation: 'bố', romanization: 'bố', category: 'family', difficulty: 1 },
-                { id: 51, word: 'syn', translation: 'con trai', romanization: 'con trai', category: 'family', difficulty: 2 },
-                { id: 52, word: 'dcera', translation: 'con gái', romanization: 'con gái', category: 'family', difficulty: 2 },
-                { id: 53, word: 'bratr', translation: 'anh/em trai', romanization: 'anh/em trai', category: 'family', difficulty: 2 },
-                { id: 54, word: 'sestra', translation: 'chị/em gái', romanization: 'chị/em gái', category: 'family', difficulty: 2 },
                 
                 // Food & Drink
                 { id: 5, word: 'voda', translation: 'nước', romanization: 'nước', category: 'food', difficulty: 1 },
-                { id: 6, word: 'chléb', translation: 'bánh mì', romanization: 'bánh mì', category: 'food', difficulty: 2 },
-                { id: 55, word: 'káva', translation: 'cà phê', romanization: 'cà phê', category: 'food', difficulty: 1 },
-                { id: 56, word: 'čaj', translation: 'trà', romanization: 'trà', category: 'food', difficulty: 1 },
-                { id: 57, word: 'pivo', translation: 'bia', romanization: 'bia', category: 'food', difficulty: 1 },
-                { id: 58, word: 'mléko', translation: 'sữa', romanization: 'sữa', category: 'food', difficulty: 1 },
-                { id: 59, word: 'maso', translation: 'thịt', romanization: 'thịt', category: 'food', difficulty: 1 },
-                { id: 60, word: 'ryba', translation: 'cá', romanization: 'cá', category: 'food', difficulty: 1 },
-                { id: 61, word: 'ovoce', translation: 'trái cây', romanization: 'trái cây', category: 'food', difficulty: 2 },
-                { id: 62, word: 'zelenina', translation: 'rau', romanization: 'rau', category: 'food', difficulty: 2 },
-                
-                // Time
-                { id: 63, word: 'dnes', translation: 'hôm nay', romanization: 'hôm nay', category: 'time', difficulty: 1 },
-                { id: 64, word: 'zítra', translation: 'ngày mai', romanization: 'ngày mai', category: 'time', difficulty: 1 },
-                { id: 65, word: 'včera', translation: 'hôm qua', romanization: 'hôm qua', category: 'time', difficulty: 1 },
-                { id: 66, word: 'ráno', translation: 'buổi sáng', romanization: 'buổi sáng', category: 'time', difficulty: 1 },
-                { id: 67, word: 'večer', translation: 'buổi tối', romanization: 'buổi tối', category: 'time', difficulty: 1 },
-                
-                // People & Emotions
-                { id: 18, word: 'přátelé', translation: 'bạn bè', romanization: 'bạn bè', category: 'people', difficulty: 2 },
-                { id: 19, word: 'láska', translation: 'tình yêu', romanization: 'tình yêu', category: 'emotions', difficulty: 3 },
-                { id: 68, word: 'šťastný', translation: 'hạnh phúc', romanization: 'hạnh phúc', category: 'emotions', difficulty: 2 },
-                { id: 69, word: 'smutný', translation: 'buồn', romanization: 'buồn', category: 'emotions', difficulty: 2 },
-                
-                // Common Verbs
-                { id: 70, word: 'jít', translation: 'đi', romanization: 'đi', category: 'activities', difficulty: 1 },
-                { id: 71, word: 'přijít', translation: 'đến', romanization: 'đến', category: 'activities', difficulty: 2 },
-                { id: 72, word: 'vidět', translation: 'nhìn thấy', romanization: 'nhìn thấy', category: 'activities', difficulty: 2 },
-                { id: 73, word: 'mluvit', translation: 'nói', romanization: 'nói', category: 'activities', difficulty: 2 },
-                { id: 74, word: 'jíst', translation: 'ăn', romanization: 'ăn', category: 'activities', difficulty: 1 },
-                { id: 75, word: 'pít', translation: 'uống', romanization: 'uống', category: 'activities', difficulty: 1 }
+                { id: 6, word: 'chléb', translation: 'bánh mì', romanization: 'bánh mì', category: 'food', difficulty: 2 }
             ],
             'vi-zh': [
-                // Greetings
                 { id: 21, word: 'xin chào', translation: '你好', romanization: 'nǐ hǎo', category: 'greetings', difficulty: 1 },
                 { id: 22, word: 'cảm ơn', translation: '谢谢', romanization: 'xiè xie', category: 'greetings', difficulty: 1 },
-                { id: 76, word: 'tạm biệt', translation: '再见', romanization: 'zài jiàn', category: 'greetings', difficulty: 1 },
-                { id: 77, word: 'xin lỗi', translation: '对不起', romanization: 'duì bù qǐ', category: 'greetings', difficulty: 1 },
-                
-                // Numbers
                 { id: 23, word: 'một', translation: '一', romanization: 'yī', category: 'numbers', difficulty: 1 },
                 { id: 24, word: 'hai', translation: '二', romanization: 'èr', category: 'numbers', difficulty: 1 },
                 { id: 25, word: 'ba', translation: '三', romanization: 'sān', category: 'numbers', difficulty: 1 },
-                { id: 78, word: 'bốn', translation: '四', romanization: 'sì', category: 'numbers', difficulty: 1 },
-                { id: 79, word: 'năm', translation: '五', romanization: 'wǔ', category: 'numbers', difficulty: 1 },
-                
-                // Food & Drink
                 { id: 26, word: 'nước', translation: '水', romanization: 'shuǐ', category: 'food', difficulty: 1 },
                 { id: 27, word: 'cơm', translation: '米饭', romanization: 'mǐ fàn', category: 'food', difficulty: 2 },
-                { id: 80, word: 'phở', translation: '越南粉', romanization: 'yuè nán fěn', category: 'food', difficulty: 2 },
-                { id: 81, word: 'bánh mì', translation: '面包', romanization: 'miàn bāo', category: 'food', difficulty: 1 },
-                { id: 82, word: 'cà phê', translation: '咖啡', romanization: 'kā fēi', category: 'food', difficulty: 1 },
-                { id: 83, word: 'trà', translation: '茶', romanization: 'chá', category: 'food', difficulty: 1 },
-                
-                // Family
                 { id: 28, word: 'gia đình', translation: '家庭', romanization: 'jiā tíng', category: 'family', difficulty: 2 },
                 { id: 29, word: 'mẹ', translation: '妈妈', romanization: 'mā ma', category: 'family', difficulty: 1 },
-                { id: 30, word: 'bố', translation: '爸爸', romanization: 'bà ba', category: 'family', difficulty: 1 },
-                { id: 84, word: 'anh', translation: '哥哥', romanization: 'gē ge', category: 'family', difficulty: 2 },
-                { id: 85, word: 'em', translation: '弟弟/妹妹', romanization: 'dì di/mèi mei', category: 'family', difficulty: 2 },
-                
-                // Places
-                { id: 86, word: 'nhà', translation: '家', romanization: 'jiā', category: 'places', difficulty: 1 },
-                { id: 87, word: 'trường học', translation: '学校', romanization: 'xué xiào', category: 'places', difficulty: 1 },
-                { id: 88, word: 'bệnh viện', translation: '医院', romanization: 'yī yuàn', category: 'places', difficulty: 2 },
-                { id: 89, word: 'chợ', translation: '市场', romanization: 'shì chǎng', category: 'places', difficulty: 1 },
-                { id: 90, word: 'nhà hàng', translation: '餐厅', romanization: 'cān tīng', category: 'places', difficulty: 1 }
+                { id: 30, word: 'bố', translation: '爸爸', romanization: 'bà ba', category: 'family', difficulty: 1 }
             ],
             'vi-en': [
-                // Greetings
                 { id: 31, word: 'xin chào', translation: 'hello', romanization: '', category: 'greetings', difficulty: 1 },
                 { id: 32, word: 'cảm ơn', translation: 'thank you', romanization: '', category: 'greetings', difficulty: 1 },
-                { id: 91, word: 'tạm biệt', translation: 'goodbye', romanization: '', category: 'greetings', difficulty: 1 },
-                { id: 92, word: 'xin lỗi', translation: 'sorry', romanization: '', category: 'greetings', difficulty: 1 },
-                { id: 93, word: 'làm ơn', translation: 'please', romanization: '', category: 'greetings', difficulty: 1 },
-                
-                // Numbers
                 { id: 33, word: 'một', translation: 'one', romanization: '', category: 'numbers', difficulty: 1 },
                 { id: 34, word: 'hai', translation: 'two', romanization: '', category: 'numbers', difficulty: 1 },
                 { id: 35, word: 'ba', translation: 'three', romanization: '', category: 'numbers', difficulty: 1 },
-                { id: 94, word: 'bốn', translation: 'four', romanization: '', category: 'numbers', difficulty: 1 },
-                { id: 95, word: 'năm', translation: 'five', romanization: '', category: 'numbers', difficulty: 1 },
-                
-                // Food & Drink
                 { id: 36, word: 'nước', translation: 'water', romanization: '', category: 'food', difficulty: 1 },
                 { id: 37, word: 'bánh mì', translation: 'bread', romanization: '', category: 'food', difficulty: 1 },
-                { id: 96, word: 'cơm', translation: 'rice', romanization: '', category: 'food', difficulty: 1 },
-                { id: 97, word: 'phở', translation: 'pho', romanization: '', category: 'food', difficulty: 1 },
-                { id: 98, word: 'cà phê', translation: 'coffee', romanization: '', category: 'food', difficulty: 1 },
-                { id: 99, word: 'trà', translation: 'tea', romanization: '', category: 'food', difficulty: 1 },
-                { id: 100, word: 'bia', translation: 'beer', romanization: '', category: 'food', difficulty: 1 },
-                
-                // Family
                 { id: 38, word: 'gia đình', translation: 'family', romanization: '', category: 'family', difficulty: 1 },
-                { id: 101, word: 'mẹ', translation: 'mother', romanization: '', category: 'family', difficulty: 1 },
-                { id: 102, word: 'bố', translation: 'father', romanization: '', category: 'family', difficulty: 1 },
-                { id: 103, word: 'anh', translation: 'older brother', romanization: '', category: 'family', difficulty: 2 },
-                { id: 104, word: 'chị', translation: 'older sister', romanization: '', category: 'family', difficulty: 2 },
-                { id: 105, word: 'em', translation: 'younger sibling', romanization: '', category: 'family', difficulty: 2 },
-                
-                // Places
                 { id: 39, word: 'nhà', translation: 'house', romanization: '', category: 'basics', difficulty: 1 },
-                { id: 40, word: 'trường học', translation: 'school', romanization: '', category: 'basics', difficulty: 2 },
-                { id: 106, word: 'bệnh viện', translation: 'hospital', romanization: '', category: 'places', difficulty: 1 },
-                { id: 107, word: 'sân bay', translation: 'airport', romanization: '', category: 'places', difficulty: 1 },
-                { id: 108, word: 'khách sạn', translation: 'hotel', romanization: '', category: 'places', difficulty: 1 },
-                { id: 109, word: 'nhà hàng', translation: 'restaurant', romanization: '', category: 'places', difficulty: 1 },
-                { id: 110, word: 'chợ', translation: 'market', romanization: '', category: 'places', difficulty: 1 },
-                
-                // Common Verbs
-                { id: 111, word: 'đi', translation: 'go', romanization: '', category: 'activities', difficulty: 1 },
-                { id: 112, word: 'đến', translation: 'come', romanization: '', category: 'activities', difficulty: 1 },
-                { id: 113, word: 'ăn', translation: 'eat', romanization: '', category: 'activities', difficulty: 1 },
-                { id: 114, word: 'uống', translation: 'drink', romanization: '', category: 'activities', difficulty: 1 },
-                { id: 115, word: 'ngủ', translation: 'sleep', romanization: '', category: 'activities', difficulty: 1 },
-                { id: 116, word: 'làm việc', translation: 'work', romanization: '', category: 'activities', difficulty: 2 },
-                { id: 117, word: 'học', translation: 'study', romanization: '', category: 'activities', difficulty: 1 },
-                
-                // Time
-                { id: 118, word: 'hôm nay', translation: 'today', romanization: '', category: 'time', difficulty: 1 },
-                { id: 119, word: 'ngày mai', translation: 'tomorrow', romanization: '', category: 'time', difficulty: 1 },
-                { id: 120, word: 'hôm qua', translation: 'yesterday', romanization: '', category: 'time', difficulty: 1 }
+                { id: 40, word: 'trường học', translation: 'school', romanization: '', category: 'basics', difficulty: 2 }
             ]
         };
+
+        // ============= VOCABULARY LOADING SYSTEM =============
+        async function loadVocabulary(languagePair, forceRefresh = false) {
+            const cacheKey = `vocabularyCache_${languagePair}`;
+            const cache = localStorage.getItem(cacheKey);
+            const now = Date.now();
+            
+            // Check cache (24 hour expiry)
+            if (!forceRefresh && cache) {
+                const cached = JSON.parse(cache);
+                if (cached.timestamp && (now - cached.timestamp) < 86400000) {
+                    devLog(`Loading vocabulary from cache for ${languagePair}`, 'info');
+                    return cached.words;
+                }
+            }
+            
+            // Try to load from external files
+            try {
+                devLog(`Fetching vocabulary files for ${languagePair}...`, 'info');
+                const response = await fetch(`./vocabulary/${languagePair}/core.json`);
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    const words = data.words || data;
+                    
+                    // Cache the loaded vocabulary
+                    localStorage.setItem(cacheKey, JSON.stringify({
+                        timestamp: now,
+                        words: words
+                    }));
+                    
+                    devLog(`Loaded ${words.length} words from external file for ${languagePair}`, 'success');
+                    return words;
+                }
+            } catch (error) {
+                devLog(`Failed to load external vocabulary for ${languagePair}: ${error.message}`, 'error');
+            }
+            
+            // Fallback to embedded vocabulary
+            devLog(`Using fallback vocabulary for ${languagePair}`, 'info');
+            return fallbackVocabulary[languagePair] || [];
+        }
+
+        async function initializeVocabulary() {
+            devLog('Initializing vocabulary system...', 'info');
+            
+            // Load vocabulary for all language pairs
+            for (const pair of ['cs-vi', 'vi-zh', 'vi-en']) {
+                vocabularyData[pair] = await loadVocabulary(pair);
+            }
+            
+            devLog('Vocabulary initialization complete', 'success');
+        }
+
+        async function refreshVocabulary() {
+            devLog('Refreshing all vocabulary...', 'info');
+            
+            // Show loading indicator
+            const settingsMenu = document.getElementById('settings-menu');
+            const originalContent = settingsMenu.innerHTML;
+            
+            // Clear cache and reload
+            for (const pair of ['cs-vi', 'vi-zh', 'vi-en']) {
+                vocabularyData[pair] = await loadVocabulary(pair, true);
+            }
+            
+            devLog('Vocabulary refresh complete', 'success');
+            alert('Vocabulary refreshed successfully!');
+            toggleSettings();
+        }
+
+        // ============= SETTINGS MENU FUNCTIONS =============
+        function toggleSettings() {
+            const menu = document.getElementById('settings-menu');
+            const overlay = document.getElementById('settings-overlay');
+            
+            if (menu.classList.contains('open')) {
+                menu.classList.remove('open');
+                overlay.classList.remove('open');
+            } else {
+                menu.classList.add('open');
+                overlay.classList.add('open');
+            }
+        }
+
+        function openVocabManager() {
+            alert('Vocabulary Manager coming soon! This will allow you to:\n\n' +
+                  '• View all loaded vocabulary\n' +
+                  '• Upload custom vocabulary files\n' +
+                  '• Toggle files on/off\n' +
+                  '• Search and filter words');
+            toggleSettings();
+        }
+
+        function showStatistics() {
+            const data = loadProgress();
+            let stats = 'Learning Statistics\n\n';
+            
+            // Count words by skill level
+            let skillCounts = { 1: 0, 2: 0, 3: 0 };
+            let totalWords = 0;
+            
+            if (data.progress) {
+                Object.values(data.progress).forEach(langPair => {
+                    Object.values(langPair).forEach(card => {
+                        totalWords++;
+                        const level = card.skillLevel || 1;
+                        skillCounts[level]++;
+                    });
+                });
+            }
+            
+            stats += `Total Words Seen: ${totalWords}\n`;
+            stats += `Beginner Level: ${skillCounts[1]}\n`;
+            stats += `Intermediate Level: ${skillCounts[2]}\n`;
+            stats += `Advanced Level: ${skillCounts[3]}\n\n`;
+            stats += `Current Streak: ${data.streak || 0} days\n`;
+            stats += `Overall Accuracy: ${data.accuracy?.total ? Math.round((data.accuracy.correct / data.accuracy.total) * 100) : 0}%`;
+            
+            alert(stats);
+            toggleSettings();
+        }
+
+        function exportProgress() {
+            const data = loadProgress();
+            const json = JSON.stringify(data, null, 2);
+            const blob = new Blob([json], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `language-learning-progress-${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            toggleSettings();
+        }
+
+        function resetAllData() {
+            if (confirm('Are you sure you want to reset all data? This cannot be undone!')) {
+                localStorage.clear();
+                location.reload();
+            }
+        }
+
+        // ============= LONG-PRESS SKILL SWITCHING =============
+        let longPressTimer = null;
+        let isLongPress = false;
+
+        function setupSkillPillLongPress() {
+            document.querySelectorAll('.skill-pill').forEach(pill => {
+                pill.addEventListener('mousedown', startLongPress);
+                pill.addEventListener('touchstart', startLongPress);
+                pill.addEventListener('mouseup', cancelLongPress);
+                pill.addEventListener('touchend', cancelLongPress);
+                pill.addEventListener('mouseleave', cancelLongPress);
+                pill.addEventListener('touchcancel', cancelLongPress);
+            });
+        }
+
+        function startLongPress(e) {
+            e.preventDefault();
+            const pill = e.currentTarget;
+            
+            // Only allow long-press on the active pill
+            if (!pill.classList.contains('active')) return;
+            
+            isLongPress = false;
+            longPressTimer = setTimeout(() => {
+                isLongPress = true;
+                showSkillSwitchMenu(e);
+            }, 500);
+        }
+
+        function cancelLongPress() {
+            if (longPressTimer) {
+                clearTimeout(longPressTimer);
+                longPressTimer = null;
+            }
+        }
+
+        function showSkillSwitchMenu(e) {
+            const menu = document.getElementById('skill-switch-menu');
+            menu.classList.remove('hidden');
+            
+            // Position the menu
+            const rect = e.target.getBoundingClientRect();
+            menu.style.left = rect.left + 'px';
+            menu.style.top = (rect.bottom + 5) + 'px';
+            
+            // Mark current level
+            document.querySelectorAll('.skill-switch-option').forEach(option => {
+                option.classList.remove('current');
+                if (parseInt(option.dataset.level) === currentCardSkillLevel) {
+                    option.classList.add('current');
+                }
+            });
+            
+            // Hide menu when clicking elsewhere
+            setTimeout(() => {
+                document.addEventListener('click', hideSkillSwitchMenu, { once: true });
+            }, 100);
+        }
+
+        function hideSkillSwitchMenu() {
+            document.getElementById('skill-switch-menu').classList.add('hidden');
+        }
+
+        function switchSkillLevel(level) {
+            currentCardSkillLevel = level;
+            devLog(`Switched to ${SKILL_NAMES[level]} level for current card`, 'info');
+            
+            // Update the UI to reflect the change
+            updateCardSkillDisplay(currentSession[currentCardIndex].id);
+            
+            // Re-show the card with new skill level
+            showCard();
+            
+            hideSkillSwitchMenu();
+        }
 
         // ============= APP STATE =============
         let currentLanguagePair = 'cs-vi';
@@ -1451,8 +1701,11 @@
         const STORAGE_KEY = 'languageApp';
 
         // ============= INITIALIZATION =============
-        function initApp() {
-            devLog('Initializing app with skill levels...', 'info');
+        async function initApp() {
+            devLog('Initializing app with vocabulary system...', 'info');
+            
+            // Initialize vocabulary first
+            await initializeVocabulary();
             
             // Ensure proper initial screen state
             document.getElementById('home-content').style.display = 'block';
@@ -1469,6 +1722,8 @@
             checkPausedSession();
             updateSessionHistory();
             updateSkillLevelDisplay();
+            setupSkillPillLongPress();
+            
             devLog('App initialized successfully', 'success');
         }
 
@@ -1541,11 +1796,6 @@
                 if (parseInt(pill.dataset.level) === currentCardSkillLevel) {
                     pill.classList.add('active');
                 }
-                
-                // Add click handler to show progress tooltip (future enhancement)
-                pill.onclick = () => {
-                    devLog(`Skill ${pill.dataset.level} clicked - future: show progress`, 'info');
-                };
             });
             
             // Check for promotion (only if card has progress)
@@ -1563,26 +1813,7 @@
                 (currentStats.correct / currentStats.total) >= PROMOTION_THRESHOLD.accuracy) {
                 
                 cardProgress.recommendedSkillLevel = currentCardSkillLevel + 1;
-                // Could show a promotion notification here
                 devLog(`Card ready for promotion to ${SKILL_NAMES[currentCardSkillLevel + 1]}!`, 'success');
-            }
-        }
-
-        function acceptSkillPromotion() {
-            const card = currentSession[currentCardIndex];
-            const data = loadProgress();
-            const cardProgress = data.progress[currentLanguagePair][card.id];
-            
-            if (cardProgress && cardProgress.recommendedSkillLevel) {
-                currentCardSkillLevel = cardProgress.recommendedSkillLevel;
-                cardProgress.skillLevel = currentCardSkillLevel;
-                saveProgress(data);
-                
-                devLog(`Card ${card.id} promoted to ${SKILL_NAMES[currentCardSkillLevel]}!`, 'success');
-                document.getElementById('skill-promotion').classList.add('hidden');
-                
-                // Refresh the card display with new skill level
-                showCard();
             }
         }
 
@@ -1732,7 +1963,8 @@
                         new: 0,
                         review: 0,
                         sessions: [],
-                        timeSpent: 0
+                        timeSpent: 0,
+                        cardsSeen: {}
                     };
                     
                     const yesterday = new Date(Date.now() - 86400000).toDateString();
@@ -1768,7 +2000,8 @@
                     new: 0,
                     review: 0,
                     sessions: [],
-                    timeSpent: 0
+                    timeSpent: 0,
+                    cardsSeen: {}
                 },
                 accuracy: { correct: 0, total: 0 },
                 totalLearned: 0,
@@ -1862,7 +2095,7 @@
             const now = Date.now();
             currentSession = [];
             
-            const vocabSet = vocabulary[currentLanguagePair] || [];
+            const vocabSet = vocabularyData[currentLanguagePair] || [];
             const newCards = [];
             const reviewCards = [];
             
@@ -1963,6 +2196,9 @@
             document.getElementById('study-screen').classList.remove('hidden');
             document.getElementById('study-screen').style.display = 'flex';
             
+            // Re-setup long-press for study screen skill pills
+            setupSkillPillLongPress();
+            
             showCard();
         }
 
@@ -1986,6 +2222,9 @@
             // Show study screen
             document.getElementById('study-screen').classList.remove('hidden');
             document.getElementById('study-screen').style.display = 'flex';
+            
+            // Re-setup long-press for study screen skill pills
+            setupSkillPillLongPress();
             
             showCard();
         }
@@ -2053,7 +2292,7 @@
                 choiceGrid.classList.remove('hidden');
                 inputGroup.classList.add('hidden');
                 
-                const vocabSet = vocabulary[currentLanguagePair] || [];
+                const vocabSet = vocabularyData[currentLanguagePair] || [];
                 const options = generateMultipleChoice(card, vocabSet);
                 renderMultipleChoice(options);
             } else {
@@ -2290,13 +2529,7 @@
             
             // Update daily progress
             if (!data.dailyProgress) {
-                data.dailyProgress = { new: 0, review: 0, sessions: [], timeSpent: 0 };
-            }
-            
-            // Create a unique session ID for tracking cards in this session
-            const sessionId = sessionStats.startTime || Date.now();
-            if (!data.dailyProgress.cardsSeen) {
-                data.dailyProgress.cardsSeen = {};
+                data.dailyProgress = { new: 0, review: 0, sessions: [], timeSpent: 0, cardsSeen: {} };
             }
             
             // Track if this card was already counted in today's progress
