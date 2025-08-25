@@ -1,0 +1,613 @@
+{
+  "metadata": {
+    "id": "cs-vi-core",
+    "name": "Core Czech-Vietnamese Vocabulary",
+    "language_pair": "cs-vi",
+    "version": "1.0",
+    "created": "2024-01-15",
+    "author": "system",
+    "description": "Essential Czech to Vietnamese vocabulary for beginners"
+  },
+  "words": [
+    {
+      "id": 1,
+      "word": "ahoj",
+      "translation": "xin chào",
+      "romanization": "sin chào",
+      "category": "greetings",
+      "difficulty": 1
+    },
+    {
+      "id": 2,
+      "word": "děkuji",
+      "translation": "cảm ơn",
+      "romanization": "cảm ơn",
+      "category": "greetings",
+      "difficulty": 1
+    },
+    {
+      "id": 3,
+      "word": "prosím",
+      "translation": "làm ơn",
+      "romanization": "làm ơn",
+      "category": "greetings",
+      "difficulty": 1
+    },
+    {
+      "id": 4,
+      "word": "promiňte",
+      "translation": "xin lỗi",
+      "romanization": "sin lỗi",
+      "category": "greetings",
+      "difficulty": 1
+    },
+    {
+      "id": 5,
+      "word": "nashledanou",
+      "translation": "tạm biệt",
+      "romanization": "tạm biệt",
+      "category": "greetings",
+      "difficulty": 1
+    },
+    {
+      "id": 6,
+      "word": "ano",
+      "translation": "vâng",
+      "romanization": "vâng",
+      "category": "basics",
+      "difficulty": 1
+    },
+    {
+      "id": 7,
+      "word": "ne",
+      "translation": "không",
+      "romanization": "không",
+      "category": "basics",
+      "difficulty": 1
+    },
+    {
+      "id": 8,
+      "word": "dům",
+      "translation": "nhà",
+      "romanization": "nhà",
+      "category": "basics",
+      "difficulty": 1
+    },
+    {
+      "id": 9,
+      "word": "škola",
+      "translation": "trường học",
+      "romanization": "trường học",
+      "category": "basics",
+      "difficulty": 2
+    },
+    {
+      "id": 10,
+      "word": "kniha",
+      "translation": "sách",
+      "romanization": "sách",
+      "category": "basics",
+      "difficulty": 2
+    },
+    {
+      "id": 11,
+      "word": "práce",
+      "translation": "công việc",
+      "romanization": "công việc",
+      "category": "basics",
+      "difficulty": 2
+    },
+    {
+      "id": 12,
+      "word": "auto",
+      "translation": "xe hơi",
+      "romanization": "se hơi",
+      "category": "basics",
+      "difficulty": 1
+    },
+    {
+      "id": 13,
+      "word": "město",
+      "translation": "thành phố",
+      "romanization": "thành phố",
+      "category": "places",
+      "difficulty": 1
+    },
+    {
+      "id": 14,
+      "word": "jeden",
+      "translation": "một",
+      "romanization": "một",
+      "category": "numbers",
+      "difficulty": 1
+    },
+    {
+      "id": 15,
+      "word": "dva",
+      "translation": "hai",
+      "romanization": "hai",
+      "category": "numbers",
+      "difficulty": 1
+    },
+    {
+      "id": 16,
+      "word": "tři",
+      "translation": "ba",
+      "romanization": "ba",
+      "category": "numbers",
+      "difficulty": 1
+    },
+    {
+      "id": 17,
+      "word": "čtyři",
+      "translation": "bốn",
+      "romanization": "bốn",
+      "category": "numbers",
+      "difficulty": 2
+    },
+    {
+      "id": 18,
+      "word": "pět",
+      "translation": "năm",
+      "romanization": "năm",
+      "category": "numbers",
+      "difficulty": 2
+    },
+    {
+      "id": 19,
+      "word": "šest",
+      "translation": "sáu",
+      "romanization": "sáu",
+      "category": "numbers",
+      "difficulty": 2
+    },
+    {
+      "id": 20,
+      "word": "sedm",
+      "translation": "bảy",
+      "romanization": "bảy",
+      "category": "numbers",
+      "difficulty": 2
+    },
+    {
+      "id": 21,
+      "word": "osm",
+      "translation": "tám",
+      "romanization": "tám",
+      "category": "numbers",
+      "difficulty": 2
+    },
+    {
+      "id": 22,
+      "word": "devět",
+      "translation": "chín",
+      "romanization": "chín",
+      "category": "numbers",
+      "difficulty": 2
+    },
+    {
+      "id": 23,
+      "word": "deset",
+      "translation": "mười",
+      "romanization": "mười",
+      "category": "numbers",
+      "difficulty": 2
+    },
+    {
+      "id": 24,
+      "word": "rodina",
+      "translation": "gia đình",
+      "romanization": "gia đình",
+      "category": "family",
+      "difficulty": 2
+    },
+    {
+      "id": 25,
+      "word": "matka",
+      "translation": "mẹ",
+      "romanization": "mẹ",
+      "category": "family",
+      "difficulty": 1
+    },
+    {
+      "id": 26,
+      "word": "otec",
+      "translation": "bố",
+      "romanization": "bố",
+      "category": "family",
+      "difficulty": 1
+    },
+    {
+      "id": 27,
+      "word": "syn",
+      "translation": "con trai",
+      "romanization": "con trai",
+      "category": "family",
+      "difficulty": 2
+    },
+    {
+      "id": 28,
+      "word": "dcera",
+      "translation": "con gái",
+      "romanization": "con gái",
+      "category": "family",
+      "difficulty": 2
+    },
+    {
+      "id": 29,
+      "word": "bratr",
+      "translation": "anh/em trai",
+      "romanization": "anh/em trai",
+      "category": "family",
+      "difficulty": 2
+    },
+    {
+      "id": 30,
+      "word": "sestra",
+      "translation": "chị/em gái",
+      "romanization": "chị/em gái",
+      "category": "family",
+      "difficulty": 2
+    },
+    {
+      "id": 31,
+      "word": "voda",
+      "translation": "nước",
+      "romanization": "nước",
+      "category": "food",
+      "difficulty": 1
+    },
+    {
+      "id": 32,
+      "word": "chléb",
+      "translation": "bánh mì",
+      "romanization": "bánh mì",
+      "category": "food",
+      "difficulty": 2
+    },
+    {
+      "id": 33,
+      "word": "káva",
+      "translation": "cà phê",
+      "romanization": "cà phê",
+      "category": "food",
+      "difficulty": 1
+    },
+    {
+      "id": 34,
+      "word": "čaj",
+      "translation": "trà",
+      "romanization": "trà",
+      "category": "food",
+      "difficulty": 1
+    },
+    {
+      "id": 35,
+      "word": "pivo",
+      "translation": "bia",
+      "romanization": "bia",
+      "category": "food",
+      "difficulty": 1
+    },
+    {
+      "id": 36,
+      "word": "mléko",
+      "translation": "sữa",
+      "romanization": "sữa",
+      "category": "food",
+      "difficulty": 1
+    },
+    {
+      "id": 37,
+      "word": "maso",
+      "translation": "thịt",
+      "romanization": "thịt",
+      "category": "food",
+      "difficulty": 1
+    },
+    {
+      "id": 38,
+      "word": "ryba",
+      "translation": "cá",
+      "romanization": "cá",
+      "category": "food",
+      "difficulty": 1
+    },
+    {
+      "id": 39,
+      "word": "ovoce",
+      "translation": "trái cây",
+      "romanization": "trái cây",
+      "category": "food",
+      "difficulty": 2
+    },
+    {
+      "id": 40,
+      "word": "zelenina",
+      "translation": "rau",
+      "romanization": "rau",
+      "category": "food",
+      "difficulty": 2
+    },
+    {
+      "id": 41,
+      "word": "dnes",
+      "translation": "hôm nay",
+      "romanization": "hôm nay",
+      "category": "time",
+      "difficulty": 1
+    },
+    {
+      "id": 42,
+      "word": "zítra",
+      "translation": "ngày mai",
+      "romanization": "ngày mai",
+      "category": "time",
+      "difficulty": 1
+    },
+    {
+      "id": 43,
+      "word": "včera",
+      "translation": "hôm qua",
+      "romanization": "hôm qua",
+      "category": "time",
+      "difficulty": 1
+    },
+    {
+      "id": 44,
+      "word": "ráno",
+      "translation": "buổi sáng",
+      "romanization": "buổi sáng",
+      "category": "time",
+      "difficulty": 1
+    },
+    {
+      "id": 45,
+      "word": "večer",
+      "translation": "buổi tối",
+      "romanization": "buổi tối",
+      "category": "time",
+      "difficulty": 1
+    },
+    {
+      "id": 46,
+      "word": "přátelé",
+      "translation": "bạn bè",
+      "romanization": "bạn bè",
+      "category": "people",
+      "difficulty": 2
+    },
+    {
+      "id": 47,
+      "word": "láska",
+      "translation": "tình yêu",
+      "romanization": "tình yêu",
+      "category": "emotions",
+      "difficulty": 3
+    },
+    {
+      "id": 48,
+      "word": "šťastný",
+      "translation": "hạnh phúc",
+      "romanization": "hạnh phúc",
+      "category": "emotions",
+      "difficulty": 2
+    },
+    {
+      "id": 49,
+      "word": "smutný",
+      "translation": "buồn",
+      "romanization": "buồn",
+      "category": "emotions",
+      "difficulty": 2
+    },
+    {
+      "id": 50,
+      "word": "jít",
+      "translation": "đi",
+      "romanization": "đi",
+      "category": "activities",
+      "difficulty": 1
+    },
+    {
+      "id": 51,
+      "word": "přijít",
+      "translation": "đến",
+      "romanization": "đến",
+      "category": "activities",
+      "difficulty": 2
+    },
+    {
+      "id": 52,
+      "word": "vidět",
+      "translation": "nhìn thấy",
+      "romanization": "nhìn thấy",
+      "category": "activities",
+      "difficulty": 2
+    },
+    {
+      "id": 53,
+      "word": "mluvit",
+      "translation": "nói",
+      "romanization": "nói",
+      "category": "activities",
+      "difficulty": 2
+    },
+    {
+      "id": 54,
+      "word": "jíst",
+      "translation": "ăn",
+      "romanization": "ăn",
+      "category": "activities",
+      "difficulty": 1
+    },
+    {
+      "id": 55,
+      "word": "pít",
+      "translation": "uống",
+      "romanization": "uống",
+      "category": "activities",
+      "difficulty": 1
+    },
+    {
+      "id": 56,
+      "word": "spát",
+      "translation": "ngủ",
+      "romanization": "ngủ",
+      "category": "activities",
+      "difficulty": 1
+    },
+    {
+      "id": 57,
+      "word": "pracovat",
+      "translation": "làm việc",
+      "romanization": "làm việc",
+      "category": "activities",
+      "difficulty": 2
+    },
+    {
+      "id": 58,
+      "word": "studovat",
+      "translation": "học",
+      "romanization": "học",
+      "category": "activities",
+      "difficulty": 2
+    },
+    {
+      "id": 59,
+      "word": "psát",
+      "translation": "viết",
+      "romanization": "viết",
+      "category": "activities",
+      "difficulty": 2
+    },
+    {
+      "id": 60,
+      "word": "číst",
+      "translation": "đọc",
+      "romanization": "đọc",
+      "category": "activities",
+      "difficulty": 2
+    },
+    {
+      "id": 61,
+      "word": "nemocnice",
+      "translation": "bệnh viện",
+      "romanization": "bệnh viện",
+      "category": "places",
+      "difficulty": 2
+    },
+    {
+      "id": 62,
+      "word": "restaurace",
+      "translation": "nhà hàng",
+      "romanization": "nhà hàng",
+      "category": "places",
+      "difficulty": 2
+    },
+    {
+      "id": 63,
+      "word": "obchod",
+      "translation": "cửa hàng",
+      "romanization": "cửa hàng",
+      "category": "places",
+      "difficulty": 2
+    },
+    {
+      "id": 64,
+      "word": "letiště",
+      "translation": "sân bay",
+      "romanization": "sân bay",
+      "category": "places",
+      "difficulty": 2
+    },
+    {
+      "id": 65,
+      "word": "nádraží",
+      "translation": "ga tàu",
+      "romanization": "ga tàu",
+      "category": "places",
+      "difficulty": 2
+    },
+    {
+      "id": 66,
+      "word": "hotel",
+      "translation": "khách sạn",
+      "romanization": "khách sạn",
+      "category": "places",
+      "difficulty": 2
+    },
+    {
+      "id": 67,
+      "word": "banka",
+      "translation": "ngân hàng",
+      "romanization": "ngân hàng",
+      "category": "places",
+      "difficulty": 2
+    },
+    {
+      "id": 68,
+      "word": "park",
+      "translation": "công viên",
+      "romanization": "công viên",
+      "category": "places",
+      "difficulty": 1
+    },
+    {
+      "id": 69,
+      "word": "ulice",
+      "translation": "đường phố",
+      "romanization": "đường phố",
+      "category": "places",
+      "difficulty": 2
+    },
+    {
+      "id": 70,
+      "word": "náměstí",
+      "translation": "quảng trường",
+      "romanization": "quảng trường",
+      "category": "places",
+      "difficulty": 2
+    },
+    {
+      "id": 71,
+      "word": "dobrý",
+      "translation": "tốt",
+      "romanization": "tốt",
+      "category": "basics",
+      "difficulty": 1
+    },
+    {
+      "id": 72,
+      "word": "špatný",
+      "translation": "xấu",
+      "romanization": "xấu",
+      "category": "basics",
+      "difficulty": 1
+    },
+    {
+      "id": 73,
+      "word": "velký",
+      "translation": "lớn",
+      "romanization": "lớn",
+      "category": "basics",
+      "difficulty": 1
+    },
+    {
+      "id": 74,
+      "word": "malý",
+      "translation": "nhỏ",
+      "romanization": "nhỏ",
+      "category": "basics",
+      "difficulty": 1
+    },
+    {
+      "id": 75,
+      "word": "nový",
+      "translation": "mới",
+      "romanization": "mới",
+      "category": "basics",
+      "difficulty": 1
+    }
+  ]
+}

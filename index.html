@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Language Learning App - Adaptive Skill Levels</title>
+    <title>Language Learning App - Smart Vocabulary System</title>
     <style>
         * {
             margin: 0;
@@ -28,6 +28,92 @@
             max-width: 500px;
             width: 100%;
             padding: 30px;
+            position: relative;
+        }
+
+        /* Settings Icon */
+        .settings-icon {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            opacity: 0.6;
+            transition: opacity 0.3s;
+            z-index: 100;
+        }
+
+        .settings-icon:hover {
+            opacity: 1;
+        }
+
+        /* Settings Menu */
+        .settings-menu {
+            position: fixed;
+            top: 0;
+            right: -300px;
+            width: 280px;
+            height: 100vh;
+            background: white;
+            box-shadow: -5px 0 20px rgba(0,0,0,0.2);
+            transition: right 0.3s ease;
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .settings-menu.open {
+            right: 0;
+        }
+
+        .settings-header {
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            display: flex;
+            justify-content: between;
+            align-items: center;
+        }
+
+        .settings-close {
+            margin-left: auto;
+            cursor: pointer;
+            font-size: 24px;
+        }
+
+        .settings-item {
+            padding: 15px 20px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .settings-item:hover {
+            background: #f8f9fa;
+        }
+
+        .settings-item-icon {
+            font-size: 20px;
+        }
+
+        /* Overlay for settings */
+        .settings-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1999;
+            display: none;
+        }
+
+        .settings-overlay.open {
+            display: block;
         }
 
         /* Study screen specific container for better mobile experience */
@@ -43,6 +129,7 @@
         .header {
             text-align: center;
             margin-bottom: 20px;
+            padding-right: 30px; /* Make space for settings icon */
         }
 
         h1 {
@@ -102,61 +189,62 @@
             margin-bottom: 4px;
         }
 
-        /* Card Skill Indicator */
-        .card-skill-display {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            color: white;
-            padding: 10px;
-            border-radius: 8px;
-            margin-bottom: 15px;
-            font-size: 12px;
-        }
-
-        .skill-progress-bars {
+        /* Skill Pills in Session */
+        .skill-pills {
+            position: absolute;
+            top: 8px;
+            left: 15px;
             display: flex;
-            gap: 8px;
-            margin-top: 8px;
+            gap: 4px;
         }
 
-        .skill-bar {
-            flex: 1;
-            text-align: center;
-        }
-
-        .skill-bar-label {
-            font-size: 10px;
-            opacity: 0.9;
-            margin-bottom: 3px;
-        }
-
-        .skill-bar-track {
+        .skill-pill {
+            width: 24px;
+            height: 24px;
+            border-radius: 12px;
             background: rgba(255,255,255,0.3);
-            height: 4px;
-            border-radius: 2px;
-            overflow: hidden;
-        }
-
-        .skill-bar-fill {
-            background: white;
-            height: 100%;
-            transition: width 0.5s ease;
-        }
-
-        .skill-promotion {
-            background: #28a745;
             color: white;
-            padding: 8px;
-            border-radius: 6px;
-            margin-top: 10px;
-            text-align: center;
-            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: bold;
             cursor: pointer;
-            animation: pulse 2s infinite;
+            transition: all 0.3s;
+            user-select: none;
         }
 
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.8; }
+        .skill-pill.active {
+            background: white;
+            color: #28a745;
+            transform: scale(1.1);
+        }
+
+        /* Long-press menu */
+        .skill-switch-menu {
+            position: fixed;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            padding: 8px 0;
+            z-index: 3000;
+            min-width: 120px;
+        }
+
+        .skill-switch-option {
+            padding: 8px 16px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: background 0.2s;
+        }
+
+        .skill-switch-option:hover {
+            background: #f0f0f0;
+        }
+
+        .skill-switch-option.current {
+            background: #e3f2fd;
+            font-weight: bold;
         }
 
         .daily-goal {
@@ -222,6 +310,7 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 12px;
+            margin-top: 20px;
         }
 
         .session-progress-title {
@@ -232,7 +321,7 @@
         .session-progress-numbers {
             font-size: 20px;
             font-weight: bold;
-            margin-right: 50px; /* Make space for pause button */
+            margin-right: 50px;
         }
 
         .session-progress-bar {
@@ -623,11 +712,6 @@
             box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
         }
 
-        .study-button:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
-        }
-
         .study-button:disabled {
             opacity: 0.5;
             cursor: not-allowed;
@@ -698,7 +782,7 @@
             color: #721c24;
         }
 
-        .feedback.intermediate {
+        .feedback.partial {
             background: #fff3cd;
             color: #856404;
         }
@@ -707,6 +791,13 @@
             font-size: 14px;
             margin-top: 8px;
             font-weight: normal;
+        }
+
+        .feedback .user-answer {
+            font-size: 13px;
+            margin-top: 5px;
+            font-weight: normal;
+            opacity: 0.9;
         }
 
         .hidden {
@@ -782,6 +873,21 @@
             border-bottom: none;
         }
 
+        /* Loading indicator */
+        .loading-indicator {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
         /* Mobile optimizations for study mode */
         @media (max-width: 480px) {
             .container {
@@ -810,7 +916,6 @@
                 overflow-x: hidden;
             }
 
-            /* Ensure hidden elements stay hidden */
             .hidden {
                 display: none !important;
                 visibility: hidden !important;
@@ -820,7 +925,6 @@
                 left: -9999px !important;
             }
             
-            /* Main container in normal mode */
             .container:not(.study-mode) {
                 border-radius: 0;
                 min-height: 100vh;
@@ -831,16 +935,6 @@
             .session-progress-card {
                 padding: 12px;
                 margin-bottom: 12px;
-            }
-
-            .card-skill-display {
-                padding: 8px;
-                margin-bottom: 12px;
-                font-size: 11px;
-            }
-
-            .skill-bar-label {
-                font-size: 9px;
             }
             
             .word {
@@ -902,7 +996,6 @@
                 height: 100%;
             }
 
-            /* Session progress adjustments */
             .session-progress-numbers {
                 font-size: 18px;
                 margin-right: 40px;
@@ -926,7 +1019,6 @@
                 height: 14px;
             }
 
-            /* Ensure button stays visible */
             #study-screen {
                 display: flex;
                 flex-direction: column;
@@ -938,13 +1030,11 @@
                 flex-shrink: 0;
             }
             
-            /* Fix overlapping screens */
             #start-screen, #study-screen, #complete-screen {
                 position: relative;
                 width: 100%;
             }
             
-            /* Ensure proper screen switching */
             #start-screen:not(.hidden) {
                 display: block;
             }
@@ -957,26 +1047,16 @@
                 display: block;
             }
         }
-        
-        /* Study screen wrapper to ensure vertical layout */
-        #study-screen-wrapper {
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-            height: 100%;
-        }
-        
-        /* Clear any potential float or inline-block issues */
-        #study-screen::before,
-        #study-screen::after {
-            content: "";
-            display: table;
-            clear: both;
-        }
     </style>
 </head>
 <body>
     <div class="container" id="main-container">
+        <!-- Settings Icon -->
+        <svg class="settings-icon" onclick="toggleSettings()" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M12 1v6m0 6v6m4.22-13.22l-4.24 4.24m0 5.96l4.24 4.24M20 12h-6m-6 0H2m13.22 4.22l-4.24-4.24m0-5.96L6.76 2.76"></path>
+        </svg>
+
         <!-- Home Screen Content -->
         <div id="home-content">
             <div class="header">
@@ -1083,8 +1163,13 @@
         <!-- Study Screen - Completely separate -->
         <div id="study-screen" class="hidden" style="display: none;">
             <div style="display: flex; flex-direction: column; width: 100%;">
-                <!-- Session Progress Card -->
+                <!-- Session Progress Card with Skill Pills -->
                 <div class="session-progress-card">
+                    <div class="skill-pills">
+                        <span class="skill-pill" data-level="1" id="pill-beginner">B</span>
+                        <span class="skill-pill" data-level="2" id="pill-intermediate">I</span>
+                        <span class="skill-pill" data-level="3" id="pill-advanced">A</span>
+                    </div>
                     <div class="pause-button" onclick="pauseSession()" title="Pause">
                         <div class="pause-icon"></div>
                     </div>
@@ -1100,34 +1185,6 @@
                     <div class="session-progress-details">
                         <span id="session-correct">Correct: 0</span>
                         <span id="session-accuracy">Accuracy: 0%</span>
-                    </div>
-                </div>
-
-                <!-- Card Skill Display -->
-                <div class="card-skill-display hidden" id="card-skill-display">
-                    <div>Current Level: <strong id="current-skill-level">Beginner</strong></div>
-                    <div class="skill-progress-bars">
-                        <div class="skill-bar">
-                            <div class="skill-bar-label">Beginner</div>
-                            <div class="skill-bar-track">
-                                <div class="skill-bar-fill" id="beginner-progress" style="width: 0%"></div>
-                            </div>
-                        </div>
-                        <div class="skill-bar">
-                            <div class="skill-bar-label">Intermediate</div>
-                            <div class="skill-bar-track">
-                                <div class="skill-bar-fill" id="intermediate-progress" style="width: 0%"></div>
-                            </div>
-                        </div>
-                        <div class="skill-bar">
-                            <div class="skill-bar-label">Advanced</div>
-                            <div class="skill-bar-track">
-                                <div class="skill-bar-fill" id="advanced-progress" style="width: 0%"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="skill-promotion hidden" id="skill-promotion" onclick="acceptSkillPromotion()">
-                        🎉 Ready for next level! Click to try →
                     </div>
                 </div>
 
@@ -1173,6 +1230,44 @@
                 <button class="btn-secondary" onclick="finishForToday()" style="margin-top: 10px;">Finish for Now</button>
             </div>
         </div>
+    </div>
+
+    <!-- Settings Menu -->
+    <div class="settings-menu" id="settings-menu">
+        <div class="settings-header">
+            <span style="font-size: 18px; font-weight: bold;">Settings</span>
+            <span class="settings-close" onclick="toggleSettings()">×</span>
+        </div>
+        <div class="settings-item" onclick="openVocabManager()">
+            <span class="settings-item-icon">📚</span>
+            <span>Vocabulary Manager</span>
+        </div>
+        <div class="settings-item" onclick="refreshVocabulary()">
+            <span class="settings-item-icon">🔄</span>
+            <span>Refresh Vocabulary</span>
+        </div>
+        <div class="settings-item" onclick="showStatistics()">
+            <span class="settings-item-icon">📊</span>
+            <span>Statistics</span>
+        </div>
+        <div class="settings-item" onclick="exportProgress()">
+            <span class="settings-item-icon">💾</span>
+            <span>Export Progress</span>
+        </div>
+        <div class="settings-item" onclick="resetAllData()">
+            <span class="settings-item-icon">🗑️</span>
+            <span>Reset All Data</span>
+        </div>
+    </div>
+    
+    <!-- Settings Overlay -->
+    <div class="settings-overlay" id="settings-overlay" onclick="toggleSettings()"></div>
+
+    <!-- Skill Switch Menu (appears on long-press) -->
+    <div class="skill-switch-menu hidden" id="skill-switch-menu">
+        <div class="skill-switch-option" data-level="1" onclick="switchSkillLevel(1)">🌱 Beginner</div>
+        <div class="skill-switch-option" data-level="2" onclick="switchSkillLevel(2)">📘 Intermediate</div>
+        <div class="skill-switch-option" data-level="3" onclick="switchSkillLevel(3)">🎯 Advanced</div>
     </div>
 
     <!-- Development Console -->
@@ -1225,10 +1320,11 @@
             
             const data = loadProgress();
             const now = Date.now();
-            const vocabSet = vocabulary[currentLanguagePair] || [];
+            const vocabSet = vocabularyData[currentLanguagePair] || [];
             
             devLog('=== VOCABULARY STATUS ===', 'success');
             devLog(`Current Language Pair: ${currentLanguagePair}`, 'info');
+            devLog(`Total vocabulary loaded: ${vocabSet.length} words`, 'info');
             
             let newCount = 0, dueCount = 0, futureCount = 0;
             
@@ -1297,29 +1393,43 @@
             accuracy: 0.8   // 80% accuracy at level
         };
 
-        // ============= VOCABULARY DATABASE =============
-        const vocabulary = {
+        // ============= VOCABULARY DATA =============
+        // This will be replaced by external loading, but kept as fallback
+        let vocabularyData = {};
+        
+        // Fallback vocabulary (embedded)
+        const fallbackVocabulary = {
             'cs-vi': [
+                // Greetings & Politeness
                 { id: 1, word: 'ahoj', translation: 'xin chào', romanization: 'sin chào', category: 'greetings', difficulty: 1 },
                 { id: 2, word: 'děkuji', translation: 'cảm ơn', romanization: 'cảm ơn', category: 'greetings', difficulty: 1 },
+                { id: 41, word: 'prosím', translation: 'làm ơn', romanization: 'làm ơn', category: 'greetings', difficulty: 1 },
+                { id: 42, word: 'promiňte', translation: 'xin lỗi', romanization: 'sin lỗi', category: 'greetings', difficulty: 1 },
+                { id: 43, word: 'nashledanou', translation: 'tạm biệt', romanization: 'tạm biệt', category: 'greetings', difficulty: 1 },
+                
+                // Basics
                 { id: 3, word: 'ano', translation: 'vâng', romanization: 'vâng', category: 'basics', difficulty: 1 },
                 { id: 4, word: 'ne', translation: 'không', romanization: 'không', category: 'basics', difficulty: 1 },
-                { id: 5, word: 'voda', translation: 'nước', romanization: 'nước', category: 'food', difficulty: 1 },
-                { id: 6, word: 'chléb', translation: 'bánh mì', romanization: 'bánh mì', category: 'food', difficulty: 2 },
+                { id: 15, word: 'dům', translation: 'nhà', romanization: 'nhà', category: 'basics', difficulty: 1 },
+                { id: 16, word: 'škola', translation: 'trường học', romanization: 'trường học', category: 'basics', difficulty: 2 },
+                { id: 17, word: 'kniha', translation: 'sách', romanization: 'sách', category: 'basics', difficulty: 2 },
+                { id: 20, word: 'práce', translation: 'công việc', romanization: 'công việc', category: 'basics', difficulty: 2 },
+                
+                // Numbers
                 { id: 7, word: 'jeden', translation: 'một', romanization: 'một', category: 'numbers', difficulty: 1 },
                 { id: 8, word: 'dva', translation: 'hai', romanization: 'hai', category: 'numbers', difficulty: 1 },
                 { id: 9, word: 'tři', translation: 'ba', romanization: 'ba', category: 'numbers', difficulty: 1 },
                 { id: 10, word: 'čtyři', translation: 'bốn', romanization: 'bốn', category: 'numbers', difficulty: 2 },
                 { id: 11, word: 'pět', translation: 'năm', romanization: 'năm', category: 'numbers', difficulty: 2 },
+                
+                // Family
                 { id: 12, word: 'rodina', translation: 'gia đình', romanization: 'gia đình', category: 'family', difficulty: 2 },
                 { id: 13, word: 'matka', translation: 'mẹ', romanization: 'mẹ', category: 'family', difficulty: 1 },
                 { id: 14, word: 'otec', translation: 'bố', romanization: 'bố', category: 'family', difficulty: 1 },
-                { id: 15, word: 'dům', translation: 'nhà', romanization: 'nhà', category: 'basics', difficulty: 1 },
-                { id: 16, word: 'škola', translation: 'trường học', romanization: 'trường học', category: 'basics', difficulty: 2 },
-                { id: 17, word: 'kniha', translation: 'sách', romanization: 'sách', category: 'basics', difficulty: 2 },
-                { id: 18, word: 'přátelé', translation: 'bạn bè', romanization: 'bạn bè', category: 'people', difficulty: 2 },
-                { id: 19, word: 'láska', translation: 'tình yêu', romanization: 'tình yêu', category: 'emotions', difficulty: 3 },
-                { id: 20, word: 'práce', translation: 'công việc', romanization: 'công việc', category: 'basics', difficulty: 2 }
+                
+                // Food & Drink
+                { id: 5, word: 'voda', translation: 'nước', romanization: 'nước', category: 'food', difficulty: 1 },
+                { id: 6, word: 'chléb', translation: 'bánh mì', romanization: 'bánh mì', category: 'food', difficulty: 2 }
             ],
             'vi-zh': [
                 { id: 21, word: 'xin chào', translation: '你好', romanization: 'nǐ hǎo', category: 'greetings', difficulty: 1 },
@@ -1347,6 +1457,224 @@
             ]
         };
 
+        // ============= VOCABULARY LOADING SYSTEM =============
+        async function loadVocabulary(languagePair, forceRefresh = false) {
+            const cacheKey = `vocabularyCache_${languagePair}`;
+            const cache = localStorage.getItem(cacheKey);
+            const now = Date.now();
+            
+            // Check cache (24 hour expiry)
+            if (!forceRefresh && cache) {
+                const cached = JSON.parse(cache);
+                if (cached.timestamp && (now - cached.timestamp) < 86400000) {
+                    devLog(`Loading vocabulary from cache for ${languagePair}`, 'info');
+                    return cached.words;
+                }
+            }
+            
+            // Try to load from external files
+            try {
+                devLog(`Fetching vocabulary files for ${languagePair}...`, 'info');
+                const response = await fetch(`./vocabulary/${languagePair}/core.json`);
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    const words = data.words || data;
+                    
+                    // Cache the loaded vocabulary
+                    localStorage.setItem(cacheKey, JSON.stringify({
+                        timestamp: now,
+                        words: words
+                    }));
+                    
+                    devLog(`Loaded ${words.length} words from external file for ${languagePair}`, 'success');
+                    return words;
+                }
+            } catch (error) {
+                devLog(`Failed to load external vocabulary for ${languagePair}: ${error.message}`, 'error');
+            }
+            
+            // Fallback to embedded vocabulary
+            devLog(`Using fallback vocabulary for ${languagePair}`, 'info');
+            return fallbackVocabulary[languagePair] || [];
+        }
+
+        async function initializeVocabulary() {
+            devLog('Initializing vocabulary system...', 'info');
+            
+            // Load vocabulary for all language pairs
+            for (const pair of ['cs-vi', 'vi-zh', 'vi-en']) {
+                vocabularyData[pair] = await loadVocabulary(pair);
+            }
+            
+            devLog('Vocabulary initialization complete', 'success');
+        }
+
+        async function refreshVocabulary() {
+            devLog('Refreshing all vocabulary...', 'info');
+            
+            // Show loading indicator
+            const settingsMenu = document.getElementById('settings-menu');
+            const originalContent = settingsMenu.innerHTML;
+            
+            // Clear cache and reload
+            for (const pair of ['cs-vi', 'vi-zh', 'vi-en']) {
+                vocabularyData[pair] = await loadVocabulary(pair, true);
+            }
+            
+            devLog('Vocabulary refresh complete', 'success');
+            alert('Vocabulary refreshed successfully!');
+            toggleSettings();
+        }
+
+        // ============= SETTINGS MENU FUNCTIONS =============
+        function toggleSettings() {
+            const menu = document.getElementById('settings-menu');
+            const overlay = document.getElementById('settings-overlay');
+            
+            if (menu.classList.contains('open')) {
+                menu.classList.remove('open');
+                overlay.classList.remove('open');
+            } else {
+                menu.classList.add('open');
+                overlay.classList.add('open');
+            }
+        }
+
+        function openVocabManager() {
+            alert('Vocabulary Manager coming soon! This will allow you to:\n\n' +
+                  '• View all loaded vocabulary\n' +
+                  '• Upload custom vocabulary files\n' +
+                  '• Toggle files on/off\n' +
+                  '• Search and filter words');
+            toggleSettings();
+        }
+
+        function showStatistics() {
+            const data = loadProgress();
+            let stats = 'Learning Statistics\n\n';
+            
+            // Count words by skill level
+            let skillCounts = { 1: 0, 2: 0, 3: 0 };
+            let totalWords = 0;
+            
+            if (data.progress) {
+                Object.values(data.progress).forEach(langPair => {
+                    Object.values(langPair).forEach(card => {
+                        totalWords++;
+                        const level = card.skillLevel || 1;
+                        skillCounts[level]++;
+                    });
+                });
+            }
+            
+            stats += `Total Words Seen: ${totalWords}\n`;
+            stats += `Beginner Level: ${skillCounts[1]}\n`;
+            stats += `Intermediate Level: ${skillCounts[2]}\n`;
+            stats += `Advanced Level: ${skillCounts[3]}\n\n`;
+            stats += `Current Streak: ${data.streak || 0} days\n`;
+            stats += `Overall Accuracy: ${data.accuracy?.total ? Math.round((data.accuracy.correct / data.accuracy.total) * 100) : 0}%`;
+            
+            alert(stats);
+            toggleSettings();
+        }
+
+        function exportProgress() {
+            const data = loadProgress();
+            const json = JSON.stringify(data, null, 2);
+            const blob = new Blob([json], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `language-learning-progress-${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            toggleSettings();
+        }
+
+        function resetAllData() {
+            if (confirm('Are you sure you want to reset all data? This cannot be undone!')) {
+                localStorage.clear();
+                location.reload();
+            }
+        }
+
+        // ============= LONG-PRESS SKILL SWITCHING =============
+        let longPressTimer = null;
+        let isLongPress = false;
+
+        function setupSkillPillLongPress() {
+            document.querySelectorAll('.skill-pill').forEach(pill => {
+                pill.addEventListener('mousedown', startLongPress);
+                pill.addEventListener('touchstart', startLongPress);
+                pill.addEventListener('mouseup', cancelLongPress);
+                pill.addEventListener('touchend', cancelLongPress);
+                pill.addEventListener('mouseleave', cancelLongPress);
+                pill.addEventListener('touchcancel', cancelLongPress);
+            });
+        }
+
+        function startLongPress(e) {
+            e.preventDefault();
+            const pill = e.currentTarget;
+            
+            // Only allow long-press on the active pill
+            if (!pill.classList.contains('active')) return;
+            
+            isLongPress = false;
+            longPressTimer = setTimeout(() => {
+                isLongPress = true;
+                showSkillSwitchMenu(e);
+            }, 500);
+        }
+
+        function cancelLongPress() {
+            if (longPressTimer) {
+                clearTimeout(longPressTimer);
+                longPressTimer = null;
+            }
+        }
+
+        function showSkillSwitchMenu(e) {
+            const menu = document.getElementById('skill-switch-menu');
+            menu.classList.remove('hidden');
+            
+            // Position the menu
+            const rect = e.target.getBoundingClientRect();
+            menu.style.left = rect.left + 'px';
+            menu.style.top = (rect.bottom + 5) + 'px';
+            
+            // Mark current level
+            document.querySelectorAll('.skill-switch-option').forEach(option => {
+                option.classList.remove('current');
+                if (parseInt(option.dataset.level) === currentCardSkillLevel) {
+                    option.classList.add('current');
+                }
+            });
+            
+            // Hide menu when clicking elsewhere
+            setTimeout(() => {
+                document.addEventListener('click', hideSkillSwitchMenu, { once: true });
+            }, 100);
+        }
+
+        function hideSkillSwitchMenu() {
+            document.getElementById('skill-switch-menu').classList.add('hidden');
+        }
+
+        function switchSkillLevel(level) {
+            currentCardSkillLevel = level;
+            devLog(`Switched to ${SKILL_NAMES[level]} level for current card`, 'info');
+            
+            // Update the UI to reflect the change
+            updateCardSkillDisplay(currentSession[currentCardIndex].id);
+            
+            // Re-show the card with new skill level
+            showCard();
+            
+            hideSkillSwitchMenu();
+        }
+
         // ============= APP STATE =============
         let currentLanguagePair = 'cs-vi';
         let currentSession = [];
@@ -1373,8 +1701,11 @@
         const STORAGE_KEY = 'languageApp';
 
         // ============= INITIALIZATION =============
-        function initApp() {
-            devLog('Initializing app with skill levels...', 'info');
+        async function initApp() {
+            devLog('Initializing app with vocabulary system...', 'info');
+            
+            // Initialize vocabulary first
+            await initializeVocabulary();
             
             // Ensure proper initial screen state
             document.getElementById('home-content').style.display = 'block';
@@ -1391,6 +1722,8 @@
             checkPausedSession();
             updateSessionHistory();
             updateSkillLevelDisplay();
+            setupSkillPillLongPress();
+            
             devLog('App initialized successfully', 'success');
         }
 
@@ -1457,63 +1790,30 @@
             const data = loadProgress();
             const cardProgress = data.progress?.[currentLanguagePair]?.[cardId];
             
-            // Always show the skill display during study
-            document.getElementById('card-skill-display').classList.remove('hidden');
-            document.getElementById('current-skill-level').textContent = SKILL_NAMES[currentCardSkillLevel];
-            
-            // Update progress bars
-            for (let level = 1; level <= 3; level++) {
-                let accuracy = 0;
-                
-                if (cardProgress && cardProgress.skillProgress) {
-                    const stats = cardProgress.skillProgress[level] || { correct: 0, total: 0 };
-                    accuracy = stats.total > 0 ? (stats.correct / stats.total) * 100 : 0;
+            // Update skill pills
+            document.querySelectorAll('.skill-pill').forEach(pill => {
+                pill.classList.remove('active');
+                if (parseInt(pill.dataset.level) === currentCardSkillLevel) {
+                    pill.classList.add('active');
                 }
-                
-                const barId = ['', 'beginner', 'intermediate', 'advanced'][level] + '-progress';
-                document.getElementById(barId).style.width = `${accuracy}%`;
-            }
+            });
             
             // Check for promotion (only if card has progress)
             if (cardProgress && cardProgress.skillProgress) {
                 checkSkillPromotion(cardProgress);
-            } else {
-                // Hide promotion for new cards
-                document.getElementById('skill-promotion').classList.add('hidden');
             }
         }
-
+        
         function checkSkillPromotion(cardProgress) {
             const currentStats = cardProgress.skillProgress[currentCardSkillLevel] || { streak: 0, correct: 0, total: 0 };
-            const promotionDiv = document.getElementById('skill-promotion');
             
             if (currentCardSkillLevel < 3 && 
                 currentStats.streak >= PROMOTION_THRESHOLD.streak && 
                 currentStats.total >= 3 &&
                 (currentStats.correct / currentStats.total) >= PROMOTION_THRESHOLD.accuracy) {
                 
-                promotionDiv.classList.remove('hidden');
                 cardProgress.recommendedSkillLevel = currentCardSkillLevel + 1;
-            } else {
-                promotionDiv.classList.add('hidden');
-            }
-        }
-
-        function acceptSkillPromotion() {
-            const card = currentSession[currentCardIndex];
-            const data = loadProgress();
-            const cardProgress = data.progress[currentLanguagePair][card.id];
-            
-            if (cardProgress && cardProgress.recommendedSkillLevel) {
-                currentCardSkillLevel = cardProgress.recommendedSkillLevel;
-                cardProgress.skillLevel = currentCardSkillLevel;
-                saveProgress(data);
-                
-                devLog(`Card ${card.id} promoted to ${SKILL_NAMES[currentCardSkillLevel]}!`, 'success');
-                document.getElementById('skill-promotion').classList.add('hidden');
-                
-                // Refresh the card display with new skill level
-                showCard();
+                devLog(`Card ready for promotion to ${SKILL_NAMES[currentCardSkillLevel + 1]}!`, 'success');
             }
         }
 
@@ -1663,7 +1963,8 @@
                         new: 0,
                         review: 0,
                         sessions: [],
-                        timeSpent: 0
+                        timeSpent: 0,
+                        cardsSeen: {}
                     };
                     
                     const yesterday = new Date(Date.now() - 86400000).toDateString();
@@ -1699,7 +2000,8 @@
                     new: 0,
                     review: 0,
                     sessions: [],
-                    timeSpent: 0
+                    timeSpent: 0,
+                    cardsSeen: {}
                 },
                 accuracy: { correct: 0, total: 0 },
                 totalLearned: 0,
@@ -1793,7 +2095,7 @@
             const now = Date.now();
             currentSession = [];
             
-            const vocabSet = vocabulary[currentLanguagePair] || [];
+            const vocabSet = vocabularyData[currentLanguagePair] || [];
             const newCards = [];
             const reviewCards = [];
             
@@ -1894,6 +2196,9 @@
             document.getElementById('study-screen').classList.remove('hidden');
             document.getElementById('study-screen').style.display = 'flex';
             
+            // Re-setup long-press for study screen skill pills
+            setupSkillPillLongPress();
+            
             showCard();
         }
 
@@ -1917,6 +2222,9 @@
             // Show study screen
             document.getElementById('study-screen').classList.remove('hidden');
             document.getElementById('study-screen').style.display = 'flex';
+            
+            // Re-setup long-press for study screen skill pills
+            setupSkillPillLongPress();
             
             showCard();
         }
@@ -1984,7 +2292,7 @@
                 choiceGrid.classList.remove('hidden');
                 inputGroup.classList.add('hidden');
                 
-                const vocabSet = vocabulary[currentLanguagePair] || [];
+                const vocabSet = vocabularyData[currentLanguagePair] || [];
                 const options = generateMultipleChoice(card, vocabSet);
                 renderMultipleChoice(options);
             } else {
@@ -2055,17 +2363,28 @@
                 const userAnswer = document.getElementById('answer').value.trim();
                 const correctAnswer = card.translation;
                 
-                isCorrect = checkIntermediateAnswer(userAnswer, correctAnswer);
+                // Check if it's close enough (without diacritics)
+                const isCloseEnough = checkIntermediateAnswer(userAnswer, correctAnswer);
                 
-                if (isCorrect && normalizeAnswer(userAnswer) !== normalizeAnswer(correctAnswer)) {
-                    feedbackMessage = `✓ Close enough! The exact spelling is: <strong>${correctAnswer}</strong>`;
-                    feedbackClass = 'intermediate';
-                } else if (isCorrect) {
+                // Check if it's exactly correct
+                const isExact = userAnswer.toLowerCase() === correctAnswer.toLowerCase();
+                
+                if (isExact) {
                     feedbackMessage = '✓ Perfect!';
                     feedbackClass = 'correct';
+                    isCorrect = true;
+                } else if (isCloseEnough) {
+                    feedbackMessage = `✓ Close enough!`;
+                    feedbackMessage += `<div class="user-answer">You typed: ${userAnswer}</div>`;
+                    feedbackMessage += `<div class="correct-spelling">Exact spelling: <strong>${correctAnswer}</strong></div>`;
+                    feedbackClass = 'partial';
+                    isCorrect = true; // Count as correct for progression
                 } else {
-                    feedbackMessage = `✗ Incorrect. The answer is: <strong>${correctAnswer}</strong>`;
+                    feedbackMessage = `✗ Incorrect.`;
+                    feedbackMessage += `<div class="user-answer">You typed: ${userAnswer}</div>`;
+                    feedbackMessage += `<div class="correct-spelling">Correct answer: <strong>${correctAnswer}</strong></div>`;
                     feedbackClass = 'incorrect';
+                    isCorrect = false;
                 }
                 
             } else {
@@ -2210,13 +2529,7 @@
             
             // Update daily progress
             if (!data.dailyProgress) {
-                data.dailyProgress = { new: 0, review: 0, sessions: [], timeSpent: 0 };
-            }
-            
-            // Create a unique session ID for tracking cards in this session
-            const sessionId = sessionStats.startTime || Date.now();
-            if (!data.dailyProgress.cardsSeen) {
-                data.dailyProgress.cardsSeen = {};
+                data.dailyProgress = { new: 0, review: 0, sessions: [], timeSpent: 0, cardsSeen: {} };
             }
             
             // Track if this card was already counted in today's progress
@@ -2409,3 +2722,5 @@
             initApp();
         };
     </script>
+</body>
+</html>

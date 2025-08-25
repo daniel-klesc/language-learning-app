@@ -1,0 +1,333 @@
+{
+  "metadata": {
+    "id": "vi-en-core",
+    "name": "Core Vietnamese-English Vocabulary",
+    "language_pair": "vi-en",
+    "version": "1.0",
+    "created": "2024-01-15",
+    "author": "system",
+    "description": "Essential Vietnamese to English vocabulary for beginners"
+  },
+  "words": [
+    {
+      "id": 1,
+      "word": "xin chào",
+      "translation": "hello",
+      "romanization": "",
+      "category": "greetings",
+      "difficulty": 1
+    },
+    {
+      "id": 2,
+      "word": "cảm ơn",
+      "translation": "thank you",
+      "romanization": "",
+      "category": "greetings",
+      "difficulty": 1
+    },
+    {
+      "id": 3,
+      "word": "tạm biệt",
+      "translation": "goodbye",
+      "romanization": "",
+      "category": "greetings",
+      "difficulty": 1
+    },
+    {
+      "id": 4,
+      "word": "xin lỗi",
+      "translation": "sorry",
+      "romanization": "",
+      "category": "greetings",
+      "difficulty": 1
+    },
+    {
+      "id": 5,
+      "word": "làm ơn",
+      "translation": "please",
+      "romanization": "",
+      "category": "greetings",
+      "difficulty": 1
+    },
+    {
+      "id": 6,
+      "word": "một",
+      "translation": "one",
+      "romanization": "",
+      "category": "numbers",
+      "difficulty": 1
+    },
+    {
+      "id": 7,
+      "word": "hai",
+      "translation": "two",
+      "romanization": "",
+      "category": "numbers",
+      "difficulty": 1
+    },
+    {
+      "id": 8,
+      "word": "ba",
+      "translation": "three",
+      "romanization": "",
+      "category": "numbers",
+      "difficulty": 1
+    },
+    {
+      "id": 9,
+      "word": "bốn",
+      "translation": "four",
+      "romanization": "",
+      "category": "numbers",
+      "difficulty": 1
+    },
+    {
+      "id": 10,
+      "word": "năm",
+      "translation": "five",
+      "romanization": "",
+      "category": "numbers",
+      "difficulty": 1
+    },
+    {
+      "id": 11,
+      "word": "nước",
+      "translation": "water",
+      "romanization": "",
+      "category": "food",
+      "difficulty": 1
+    },
+    {
+      "id": 12,
+      "word": "bánh mì",
+      "translation": "bread",
+      "romanization": "",
+      "category": "food",
+      "difficulty": 1
+    },
+    {
+      "id": 13,
+      "word": "cơm",
+      "translation": "rice",
+      "romanization": "",
+      "category": "food",
+      "difficulty": 1
+    },
+    {
+      "id": 14,
+      "word": "phở",
+      "translation": "pho",
+      "romanization": "",
+      "category": "food",
+      "difficulty": 1
+    },
+    {
+      "id": 15,
+      "word": "cà phê",
+      "translation": "coffee",
+      "romanization": "",
+      "category": "food",
+      "difficulty": 1
+    },
+    {
+      "id": 16,
+      "word": "trà",
+      "translation": "tea",
+      "romanization": "",
+      "category": "food",
+      "difficulty": 1
+    },
+    {
+      "id": 17,
+      "word": "bia",
+      "translation": "beer",
+      "romanization": "",
+      "category": "food",
+      "difficulty": 1
+    },
+    {
+      "id": 18,
+      "word": "gia đình",
+      "translation": "family",
+      "romanization": "",
+      "category": "family",
+      "difficulty": 1
+    },
+    {
+      "id": 19,
+      "word": "mẹ",
+      "translation": "mother",
+      "romanization": "",
+      "category": "family",
+      "difficulty": 1
+    },
+    {
+      "id": 20,
+      "word": "bố",
+      "translation": "father",
+      "romanization": "",
+      "category": "family",
+      "difficulty": 1
+    },
+    {
+      "id": 21,
+      "word": "anh",
+      "translation": "older brother",
+      "romanization": "",
+      "category": "family",
+      "difficulty": 2
+    },
+    {
+      "id": 22,
+      "word": "chị",
+      "translation": "older sister",
+      "romanization": "",
+      "category": "family",
+      "difficulty": 2
+    },
+    {
+      "id": 23,
+      "word": "em",
+      "translation": "younger sibling",
+      "romanization": "",
+      "category": "family",
+      "difficulty": 2
+    },
+    {
+      "id": 24,
+      "word": "nhà",
+      "translation": "house",
+      "romanization": "",
+      "category": "basics",
+      "difficulty": 1
+    },
+    {
+      "id": 25,
+      "word": "trường học",
+      "translation": "school",
+      "romanization": "",
+      "category": "basics",
+      "difficulty": 2
+    },
+    {
+      "id": 26,
+      "word": "bệnh viện",
+      "translation": "hospital",
+      "romanization": "",
+      "category": "places",
+      "difficulty": 1
+    },
+    {
+      "id": 27,
+      "word": "sân bay",
+      "translation": "airport",
+      "romanization": "",
+      "category": "places",
+      "difficulty": 1
+    },
+    {
+      "id": 28,
+      "word": "khách sạn",
+      "translation": "hotel",
+      "romanization": "",
+      "category": "places",
+      "difficulty": 1
+    },
+    {
+      "id": 29,
+      "word": "nhà hàng",
+      "translation": "restaurant",
+      "romanization": "",
+      "category": "places",
+      "difficulty": 1
+    },
+    {
+      "id": 30,
+      "word": "chợ",
+      "translation": "market",
+      "romanization": "",
+      "category": "places",
+      "difficulty": 1
+    },
+    {
+      "id": 31,
+      "word": "đi",
+      "translation": "go",
+      "romanization": "",
+      "category": "activities",
+      "difficulty": 1
+    },
+    {
+      "id": 32,
+      "word": "đến",
+      "translation": "come",
+      "romanization": "",
+      "category": "activities",
+      "difficulty": 1
+    },
+    {
+      "id": 33,
+      "word": "ăn",
+      "translation": "eat",
+      "romanization": "",
+      "category": "activities",
+      "difficulty": 1
+    },
+    {
+      "id": 34,
+      "word": "uống",
+      "translation": "drink",
+      "romanization": "",
+      "category": "activities",
+      "difficulty": 1
+    },
+    {
+      "id": 35,
+      "word": "ngủ",
+      "translation": "sleep",
+      "romanization": "",
+      "category": "activities",
+      "difficulty": 1
+    },
+    {
+      "id": 36,
+      "word": "làm việc",
+      "translation": "work",
+      "romanization": "",
+      "category": "activities",
+      "difficulty": 2
+    },
+    {
+      "id": 37,
+      "word": "học",
+      "translation": "study",
+      "romanization": "",
+      "category": "activities",
+      "difficulty": 1
+    },
+    {
+      "id": 38,
+      "word": "hôm nay",
+      "translation": "today",
+      "romanization": "",
+      "category": "time",
+      "difficulty": 1
+    },
+    {
+      "id": 39,
+      "word": "ngày mai",
+      "translation": "tomorrow",
+      "romanization": "",
+      "category": "time",
+      "difficulty": 1
+    },
+    {
+      "id": 40,
+      "word": "hôm qua",
+      "translation": "yesterday",
+      "romanization": "",
+      "category": "time",
+      "difficulty": 1
+    }
+  ]
+}
