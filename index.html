@@ -1664,7 +1664,7 @@
 
         function switchSkillLevel(level) {
             currentCardSkillLevel = level;
-            devLog(`Switched to ${SKILL_NAMES[level]} level for current card`, 'info');
+            devLog(`Manually switched to ${SKILL_NAMES[level]} level for current card`, 'info');
             
             // Hide the menu first
             hideSkillSwitchMenu();
@@ -1679,8 +1679,8 @@
             // Clear any existing feedback
             document.getElementById('feedback').classList.add('hidden');
             
-            // Re-show the card with new skill level
-            showCard();
+            // Re-show the card with new skill level (preserve the manually selected level)
+            showCard(true);
         }
 
         // ============= APP STATE =============
@@ -2260,7 +2260,7 @@
             backToStart();
         }
 
-        function showCard() {
+        function showCard(preserveSkillLevel = false) {
             if (currentCardIndex >= currentSession.length) {
                 completeSession();
                 return;
@@ -2268,8 +2268,10 @@
             
             const card = currentSession[currentCardIndex];
             
-            // Determine skill level for this card
-            currentCardSkillLevel = determineCardSkillLevel(card.id);
+            // Only determine skill level if not preserving (i.e., not switching manually)
+            if (!preserveSkillLevel) {
+                currentCardSkillLevel = determineCardSkillLevel(card.id);
+            }
             devLog(`Showing card ${card.id} at ${SKILL_NAMES[currentCardSkillLevel]} level`, 'info');
             
             // Update skill display
