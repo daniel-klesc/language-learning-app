@@ -1605,42 +1605,76 @@
 
         function setupSkillPillLongPress() {
             document.querySelectorAll('.skill-pill').forEach(pill => {
-                pill.addEventListener('mousedown', startLongPress);
-                pill.addEventListener('touchstart', startLongPress);
-                pill.addEventListener('mouseup', cancelLongPress);
+                // Remove any existing listeners first
+                pill.replaceWith(pill.cloneNode(true));
+            });
+            
+            // Re-select after cloning
+            document.querySelectorAll('.skill-pill').forEach(pill => {
+                // Desktop: Simple click on inactive pills
+                pill.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const level = parseInt(pill.dataset.level);
+                    
+                    // If clicking an inactive pill, switch to it
+                    if (!pill.classList.contains('active') && level) {
+                        devLog(`Desktop: Switching to ${SKILL_NAMES[level]} via click`, 'info');
+                        switchSkillLevel(level);
+                    }
+                });
+                
+                // Mobile: Long press on active pill (keep existing behavior)
+                pill.addEventListener('touchstart', startLongPress, { passive: false });
                 pill.addEventListener('touchend', cancelLongPress);
-                pill.addEventListener('mouseleave', cancelLongPress);
                 pill.addEventListener('touchcancel', cancelLongPress);
+                pill.addEventListener('touchmove', cancelLongPress);
+                
+                // Prevent default actions
+                pill.addEventListener('contextmenu', (e) => e.preventDefault());
+                pill.addEventListener('dragstart', (e) => e.preventDefault());
             });
         }
 
         function startLongPress(e) {
             e.preventDefault();
+            e.stopPropagation();
+            
             const pill = e.currentTarget;
             
-            // Only allow long-press on the active pill
-            if (!pill.classList.contains('active')) return;
+            // Only allow long-press on the active pill for mobile
+            if (!pill.classList.contains('active')) {
+                return;
+            }
+            
+            // Cancel any existing timer
+            if (longPressTimer) {
+                clearTimeout(longPressTimer);
+            }
+            
+            devLog(`Mobile: Long press started on ${pill.textContent} pill`, 'info');
             
             isLongPress = false;
             longPressTimer = setTimeout(() => {
                 isLongPress = true;
-                showSkillSwitchMenu(e);
+                devLog('Mobile: Long press triggered - showing menu', 'success');
+                showSkillSwitchMenu(e, pill);
             }, 500);
         }
 
-        function cancelLongPress() {
+        function cancelLongPress(e) {
             if (longPressTimer) {
                 clearTimeout(longPressTimer);
                 longPressTimer = null;
             }
         }
 
-        function showSkillSwitchMenu(e) {
+        function showSkillSwitchMenu(e, pill) {
             const menu = document.getElementById('skill-switch-menu');
             menu.classList.remove('hidden');
             
-            // Position the menu
-            const rect = e.target.getBoundingClientRect();
+            // Position the menu based on the pill's position
+            const rect = pill.getBoundingClientRect();
             menu.style.left = rect.left + 'px';
             menu.style.top = (rect.bottom + 5) + 'px';
             
@@ -1652,9 +1686,14 @@
                 }
             });
             
-            // Hide menu when clicking elsewhere
+            // Hide menu when touching elsewhere (mobile only)
             setTimeout(() => {
-                document.addEventListener('click', hideSkillSwitchMenu, { once: true });
+                const hideHandler = (e) => {
+                    if (!menu.contains(e.target)) {
+                        hideSkillSwitchMenu();
+                    }
+                };
+                document.addEventListener('touchstart', hideHandler, { once: true });
             }, 100);
         }
 
