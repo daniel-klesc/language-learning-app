@@ -1666,13 +1666,21 @@
             currentCardSkillLevel = level;
             devLog(`Switched to ${SKILL_NAMES[level]} level for current card`, 'info');
             
+            // Hide the menu first
+            hideSkillSwitchMenu();
+            
             // Update the UI to reflect the change
             updateCardSkillDisplay(currentSession[currentCardIndex].id);
             
+            // Reset answer state
+            isAnswerShown = false;
+            selectedChoiceIndex = -1;
+            
+            // Clear any existing feedback
+            document.getElementById('feedback').classList.add('hidden');
+            
             // Re-show the card with new skill level
             showCard();
-            
-            hideSkillSwitchMenu();
         }
 
         // ============= APP STATE =============
