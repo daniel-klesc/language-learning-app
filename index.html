@@ -1230,6 +1230,105 @@
             color: #0c5460;
         }
 
+        .upload-preview-categories {
+            padding: 10px 20px;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            border-bottom: 1px solid #dee2e6;
+            max-height: 80px;
+            overflow-y: auto;
+        }
+
+        .category-filter-btn {
+            padding: 4px 10px;
+            background: #e9ecef;
+            border: 1px solid #ced4da;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .category-filter-btn.active {
+            background: #764ba2;
+            color: white;
+            border-color: #764ba2;
+        }
+
+        .upload-preview-controls {
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .sort-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sort-controls label {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .sort-controls select {
+            padding: 4px 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 13px;
+        }
+
+        .select-controls {
+            display: flex;
+            gap: 8px;
+        }
+
+        .select-all-btn,
+        .select-none-btn {
+            padding: 4px 12px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s;
+        }
+
+        .select-all-btn:hover,
+        .select-none-btn:hover {
+            background: #f8f9fa;
+            border-color: #667eea;
+        }
+
+        .preview-category-section {
+            margin-bottom: 20px;
+        }
+
+        .preview-category-header {
+            background: #f8f9fa;
+            padding: 8px 12px;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #495057;
+            font-size: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .preview-category-count {
+            font-weight: normal;
+            color: #6c757d;
+            font-size: 12px;
+        }
+
         .upload-preview-filters {
             padding: 10px 20px;
             display: flex;
@@ -1851,6 +1950,29 @@
                 <button class="filter-btn" onclick="filterPreview('duplicate')">Duplicates Only</button>
             </div>
             
+            <div class="upload-preview-categories" id="upload-preview-categories">
+                <!-- Category filter buttons will be added here -->
+            </div>
+            
+            <div class="upload-preview-controls">
+                <div class="sort-controls">
+                    <label>View:</label>
+                    <select id="preview-view-mode" onchange="updatePreviewDisplay()">
+                        <option value="category">By Category</option>
+                        <option value="alphabetical">Alphabetical</option>
+                    </select>
+                    <label>Sort by:</label>
+                    <select id="preview-sort-language" onchange="updatePreviewDisplay()">
+                        <option value="source">Source Language</option>
+                        <option value="target">Target Language</option>
+                    </select>
+                </div>
+                <div class="select-controls">
+                    <button class="select-all-btn" onclick="selectAllWords(true)">Select All</button>
+                    <button class="select-none-btn" onclick="selectAllWords(false)">Select None</button>
+                </div>
+            </div>
+            
             <div class="upload-preview-list" id="upload-preview-list">
                 <!-- Will be populated with preview items -->
             </div>
@@ -2141,6 +2263,8 @@
         let userVocabulary = {}; // Store user-uploaded vocabulary
         let vocabularyFiles = {}; // Track loaded files
         let pendingUpload = null; // Store pending upload data
+        let currentFilter = 'all'; // Track current filter
+        let activeCategories = new Set(); // Track active category filters
 
         // Helper functions (need to be defined before they're used)
         function loadVocabManagerData() {
@@ -2252,6 +2376,10 @@
                     metadata: data.metadata || {}
                 };
                 
+                // Reset filters
+                currentFilter = 'all';
+                activeCategories.clear();
+                
                 // Update preview header
                 const fileNameElement = document.getElementById('upload-file-name');
                 if (fileNameElement) {
@@ -2271,34 +2399,19 @@
                     `;
                 }
                 
-                // Build preview list
-                let html = '';
-                analyzedWords.forEach((word, index) => {
-                    const statusClass = word.status;
-                    const statusText = word.status === 'new' ? 'NEW' : 'DUPLICATE';
-                    
-                    html += `
-                        <div class="preview-item ${statusClass}" data-index="${index}" data-status="${statusClass}">
-                            <input type="checkbox" class="preview-checkbox" checked onchange="toggleWordSelection(${index})">
-                            <div class="preview-item-content">
-                                <div class="preview-word">${word.word}</div>
-                                <div class="preview-translation">${word.translation} ${word.romanization ? `(${word.romanization})` : ''}</div>
-                                ${word.status === 'duplicate' ? `
-                                    <div class="preview-duplicate-info">
-                                        Existing: ${word.existingWord.translation} 
-                                        ${word.existingWord.romanization ? `(${word.existingWord.romanization})` : ''}
-                                    </div>
-                                ` : ''}
-                            </div>
-                            <span class="preview-status ${statusClass}">${statusText}</span>
-                        </div>
-                    `;
-                });
-                
-                const listElement = document.getElementById('upload-preview-list');
-                if (listElement) {
-                    listElement.innerHTML = html || '<p>No words found in file</p>';
+                // Create category filters
+                const categories = [...new Set(analyzedWords.map(w => w.category))].sort();
+                const categoryContainer = document.getElementById('upload-preview-categories');
+                if (categoryContainer) {
+                    categoryContainer.innerHTML = categories.map(cat => `
+                        <button class="category-filter-btn" onclick="toggleCategoryFilter('${cat}')">
+                            ${cat.charAt(0).toUpperCase() + cat.slice(1)}
+                        </button>
+                    `).join('');
                 }
+                
+                // Display words
+                updatePreviewDisplay();
                 
                 // Show preview modal
                 const modal = document.getElementById('upload-preview-modal');
@@ -2318,6 +2431,125 @@
             }
         }
 
+        window.updatePreviewDisplay = function() {
+            if (!pendingUpload) return;
+            
+            const viewMode = document.getElementById('preview-view-mode').value;
+            const sortBy = document.getElementById('preview-sort-language').value;
+            let wordsToDisplay = [...pendingUpload.words];
+            
+            // Apply status filter
+            if (currentFilter === 'new') {
+                wordsToDisplay = wordsToDisplay.filter(w => w.status === 'new');
+            } else if (currentFilter === 'duplicate') {
+                wordsToDisplay = wordsToDisplay.filter(w => w.status === 'duplicate');
+            }
+            
+            // Apply category filter
+            if (activeCategories.size > 0) {
+                wordsToDisplay = wordsToDisplay.filter(w => activeCategories.has(w.category));
+            }
+            
+            // Sort words
+            wordsToDisplay.sort((a, b) => {
+                const fieldA = sortBy === 'source' ? a.word : a.translation;
+                const fieldB = sortBy === 'source' ? b.word : b.translation;
+                return fieldA.toLowerCase().localeCompare(fieldB.toLowerCase());
+            });
+            
+            // Build HTML based on view mode
+            let html = '';
+            
+            if (viewMode === 'category') {
+                // Group by category
+                const grouped = {};
+                wordsToDisplay.forEach((word, originalIndex) => {
+                    if (!grouped[word.category]) {
+                        grouped[word.category] = [];
+                    }
+                    grouped[word.category].push({ ...word, originalIndex: pendingUpload.words.indexOf(word) });
+                });
+                
+                // Sort categories alphabetically
+                Object.keys(grouped).sort().forEach(category => {
+                    const categoryWords = grouped[category];
+                    html += `
+                        <div class="preview-category-section">
+                            <div class="preview-category-header">
+                                <span>${category.charAt(0).toUpperCase() + category.slice(1)}</span>
+                                <span class="preview-category-count">${categoryWords.length} words</span>
+                            </div>`;
+                    
+                    categoryWords.forEach(word => {
+                        html += createPreviewItemHTML(word, word.originalIndex);
+                    });
+                    
+                    html += '</div>';
+                });
+            } else {
+                // Alphabetical view without categories
+                wordsToDisplay.forEach(word => {
+                    const originalIndex = pendingUpload.words.indexOf(word);
+                    html += createPreviewItemHTML(word, originalIndex);
+                });
+            }
+            
+            const listElement = document.getElementById('upload-preview-list');
+            if (listElement) {
+                listElement.innerHTML = html || '<p style="text-align: center; color: #999;">No words match the current filters</p>';
+            }
+        }
+
+        function createPreviewItemHTML(word, index) {
+            const statusClass = word.status;
+            const statusText = word.status === 'new' ? 'NEW' : 'DUPLICATE';
+            const checked = word.selected ? 'checked' : '';
+            
+            return `
+                <div class="preview-item ${statusClass}" data-index="${index}" data-status="${statusClass}">
+                    <input type="checkbox" class="preview-checkbox" ${checked} onchange="toggleWordSelection(${index})">
+                    <div class="preview-item-content">
+                        <div class="preview-word">${word.word}</div>
+                        <div class="preview-translation">${word.translation} ${word.romanization ? `(${word.romanization})` : ''}</div>
+                        ${word.status === 'duplicate' ? `
+                            <div class="preview-duplicate-info">
+                                Existing: ${word.existingWord.translation} 
+                                ${word.existingWord.romanization ? `(${word.existingWord.romanization})` : ''}
+                            </div>
+                        ` : ''}
+                    </div>
+                    <span class="preview-status ${statusClass}">${statusText}</span>
+                </div>
+            `;
+        }
+
+        window.toggleCategoryFilter = function(category) {
+            const btn = event.target;
+            
+            if (activeCategories.has(category)) {
+                activeCategories.delete(category);
+                btn.classList.remove('active');
+            } else {
+                activeCategories.add(category);
+                btn.classList.add('active');
+            }
+            
+            updatePreviewDisplay();
+        }
+
+        window.selectAllWords = function(select) {
+            if (pendingUpload) {
+                pendingUpload.words.forEach(word => {
+                    word.selected = select;
+                });
+                
+                // Update all checkboxes
+                document.querySelectorAll('.preview-checkbox').forEach(checkbox => {
+                    checkbox.checked = select;
+                });
+            }
+        }
+
         window.toggleWordSelection = function(index) {
             if (pendingUpload && pendingUpload.words[index]) {
                 pendingUpload.words[index].selected = !pendingUpload.words[index].selected;
@@ -2325,30 +2557,21 @@
         }
 
         window.filterPreview = function(filter) {
+            currentFilter = filter;
+            
             // Update filter button states
             document.querySelectorAll('.filter-btn').forEach(btn => {
                 btn.classList.remove('active');
             });
             event.target.classList.add('active');
             
-            // Filter items
-            const items = document.querySelectorAll('.preview-item');
-            items.forEach(item => {
-                const status = item.dataset.status;
-                if (filter === 'all') {
-                    item.classList.remove('hidden');
-                } else if (filter === 'new' && status === 'new') {
-                    item.classList.remove('hidden');
-                } else if (filter === 'duplicate' && status === 'duplicate') {
-                    item.classList.remove('hidden');
-                } else {
-                    item.classList.add('hidden');
-                }
-            });
+            updatePreviewDisplay();
         }
 
         window.cancelUploadPreview = function() {
             pendingUpload = null;
+            currentFilter = 'all';
+            activeCategories.clear();
             document.getElementById('upload-preview-modal').classList.add('hidden');
             document.getElementById('upload-preview-modal').style.display = 'none';
         }
@@ -2586,7 +2809,11 @@
 
         window.handleFileSelect = function(e) {
             const files = e.target.files;
-            window.handleFiles(files);
+            if (files.length > 0) {
+                window.handleFiles(files);
+                // Reset the file input so the same file can be selected again
+                e.target.value = '';
+            }
         }
         
         window.handleFiles = async function(files) {
