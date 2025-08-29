@@ -1231,30 +1231,46 @@
         }
 
         .upload-preview-categories {
-            padding: 10px 20px;
+            padding: 15px 20px;
+            background: #f8f9fa;
+            border-bottom: 2px solid #dee2e6;
+        }
+
+        .category-filters-label {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .category-filters-grid {
             display: flex;
-            gap: 8px;
+            gap: 10px;
             flex-wrap: wrap;
-            border-bottom: 1px solid #dee2e6;
-            max-height: 80px;
-            overflow-y: auto;
         }
 
         .category-filter-btn {
-            padding: 4px 10px;
-            background: #e9ecef;
-            border: 1px solid #ced4da;
-            border-radius: 15px;
+            padding: 8px 16px;
+            background: white;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
             cursor: pointer;
-            font-size: 12px;
-            transition: all 0.2s;
-            white-space: nowrap;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s;
+            color: #495057;
+        }
+
+        .category-filter-btn:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 3px 10px rgba(102, 126, 234, 0.2);
         }
 
         .category-filter-btn.active {
-            background: #764ba2;
+            background: #667eea;
             color: white;
-            border-color: #764ba2;
+            border-color: #667eea;
         }
 
         .upload-preview-controls {
@@ -1262,7 +1278,6 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: #f8f9fa;
             border-bottom: 1px solid #dee2e6;
         }
 
@@ -1950,10 +1965,6 @@
                 <button class="filter-btn" onclick="filterPreview('duplicate')">Duplicates Only</button>
             </div>
             
-            <div class="upload-preview-categories" id="upload-preview-categories">
-                <!-- Category filter buttons will be added here -->
-            </div>
-            
             <div class="upload-preview-controls">
                 <div class="sort-controls">
                     <label>View:</label>
@@ -1971,6 +1982,10 @@
                     <button class="select-all-btn" onclick="selectAllWords(true)">Select All</button>
                     <button class="select-none-btn" onclick="selectAllWords(false)">Select None</button>
                 </div>
+            </div>
+            
+            <div class="upload-preview-categories" id="upload-preview-categories">
+                <!-- Category filter buttons will be added here -->
             </div>
             
             <div class="upload-preview-list" id="upload-preview-list">
@@ -2403,11 +2418,20 @@
                 const categories = [...new Set(analyzedWords.map(w => w.category))].sort();
                 const categoryContainer = document.getElementById('upload-preview-categories');
                 if (categoryContainer) {
-                    categoryContainer.innerHTML = categories.map(cat => `
-                        <button class="category-filter-btn" onclick="toggleCategoryFilter('${cat}')">
-                            ${cat.charAt(0).toUpperCase() + cat.slice(1)}
-                        </button>
-                    `).join('');
+                    let categoryHTML = '';
+                    if (categories.length > 0) {
+                        categoryHTML = `
+                            <div class="category-filters-label">Filter by Category:</div>
+                            <div class="category-filters-grid">
+                                ${categories.map(cat => `
+                                    <button class="category-filter-btn" onclick="toggleCategoryFilter('${cat}')">
+                                        ${cat.charAt(0).toUpperCase() + cat.slice(1)}
+                                    </button>
+                                `).join('')}
+                            </div>
+                        `;
+                    }
+                    categoryContainer.innerHTML = categoryHTML;
                 }
                 
                 // Display words
