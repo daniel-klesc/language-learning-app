@@ -34,8 +34,8 @@
         /* Settings Icon */
         .settings-icon {
             position: absolute;
-            top: 15px;
-            right: 15px;
+            top: 20px;
+            right: 20px;
             width: 24px;
             height: 24px;
             cursor: pointer;
@@ -889,7 +889,638 @@
         }
 
         /* Mobile optimizations for study mode */
+        /* Vocabulary Manager Styles */
+        .vocab-manager {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 3000;
+            display: none; /* Changed from flex to none by default */
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .vocab-manager:not(.hidden) {
+            display: flex; /* Show when not hidden */
+        }
+
+        .vocab-manager-content {
+            background: white;
+            border-radius: 20px;
+            max-width: 800px;
+            width: 100%;
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .vocab-manager-header {
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 20px 20px 0 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .vocab-manager-header h2 {
+            margin: 0;
+            font-size: 20px;
+            flex-grow: 1;
+            text-align: center;
+        }
+
+        .vocab-back-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 0;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .vocab-close {
+            cursor: pointer;
+            font-size: 28px;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .vocab-manager-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .vocab-upload-section {
+            margin-bottom: 20px;
+        }
+
+        .upload-zone {
+            border: 2px dashed #667eea;
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s;
+            background: #f8f9fa;
+        }
+
+        .upload-zone.dragover {
+            background: #e8ebff;
+            border-color: #764ba2;
+        }
+
+        .upload-zone svg {
+            margin-bottom: 10px;
+        }
+
+        .upload-zone p {
+            color: #666;
+            margin: 10px 0;
+        }
+
+        .upload-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.2s;
+        }
+
+        .upload-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .vocab-search {
+            margin-bottom: 20px;
+        }
+
+        .vocab-search input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+        }
+
+        .vocab-search input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .vocab-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .vocab-tab {
+            flex: 1;
+            padding: 10px;
+            background: #f8f9fa;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 13px;
+            min-width: 140px;
+        }
+
+        .vocab-tab.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .vocab-list {
+            max-height: 400px;
+            overflow-y: auto;
+            border: 1px solid #eee;
+            border-radius: 10px;
+            padding: 10px;
+        }
+
+        .vocab-category {
+            margin-bottom: 20px;
+        }
+
+        .vocab-category-header {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #333;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .vocab-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 10px;
+            border-bottom: 1px solid #f0f0f0;
+            transition: background 0.2s;
+        }
+
+        .vocab-item:hover {
+            background: #f8f9fa;
+        }
+
+        .vocab-item-text {
+            flex-grow: 1;
+        }
+
+        .vocab-word {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .vocab-translation {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .vocab-item-actions {
+            display: flex;
+            gap: 5px;
+        }
+
+        .vocab-difficulty {
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            background: #e9ecef;
+        }
+
+        .vocab-difficulty.easy {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .vocab-difficulty.medium {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .vocab-difficulty.hard {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .vocab-stats {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            text-align: center;
+            color: #666;
+        }
+
+        /* Upload Preview Modal */
+        .upload-preview-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 4000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .upload-preview-modal:not(.hidden) {
+            display: flex;
+        }
+
+        .upload-preview-content {
+            background: white;
+            border-radius: 15px;
+            max-width: 700px;
+            width: 100%;
+            max-height: 85vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+        }
+
+        .upload-preview-header {
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 15px 15px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .upload-preview-header h3 {
+            margin: 0;
+            font-size: 18px;
+        }
+
+        .upload-preview-close {
+            cursor: pointer;
+            font-size: 24px;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .upload-preview-info {
+            padding: 15px 20px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .upload-file-name {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .upload-summary {
+            display: flex;
+            gap: 20px;
+        }
+
+        .summary-item {
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .summary-item.new {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .summary-item.duplicate {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .summary-item.total {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .upload-preview-categories {
+            padding: 15px 20px;
+            background: #f8f9fa;
+            border-bottom: 2px solid #dee2e6;
+        }
+
+        .category-filters-label {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .category-filters-grid {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .category-filter-btn {
+            padding: 8px 16px;
+            background: white;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s;
+            color: #495057;
+        }
+
+        .category-filter-btn:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 3px 10px rgba(102, 126, 234, 0.2);
+        }
+
+        .category-filter-btn.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .upload-preview-controls {
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .sort-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sort-controls label {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .sort-controls select {
+            padding: 4px 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 13px;
+        }
+
+        .select-controls {
+            display: flex;
+            gap: 8px;
+        }
+
+        .select-all-btn,
+        .select-none-btn {
+            padding: 4px 12px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s;
+        }
+
+        .select-all-btn:hover,
+        .select-none-btn:hover {
+            background: #f8f9fa;
+            border-color: #667eea;
+        }
+
+        .preview-category-section {
+            margin-bottom: 20px;
+        }
+
+        .preview-category-header {
+            background: #f8f9fa;
+            padding: 8px 12px;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #495057;
+            font-size: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .preview-category-count {
+            font-weight: normal;
+            color: #6c757d;
+            font-size: 12px;
+        }
+
+        .upload-preview-filters {
+            padding: 10px 20px;
+            display: flex;
+            gap: 10px;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .filter-btn {
+            padding: 6px 12px;
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+
+        .filter-btn.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .upload-preview-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 15px 20px;
+        }
+
+        .preview-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            transition: all 0.2s;
+        }
+
+        .preview-item.duplicate {
+            background: #fff3cd;
+        }
+
+        .preview-item.new {
+            background: #d4edda;
+        }
+
+        .preview-item.hidden {
+            display: none;
+        }
+
+        .preview-checkbox {
+            margin-right: 12px;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .preview-item-content {
+            flex: 1;
+        }
+
+        .preview-word {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 2px;
+        }
+
+        .preview-translation {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .preview-status {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+
+        .preview-status.new {
+            background: #28a745;
+            color: white;
+        }
+
+        .preview-status.duplicate {
+            background: #ffc107;
+            color: #333;
+        }
+
+        .preview-duplicate-info {
+            font-size: 11px;
+            color: #666;
+            margin-top: 5px;
+            padding: 5px;
+            background: rgba(255,255,255,0.5);
+            border-radius: 4px;
+        }
+
+        .upload-preview-actions {
+            padding: 15px 20px;
+            background: #f8f9fa;
+            border-top: 1px solid #dee2e6;
+            border-radius: 0 0 15px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .duplicate-strategy {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .duplicate-strategy label {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .duplicate-strategy select {
+            padding: 5px 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-buttons button {
+            padding: 8px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .action-buttons button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
         @media (max-width: 480px) {
+            .vocab-manager-content {
+                max-width: 100%;
+                max-height: 100%;
+                height: 100%;
+                border-radius: 0;
+            }
+
+            .vocab-manager-header {
+                border-radius: 0;
+            }
+
+            .vocab-tabs {
+                flex-direction: column;
+            }
+
+            .vocab-tab {
+                width: 100%;
+            }
+        }
             .container {
                 width: 100%;
                 max-width: 100%;
@@ -1052,9 +1683,8 @@
 <body>
     <div class="container" id="main-container">
         <!-- Settings Icon -->
-        <svg class="settings-icon" onclick="toggleSettings()" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="3"></circle>
-            <path d="M12 1v6m0 6v6m4.22-13.22l-4.24 4.24m0 5.96l4.24 4.24M20 12h-6m-6 0H2m13.22 4.22l-4.24-4.24m0-5.96L6.76 2.76"></path>
+        <svg class="settings-icon" onclick="toggleSettings()" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.74,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/>
         </svg>
 
         <!-- Home Screen Content -->
@@ -1238,7 +1868,7 @@
             <span style="font-size: 18px; font-weight: bold;">Settings</span>
             <span class="settings-close" onclick="toggleSettings()">×</span>
         </div>
-        <div class="settings-item" onclick="openVocabManager()">
+        <div class="settings-item" onclick="window.openVocabManager ? openVocabManager() : alert('Function not loaded')">
             <span class="settings-item-icon">📚</span>
             <span>Vocabulary Manager</span>
         </div>
@@ -1262,6 +1892,122 @@
     
     <!-- Settings Overlay -->
     <div class="settings-overlay" id="settings-overlay" onclick="toggleSettings()"></div>
+
+    <!-- Vocabulary Manager Modal -->
+    <div class="vocab-manager hidden" id="vocab-manager">
+        <div class="vocab-manager-content">
+            <div class="vocab-manager-header">
+                <button class="vocab-back-btn" onclick="closeVocabManager()">←</button>
+                <h2>Vocabulary Manager</h2>
+                <span class="vocab-close" onclick="closeVocabManager()">×</span>
+            </div>
+            
+            <div class="vocab-manager-body">
+                <!-- Upload Section -->
+                <div class="vocab-upload-section">
+                    <div class="upload-zone" id="upload-zone" ondrop="handleDrop(event)" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#667eea" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="17 8 12 3 7 8"></polyline>
+                            <line x1="12" y1="3" x2="12" y2="15"></line>
+                        </svg>
+                        <p>Drag & drop JSON files here or</p>
+                        <button class="upload-btn" onclick="document.getElementById('file-input').click()">Choose Files</button>
+                        <input type="file" id="file-input" multiple accept=".json" style="display: none;" onchange="handleFileSelect(event)">
+                    </div>
+                </div>
+
+                <!-- Search Bar -->
+                <div class="vocab-search">
+                    <input type="text" id="vocab-search-input" placeholder="Search vocabulary..." oninput="searchVocabulary(this.value)">
+                </div>
+
+                <!-- Language Tabs -->
+                <div class="vocab-tabs">
+                    <button class="vocab-tab active" data-lang="cs-vi" onclick="switchVocabTab('cs-vi')">Czech→Vietnamese</button>
+                    <button class="vocab-tab" data-lang="vi-zh" onclick="switchVocabTab('vi-zh')">Vietnamese→Chinese</button>
+                    <button class="vocab-tab" data-lang="vi-en" onclick="switchVocabTab('vi-en')">Vietnamese→English</button>
+                </div>
+
+                <!-- Vocabulary List -->
+                <div class="vocab-list" id="vocab-list">
+                    <!-- Will be populated dynamically -->
+                </div>
+
+                <!-- Stats Footer -->
+                <div class="vocab-stats">
+                    <span id="vocab-stats-text">Total: 0 words</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Upload Preview Modal -->
+    <div class="upload-preview-modal hidden" id="upload-preview-modal">
+        <div class="upload-preview-content">
+            <div class="upload-preview-header">
+                <h3>Review Import</h3>
+                <span class="upload-preview-close" onclick="cancelUploadPreview()">×</span>
+            </div>
+            
+            <div class="upload-preview-info">
+                <div class="upload-file-name" id="upload-file-name">File: example.json</div>
+                <div class="upload-summary" id="upload-summary">
+                    <span class="summary-item new">New: 0</span>
+                    <span class="summary-item duplicate">Duplicates: 0</span>
+                    <span class="summary-item total">Total: 0</span>
+                </div>
+            </div>
+            
+            <div class="upload-preview-filters">
+                <button class="filter-btn active" onclick="filterPreview('all')">All</button>
+                <button class="filter-btn" onclick="filterPreview('new')">New Only</button>
+                <button class="filter-btn" onclick="filterPreview('duplicate')">Duplicates Only</button>
+            </div>
+            
+            <div class="upload-preview-controls">
+                <div class="sort-controls">
+                    <label>View:</label>
+                    <select id="preview-view-mode" onchange="updatePreviewDisplay()">
+                        <option value="category">By Category</option>
+                        <option value="alphabetical">Alphabetical</option>
+                    </select>
+                    <label>Sort by:</label>
+                    <select id="preview-sort-language" onchange="updatePreviewDisplay()">
+                        <option value="source">Source Language</option>
+                        <option value="target">Target Language</option>
+                    </select>
+                </div>
+                <div class="select-controls">
+                    <button class="select-all-btn" onclick="selectAllWords(true)">Select All</button>
+                    <button class="select-none-btn" onclick="selectAllWords(false)">Select None</button>
+                </div>
+            </div>
+            
+            <div class="upload-preview-categories" id="upload-preview-categories">
+                <!-- Category filter buttons will be added here -->
+            </div>
+            
+            <div class="upload-preview-list" id="upload-preview-list">
+                <!-- Will be populated with preview items -->
+            </div>
+            
+            <div class="upload-preview-actions">
+                <div class="duplicate-strategy">
+                    <label>For duplicates:</label>
+                    <select id="duplicate-strategy">
+                        <option value="skip">Skip</option>
+                        <option value="replace">Replace</option>
+                        <option value="add">Add as alternate</option>
+                    </select>
+                </div>
+                <div class="action-buttons">
+                    <button class="btn-secondary" onclick="cancelUploadPreview()">Cancel</button>
+                    <button class="btn-primary" onclick="confirmUpload()">Import Selected</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Skill Switch Menu (appears on long-press) -->
     <div class="skill-switch-menu hidden" id="skill-switch-menu">
@@ -1525,6 +2271,693 @@
             devLog('Vocabulary refresh complete', 'success');
             alert('Vocabulary refreshed successfully!');
             toggleSettings();
+        }
+
+        // ============= VOCABULARY MANAGER FUNCTIONS =============
+        let currentVocabTab = 'cs-vi';
+        let userVocabulary = {}; // Store user-uploaded vocabulary
+        let vocabularyFiles = {}; // Track loaded files
+        let pendingUpload = null; // Store pending upload data
+        let currentFilter = 'all'; // Track current filter
+        let activeCategories = new Set(); // Track active category filters
+
+        // Helper functions (need to be defined before they're used)
+        function loadVocabManagerData() {
+            // Load user vocabulary from localStorage
+            const saved = localStorage.getItem('userVocabulary');
+            if (saved) {
+                userVocabulary = JSON.parse(saved);
+            }
+            
+            // Load file tracking
+            const files = localStorage.getItem('vocabularyFiles');
+            if (files) {
+                vocabularyFiles = JSON.parse(files);
+            }
+            
+            displayVocabulary(currentVocabTab);
+        }
+
+        function displayVocabulary(lang) {
+            const vocabList = document.getElementById('vocab-list');
+            if (!vocabList) return;
+            
+            const vocab = vocabularyData[lang] || [];
+            const userVocab = userVocabulary[lang] || [];
+            const allVocab = [...vocab, ...userVocab];
+            
+            // Group by category
+            const categories = {};
+            allVocab.forEach(word => {
+                if (!categories[word.category]) {
+                    categories[word.category] = [];
+                }
+                categories[word.category].push(word);
+            });
+            
+            // Build HTML
+            let html = '';
+            Object.keys(categories).sort().forEach(category => {
+                html += `
+                    <div class="vocab-category">
+                        <div class="vocab-category-header">
+                            <span>${category.charAt(0).toUpperCase() + category.slice(1)}</span>
+                            <span>${categories[category].length} words</span>
+                        </div>`;
+                
+                categories[category].forEach(word => {
+                    const difficultyClass = word.difficulty === 1 ? 'easy' : 
+                                          word.difficulty === 2 ? 'medium' : 'hard';
+                    const difficultyText = word.difficulty === 1 ? 'Easy' : 
+                                         word.difficulty === 2 ? 'Medium' : 'Hard';
+                    
+                    html += `
+                        <div class="vocab-item" data-word="${(word.word || '').toLowerCase()}" data-translation="${(word.translation || '').toLowerCase()}">
+                            <div class="vocab-item-text">
+                                <div class="vocab-word">${word.word}</div>
+                                <div class="vocab-translation">${word.translation} ${word.romanization ? `(${word.romanization})` : ''}</div>
+                            </div>
+                            <div class="vocab-item-actions">
+                                <span class="vocab-difficulty ${difficultyClass}">${difficultyText}</span>
+                            </div>
+                        </div>`;
+                });
+                
+                html += '</div>';
+            });
+            
+            vocabList.innerHTML = html || '<p style="text-align: center; color: #999;">No vocabulary loaded</p>';
+            
+            // Update stats
+            const statsElement = document.getElementById('vocab-stats-text');
+            if (statsElement) {
+                statsElement.textContent = `Total: ${allVocab.length} words across ${Object.keys(categories).length} categories`;
+            }
+        }
+
+        function checkDuplicates(newWords, languagePair) {
+            const existingVocab = [...(vocabularyData[languagePair] || []), ...(userVocabulary[languagePair] || [])];
+            const results = [];
+            
+            newWords.forEach(newWord => {
+                const duplicate = existingVocab.find(existing => 
+                    existing.word.toLowerCase() === newWord.word.toLowerCase()
+                );
+                
+                results.push({
+                    ...newWord,
+                    status: duplicate ? 'duplicate' : 'new',
+                    existingWord: duplicate,
+                    selected: true // Default to selected
+                });
+            });
+            
+            return results;
+        }
+
+        function showUploadPreview(file, data, languagePair) {
+            console.log('showUploadPreview called', file.name, data, languagePair);
+            devLog(`Showing preview for ${file.name}`, 'info');
+            
+            try {
+                const words = data.words || [];
+                const analyzedWords = checkDuplicates(words, languagePair);
+                
+                // Store pending upload data
+                pendingUpload = {
+                    file: file,
+                    languagePair: languagePair,
+                    words: analyzedWords,
+                    metadata: data.metadata || {}
+                };
+                
+                // Reset filters
+                currentFilter = 'all';
+                activeCategories.clear();
+                
+                // Update preview header
+                const fileNameElement = document.getElementById('upload-file-name');
+                if (fileNameElement) {
+                    fileNameElement.textContent = `File: ${file.name}`;
+                }
+                
+                // Count status
+                const newCount = analyzedWords.filter(w => w.status === 'new').length;
+                const duplicateCount = analyzedWords.filter(w => w.status === 'duplicate').length;
+                
+                const summaryElement = document.getElementById('upload-summary');
+                if (summaryElement) {
+                    summaryElement.innerHTML = `
+                        <span class="summary-item new">New: ${newCount}</span>
+                        <span class="summary-item duplicate">Duplicates: ${duplicateCount}</span>
+                        <span class="summary-item total">Total: ${words.length}</span>
+                    `;
+                }
+                
+                // Create category filters
+                const categories = [...new Set(analyzedWords.map(w => w.category))].sort();
+                const categoryContainer = document.getElementById('upload-preview-categories');
+                if (categoryContainer) {
+                    let categoryHTML = '';
+                    if (categories.length > 0) {
+                        categoryHTML = `
+                            <div class="category-filters-label">Filter by Category:</div>
+                            <div class="category-filters-grid">
+                                ${categories.map(cat => `
+                                    <button class="category-filter-btn" onclick="toggleCategoryFilter('${cat}')">
+                                        ${cat.charAt(0).toUpperCase() + cat.slice(1)}
+                                    </button>
+                                `).join('')}
+                            </div>
+                        `;
+                    }
+                    categoryContainer.innerHTML = categoryHTML;
+                }
+                
+                // Display words
+                updatePreviewDisplay();
+                
+                // Show preview modal
+                const modal = document.getElementById('upload-preview-modal');
+                if (modal) {
+                    modal.classList.remove('hidden');
+                    modal.style.display = 'flex';
+                    console.log('Preview modal shown');
+                    devLog('Preview modal displayed', 'success');
+                } else {
+                    console.error('Upload preview modal element not found');
+                    alert('Preview modal not found. Please refresh the page.');
+                }
+            } catch (error) {
+                console.error('Error in showUploadPreview:', error);
+                devLog(`Error showing preview: ${error.message}`, 'error');
+                alert(`Error showing preview: ${error.message}`);
+            }
+        }
+
+        window.updatePreviewDisplay = function() {
+            if (!pendingUpload) return;
+            
+            const viewMode = document.getElementById('preview-view-mode').value;
+            const sortBy = document.getElementById('preview-sort-language').value;
+            let wordsToDisplay = [...pendingUpload.words];
+            
+            // Apply status filter
+            if (currentFilter === 'new') {
+                wordsToDisplay = wordsToDisplay.filter(w => w.status === 'new');
+            } else if (currentFilter === 'duplicate') {
+                wordsToDisplay = wordsToDisplay.filter(w => w.status === 'duplicate');
+            }
+            
+            // Apply category filter
+            if (activeCategories.size > 0) {
+                wordsToDisplay = wordsToDisplay.filter(w => activeCategories.has(w.category));
+            }
+            
+            // Sort words
+            wordsToDisplay.sort((a, b) => {
+                const fieldA = sortBy === 'source' ? a.word : a.translation;
+                const fieldB = sortBy === 'source' ? b.word : b.translation;
+                return fieldA.toLowerCase().localeCompare(fieldB.toLowerCase());
+            });
+            
+            // Build HTML based on view mode
+            let html = '';
+            
+            if (viewMode === 'category') {
+                // Group by category
+                const grouped = {};
+                wordsToDisplay.forEach((word, originalIndex) => {
+                    if (!grouped[word.category]) {
+                        grouped[word.category] = [];
+                    }
+                    grouped[word.category].push({ ...word, originalIndex: pendingUpload.words.indexOf(word) });
+                });
+                
+                // Sort categories alphabetically
+                Object.keys(grouped).sort().forEach(category => {
+                    const categoryWords = grouped[category];
+                    html += `
+                        <div class="preview-category-section">
+                            <div class="preview-category-header">
+                                <span>${category.charAt(0).toUpperCase() + category.slice(1)}</span>
+                                <span class="preview-category-count">${categoryWords.length} words</span>
+                            </div>`;
+                    
+                    categoryWords.forEach(word => {
+                        html += createPreviewItemHTML(word, word.originalIndex);
+                    });
+                    
+                    html += '</div>';
+                });
+            } else {
+                // Alphabetical view without categories
+                wordsToDisplay.forEach(word => {
+                    const originalIndex = pendingUpload.words.indexOf(word);
+                    html += createPreviewItemHTML(word, originalIndex);
+                });
+            }
+            
+            const listElement = document.getElementById('upload-preview-list');
+            if (listElement) {
+                listElement.innerHTML = html || '<p style="text-align: center; color: #999;">No words match the current filters</p>';
+            }
+        }
+
+        function createPreviewItemHTML(word, index) {
+            const statusClass = word.status;
+            const statusText = word.status === 'new' ? 'NEW' : 'DUPLICATE';
+            const checked = word.selected ? 'checked' : '';
+            
+            return `
+                <div class="preview-item ${statusClass}" data-index="${index}" data-status="${statusClass}">
+                    <input type="checkbox" class="preview-checkbox" ${checked} onchange="toggleWordSelection(${index})">
+                    <div class="preview-item-content">
+                        <div class="preview-word">${word.word}</div>
+                        <div class="preview-translation">${word.translation} ${word.romanization ? `(${word.romanization})` : ''}</div>
+                        ${word.status === 'duplicate' ? `
+                            <div class="preview-duplicate-info">
+                                Existing: ${word.existingWord.translation} 
+                                ${word.existingWord.romanization ? `(${word.existingWord.romanization})` : ''}
+                            </div>
+                        ` : ''}
+                    </div>
+                    <span class="preview-status ${statusClass}">${statusText}</span>
+                </div>
+            `;
+        }
+
+        window.toggleCategoryFilter = function(category) {
+            const btn = event.target;
+            
+            if (activeCategories.has(category)) {
+                activeCategories.delete(category);
+                btn.classList.remove('active');
+            } else {
+                activeCategories.add(category);
+                btn.classList.add('active');
+            }
+            
+            updatePreviewDisplay();
+        }
+
+        window.selectAllWords = function(select) {
+            if (pendingUpload) {
+                pendingUpload.words.forEach(word => {
+                    word.selected = select;
+                });
+                
+                // Update all checkboxes
+                document.querySelectorAll('.preview-checkbox').forEach(checkbox => {
+                    checkbox.checked = select;
+                });
+            }
+        }
+
+        window.toggleWordSelection = function(index) {
+            if (pendingUpload && pendingUpload.words[index]) {
+                pendingUpload.words[index].selected = !pendingUpload.words[index].selected;
+            }
+        }
+
+        window.filterPreview = function(filter) {
+            currentFilter = filter;
+            
+            // Update filter button states
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            updatePreviewDisplay();
+        }
+
+        window.cancelUploadPreview = function() {
+            pendingUpload = null;
+            currentFilter = 'all';
+            activeCategories.clear();
+            document.getElementById('upload-preview-modal').classList.add('hidden');
+            document.getElementById('upload-preview-modal').style.display = 'none';
+        }
+
+        window.confirmUpload = function() {
+            if (!pendingUpload) return;
+            
+            const strategy = document.getElementById('duplicate-strategy').value;
+            const languagePair = pendingUpload.languagePair;
+            const selectedWords = pendingUpload.words.filter(w => w.selected);
+            
+            let addedCount = 0;
+            let skippedCount = 0;
+            let replacedCount = 0;
+            
+            // Initialize user vocabulary if needed
+            if (!userVocabulary[languagePair]) {
+                userVocabulary[languagePair] = [];
+            }
+            
+            // Get max ID
+            const existingIds = [
+                ...(vocabularyData[languagePair] || []).map(w => w.id),
+                ...(userVocabulary[languagePair] || []).map(w => w.id)
+            ];
+            let maxId = Math.max(...existingIds, 1000);
+            
+            selectedWords.forEach(word => {
+                if (word.status === 'new') {
+                    // Add new word
+                    if (!word.id) {
+                        word.id = ++maxId;
+                    }
+                    userVocabulary[languagePair].push(word);
+                    addedCount++;
+                } else if (word.status === 'duplicate') {
+                    // Handle duplicate based on strategy
+                    if (strategy === 'skip') {
+                        skippedCount++;
+                    } else if (strategy === 'replace') {
+                        // Find and replace existing word
+                        const existingIndex = userVocabulary[languagePair].findIndex(w => 
+                            w.word.toLowerCase() === word.word.toLowerCase()
+                        );
+                        if (existingIndex !== -1) {
+                            word.id = userVocabulary[languagePair][existingIndex].id;
+                            userVocabulary[languagePair][existingIndex] = word;
+                        } else {
+                            // It's in the main vocabulary, so add to user vocabulary as override
+                            if (!word.id) {
+                                word.id = ++maxId;
+                            }
+                            userVocabulary[languagePair].push(word);
+                        }
+                        replacedCount++;
+                    } else if (strategy === 'add') {
+                        // Add as alternate translation
+                        if (!word.id) {
+                            word.id = ++maxId;
+                        }
+                        word.word = word.word + ' (alt)'; // Mark as alternate
+                        userVocabulary[languagePair].push(word);
+                        addedCount++;
+                    }
+                }
+            });
+            
+            // Save to localStorage
+            localStorage.setItem('userVocabulary', JSON.stringify(userVocabulary));
+            
+            // Track file
+            if (!vocabularyFiles[languagePair]) {
+                vocabularyFiles[languagePair] = [];
+            }
+            vocabularyFiles[languagePair].push({
+                name: pendingUpload.file.name,
+                wordCount: selectedWords.length,
+                uploadedAt: new Date().toISOString()
+            });
+            localStorage.setItem('vocabularyFiles', JSON.stringify(vocabularyFiles));
+            
+            // Update main vocabulary data
+            vocabularyData[languagePair] = [
+                ...(vocabularyData[languagePair] || []),
+                ...userVocabulary[languagePair]
+            ];
+            
+            // Show result message
+            let message = `Import complete!\n`;
+            if (addedCount > 0) message += `✓ Added: ${addedCount} words\n`;
+            if (replacedCount > 0) message += `✓ Replaced: ${replacedCount} words\n`;
+            if (skippedCount > 0) message += `✓ Skipped: ${skippedCount} duplicates`;
+            
+            alert(message);
+            
+            // Close preview and refresh display
+            cancelUploadPreview();
+            displayVocabulary(currentVocabTab);
+            
+            devLog(`Import complete: ${addedCount} added, ${replacedCount} replaced, ${skippedCount} skipped`, 'success');
+        }
+
+        async function handleFiles(files) {
+            for (const file of files) {
+                if (file.type === 'application/json' || file.name.endsWith('.json')) {
+                    try {
+                        const text = await file.text();
+                        const data = JSON.parse(text);
+                        
+                        // Validate structure
+                        if (data.words && Array.isArray(data.words)) {
+                            const metadata = data.metadata || {};
+                            const languagePair = metadata.language_pair || currentVocabTab;
+                            
+                            // Show preview instead of directly importing
+                            showUploadPreview(file, data, languagePair);
+                        } else {
+                            alert(`Invalid file format in ${file.name}. Expected JSON with 'words' array.`);
+                        }
+                    } catch (error) {
+                        devLog(`Error processing ${file.name}: ${error.message}`, 'error');
+                        alert(`Error processing ${file.name}: ${error.message}`);
+                    }
+                } else {
+                    alert(`${file.name} is not a JSON file`);
+                }
+            }
+        }
+
+        // Make functions globally accessible
+        window.openVocabManager = function() {
+            console.log('openVocabManager called');
+            devLog('Opening Vocabulary Manager...', 'info');
+            
+            try {
+                toggleSettings(); // Close settings menu
+                
+                const vocabManager = document.getElementById('vocab-manager');
+                if (!vocabManager) {
+                    console.error('Vocabulary Manager element not found!');
+                    alert('Vocabulary Manager element not found!');
+                    return;
+                }
+                
+                vocabManager.classList.remove('hidden');
+                vocabManager.style.display = 'flex';
+                
+                currentVocabTab = currentLanguagePair || 'cs-vi';
+                switchVocabTab(currentVocabTab);
+                loadVocabManagerData();
+                
+                devLog('Vocabulary Manager opened', 'success');
+            } catch (error) {
+                console.error('Error opening vocabulary manager:', error);
+                alert('Error opening vocabulary manager: ' + error.message);
+            }
+        }
+
+        window.closeVocabManager = function() {
+            const vocabManager = document.getElementById('vocab-manager');
+            if (vocabManager) {
+                vocabManager.classList.add('hidden');
+                vocabManager.style.display = 'none';
+            }
+        }
+
+        window.switchVocabTab = function(lang) {
+            currentVocabTab = lang;
+            
+            // Update tab UI
+            document.querySelectorAll('.vocab-tab').forEach(tab => {
+                tab.classList.remove('active');
+                if (tab.dataset.lang === lang) {
+                    tab.classList.add('active');
+                }
+            });
+            
+            displayVocabulary(lang);
+        }
+
+        window.searchVocabulary = function(query) {
+            const items = document.querySelectorAll('.vocab-item');
+            const categories = document.querySelectorAll('.vocab-category');
+            const searchTerm = query.toLowerCase();
+            
+            if (!searchTerm) {
+                // Show all
+                items.forEach(item => item.style.display = 'flex');
+                categories.forEach(cat => cat.style.display = 'block');
+                return;
+            }
+            
+            // Hide/show based on search
+            categories.forEach(category => {
+                let hasVisibleItems = false;
+                const categoryItems = category.querySelectorAll('.vocab-item');
+                
+                categoryItems.forEach(item => {
+                    const word = item.dataset.word || '';
+                    const translation = item.dataset.translation || '';
+                    
+                    if (word.includes(searchTerm) || translation.includes(searchTerm)) {
+                        item.style.display = 'flex';
+                        hasVisibleItems = true;
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+                
+                category.style.display = hasVisibleItems ? 'block' : 'none';
+            });
+        }
+
+        // File upload handling - make globally accessible
+        window.handleDragOver = function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            document.getElementById('upload-zone').classList.add('dragover');
+        }
+
+        window.handleDragLeave = function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            document.getElementById('upload-zone').classList.remove('dragover');
+        }
+
+        window.handleDrop = function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            document.getElementById('upload-zone').classList.remove('dragover');
+            
+            const files = e.dataTransfer.files;
+            window.handleFiles(files);
+        }
+
+        window.handleFileSelect = function(e) {
+            const files = e.target.files;
+            if (files.length > 0) {
+                window.handleFiles(files);
+                // Reset the file input so the same file can be selected again
+                e.target.value = '';
+            }
+        }
+        
+        window.handleFiles = async function(files) {
+            console.log('handleFiles called with', files.length, 'files');
+            
+            for (const file of files) {
+                console.log('Processing file:', file.name, file.type);
+                
+                if (file.type === 'application/json' || file.name.endsWith('.json')) {
+                    try {
+                        const text = await file.text();
+                        console.log('File text read, length:', text.length);
+                        
+                        const data = JSON.parse(text);
+                        console.log('JSON parsed, words count:', data.words ? data.words.length : 0);
+                        
+                        // Validate structure
+                        if (data.words && Array.isArray(data.words)) {
+                            const metadata = data.metadata || {};
+                            const languagePair = metadata.language_pair || currentVocabTab;
+                            
+                            console.log('Calling showUploadPreview for', languagePair);
+                            // Show preview instead of directly importing
+                            showUploadPreview(file, data, languagePair);
+                        } else {
+                            alert(`Invalid file format in ${file.name}. Expected JSON with 'words' array.`);
+                        }
+                    } catch (error) {
+                        console.error('Error in handleFiles:', error);
+                        devLog(`Error processing ${file.name}: ${error.message}`, 'error');
+                        alert(`Error processing ${file.name}: ${error.message}`);
+                    }
+                } else {
+                    alert(`${file.name} is not a JSON file`);
+                }
+            }
+        }
+
+        async function handleFiles(files) {
+            for (const file of files) {
+                if (file.type === 'application/json') {
+                    try {
+                        const text = await file.text();
+                        const data = JSON.parse(text);
+                        
+                        // Validate structure
+                        if (data.words && Array.isArray(data.words)) {
+                            const metadata = data.metadata || {};
+                            const languagePair = metadata.language_pair || currentVocabTab;
+                            
+                            // Add to user vocabulary
+                            if (!userVocabulary[languagePair]) {
+                                userVocabulary[languagePair] = [];
+                            }
+                            
+                            // Add words with unique IDs
+                            const maxId = Math.max(...vocabularyData[languagePair].map(w => w.id), 1000);
+                            data.words.forEach((word, index) => {
+                                if (!word.id) {
+                                    word.id = maxId + index + 1;
+                                }
+                                userVocabulary[languagePair].push(word);
+                            });
+                            
+                            // Track file
+                            if (!vocabularyFiles[languagePair]) {
+                                vocabularyFiles[languagePair] = [];
+                            }
+                            vocabularyFiles[languagePair].push({
+                                name: file.name,
+                                wordCount: data.words.length,
+                                uploadedAt: new Date().toISOString()
+                            });
+                            
+                            // Save to localStorage
+                            localStorage.setItem('userVocabulary', JSON.stringify(userVocabulary));
+                            localStorage.setItem('vocabularyFiles', JSON.stringify(vocabularyFiles));
+                            
+                            // Update main vocabulary data
+                            vocabularyData[languagePair] = [...vocabularyData[languagePair], ...data.words];
+                            
+                            devLog(`Uploaded ${data.words.length} words from ${file.name}`, 'success');
+                            alert(`Successfully added ${data.words.length} words from ${file.name}`);
+                            
+                            // Refresh display
+                            displayVocabulary(currentVocabTab);
+                        } else {
+                            alert(`Invalid file format in ${file.name}. Expected JSON with 'words' array.`);
+                        }
+                    } catch (error) {
+                        devLog(`Error processing ${file.name}: ${error.message}`, 'error');
+                        alert(`Error processing ${file.name}: ${error.message}`);
+                    }
+                } else {
+                    alert(`${file.name} is not a JSON file`);
+                }
+            }
+        }
+
+        function exportVocabulary() {
+            const lang = currentVocabTab;
+            const vocab = [...(vocabularyData[lang] || []), ...(userVocabulary[lang] || [])];
+            
+            const exportData = {
+                metadata: {
+                    language_pair: lang,
+                    exported_at: new Date().toISOString(),
+                    word_count: vocab.length
+                },
+                words: vocab
+            };
+            
+            const json = JSON.stringify(exportData, null, 2);
+            const blob = new Blob([json], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `vocabulary-${lang}-${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
         }
 
         // ============= SETTINGS MENU FUNCTIONS =============
