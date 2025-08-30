@@ -1344,6 +1344,56 @@
             font-size: 12px;
         }
 
+        .upload-preview-filter-section {
+            position: sticky;
+            top: 0;
+            background: white;
+            z-index: 10;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .filter-toggle-bar {
+            padding: 12px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            user-select: none;
+            transition: background 0.3s;
+        }
+
+        .filter-toggle-bar:hover {
+            background: linear-gradient(135deg, #5a72d8 0%, #6a4190 100%);
+        }
+
+        .filter-toggle-text {
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .filter-toggle-icon {
+            font-size: 16px;
+            transition: transform 0.3s ease;
+        }
+
+        .filter-toggle-icon.collapsed {
+            transform: rotate(-90deg);
+        }
+
+        .filter-content {
+            max-height: 500px;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+        }
+
+        .filter-content.collapsed {
+            max-height: 0;
+            padding: 0 !important;
+        }
+
         .upload-preview-filters {
             padding: 10px 20px;
             display: flex;
@@ -1959,33 +2009,42 @@
                 </div>
             </div>
             
-            <div class="upload-preview-filters">
-                <button class="filter-btn active" onclick="filterPreview('all')">All</button>
-                <button class="filter-btn" onclick="filterPreview('new')">New Only</button>
-                <button class="filter-btn" onclick="filterPreview('duplicate')">Duplicates Only</button>
-            </div>
-            
-            <div class="upload-preview-controls">
-                <div class="sort-controls">
-                    <label>View:</label>
-                    <select id="preview-view-mode" onchange="updatePreviewDisplay()">
-                        <option value="category">By Category</option>
-                        <option value="alphabetical">Alphabetical</option>
-                    </select>
-                    <label>Sort by:</label>
-                    <select id="preview-sort-language" onchange="updatePreviewDisplay()">
-                        <option value="source">Source Language</option>
-                        <option value="target">Target Language</option>
-                    </select>
+            <div class="upload-preview-filter-section" id="filter-section">
+                <div class="filter-toggle-bar" onclick="toggleFilterSection()">
+                    <span class="filter-toggle-text">Filters & Sorting</span>
+                    <span class="filter-toggle-icon" id="filter-toggle-icon">▼</span>
                 </div>
-                <div class="select-controls">
-                    <button class="select-all-btn" onclick="selectAllWords(true)">Select All</button>
-                    <button class="select-none-btn" onclick="selectAllWords(false)">Select None</button>
+                
+                <div class="filter-content" id="filter-content">
+                    <div class="upload-preview-filters">
+                        <button class="filter-btn active" onclick="filterPreview('all')">All</button>
+                        <button class="filter-btn" onclick="filterPreview('new')">New Only</button>
+                        <button class="filter-btn" onclick="filterPreview('duplicate')">Duplicates Only</button>
+                    </div>
+                    
+                    <div class="upload-preview-controls">
+                        <div class="sort-controls">
+                            <label>View:</label>
+                            <select id="preview-view-mode" onchange="updatePreviewDisplay()">
+                                <option value="category">By Category</option>
+                                <option value="alphabetical">Alphabetical</option>
+                            </select>
+                            <label>Sort by:</label>
+                            <select id="preview-sort-language" onchange="updatePreviewDisplay()">
+                                <option value="source">Source Language</option>
+                                <option value="target">Target Language</option>
+                            </select>
+                        </div>
+                        <div class="select-controls">
+                            <button class="select-all-btn" onclick="selectAllWords(true)">Select All</button>
+                            <button class="select-none-btn" onclick="selectAllWords(false)">Select None</button>
+                        </div>
+                    </div>
+                    
+                    <div class="upload-preview-categories" id="upload-preview-categories">
+                        <!-- Category filter buttons will be added here -->
+                    </div>
                 </div>
-            </div>
-            
-            <div class="upload-preview-categories" id="upload-preview-categories">
-                <!-- Category filter buttons will be added here -->
             </div>
             
             <div class="upload-preview-list" id="upload-preview-list">
@@ -2545,6 +2604,21 @@
                     <span class="preview-status ${statusClass}">${statusText}</span>
                 </div>
             `;
+        }
+
+        window.toggleFilterSection = function() {
+            const filterContent = document.getElementById('filter-content');
+            const toggleIcon = document.getElementById('filter-toggle-icon');
+            
+            if (filterContent.classList.contains('collapsed')) {
+                filterContent.classList.remove('collapsed');
+                toggleIcon.classList.remove('collapsed');
+                toggleIcon.textContent = '▼';
+            } else {
+                filterContent.classList.add('collapsed');
+                toggleIcon.classList.add('collapsed');
+                toggleIcon.textContent = '▶';
+            }
         }
 
         window.toggleCategoryFilter = function(category) {
