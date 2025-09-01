@@ -970,6 +970,149 @@
             margin-bottom: 20px;
         }
 
+        .upload-tabs {
+            display: flex;
+            gap: 0;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #dee2e6;
+        }
+
+        .upload-tab {
+            flex: 1;
+            padding: 10px 15px;
+            background: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            color: #666;
+            transition: all 0.3s;
+        }
+
+        .upload-tab:hover {
+            background: #f8f9fa;
+        }
+
+        .upload-tab.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+        }
+
+        .upload-tab-content {
+            display: none;
+        }
+
+        .github-input-section {
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 12px;
+        }
+
+        .github-input-section label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .github-input-section input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .github-input-section input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .github-hint {
+            color: #666;
+            font-size: 13px;
+            margin-bottom: 15px;
+        }
+
+        .github-examples {
+            background: white;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .github-examples small {
+            color: #666;
+            font-weight: 600;
+        }
+
+        .github-examples ul {
+            margin: 5px 0 0 20px;
+            padding: 0;
+        }
+
+        .github-examples li {
+            color: #999;
+            font-size: 12px;
+            margin: 3px 0;
+            word-break: break-all;
+        }
+
+        .github-load-btn {
+            width: 100%;
+            padding: 12px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .github-load-btn:hover {
+            background: #5a72d8;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .github-load-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .github-status {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 13px;
+            display: none;
+        }
+
+        .github-status.loading {
+            display: block;
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        .github-status.success {
+            display: block;
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .github-status.error {
+            display: block;
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
         .upload-zone {
             border: 2px dashed #667eea;
             border-radius: 12px;
@@ -1955,15 +2098,39 @@
             <div class="vocab-manager-body">
                 <!-- Upload Section -->
                 <div class="vocab-upload-section">
-                    <div class="upload-zone" id="upload-zone" ondrop="handleDrop(event)" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)">
-                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#667eea" stroke-width="2">
-                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                            <polyline points="17 8 12 3 7 8"></polyline>
-                            <line x1="12" y1="3" x2="12" y2="15"></line>
-                        </svg>
-                        <p>Drag & drop JSON files here or</p>
-                        <button class="upload-btn" onclick="document.getElementById('file-input').click()">Choose Files</button>
-                        <input type="file" id="file-input" multiple accept=".json" style="display: none;" onchange="handleFileSelect(event)">
+                    <div class="upload-tabs">
+                        <button class="upload-tab active" onclick="switchUploadTab('local')">Upload Files</button>
+                        <button class="upload-tab" onclick="switchUploadTab('github')">Load from GitHub</button>
+                    </div>
+                    
+                    <div class="upload-tab-content" id="local-upload" style="display: block;">
+                        <div class="upload-zone" id="upload-zone" ondrop="handleDrop(event)" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#667eea" stroke-width="2">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="17 8 12 3 7 8"></polyline>
+                                <line x1="12" y1="3" x2="12" y2="15"></line>
+                            </svg>
+                            <p>Drag & drop JSON files here or</p>
+                            <button class="upload-btn" onclick="document.getElementById('file-input').click()">Choose Files</button>
+                            <input type="file" id="file-input" multiple accept=".json" style="display: none;" onchange="handleFileSelect(event)">
+                        </div>
+                    </div>
+                    
+                    <div class="upload-tab-content" id="github-upload" style="display: none;">
+                        <div class="github-input-section">
+                            <label for="github-url">GitHub Repository URL:</label>
+                            <input type="text" id="github-url" placeholder="https://github.com/username/repo/tree/main/vocabulary">
+                            <p class="github-hint">Enter the URL to a public GitHub folder containing JSON vocabulary files</p>
+                            <div class="github-examples">
+                                <small>Examples:</small>
+                                <ul>
+                                    <li>https://github.com/username/repo/tree/main/vocabulary</li>
+                                    <li>https://github.com/username/language-learning/tree/main/cs-vi</li>
+                                </ul>
+                            </div>
+                            <button class="github-load-btn" onclick="loadFromGitHub()">Load Vocabulary</button>
+                            <div id="github-status" class="github-status"></div>
+                        </div>
                     </div>
                 </div>
 
@@ -2882,6 +3049,180 @@
                 category.style.display = hasVisibleItems ? 'block' : 'none';
             });
         }
+
+        // GitHub Integration Functions
+        window.switchUploadTab = function(tab) {
+            // Update tab buttons
+            document.querySelectorAll('.upload-tab').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Show/hide tab content
+            document.getElementById('local-upload').style.display = tab === 'local' ? 'block' : 'none';
+            document.getElementById('github-upload').style.display = tab === 'github' ? 'block' : 'none';
+        }
+
+        window.loadFromGitHub = async function() {
+            const urlInput = document.getElementById('github-url');
+            const statusDiv = document.getElementById('github-status');
+            const loadBtn = document.querySelector('.github-load-btn');
+            
+            const githubUrl = urlInput.value.trim();
+            
+            if (!githubUrl) {
+                statusDiv.className = 'github-status error';
+                statusDiv.textContent = 'Please enter a GitHub URL';
+                return;
+            }
+            
+            // Parse GitHub URL to get API endpoint
+            const apiUrl = parseGitHubUrl(githubUrl);
+            
+            if (!apiUrl) {
+                statusDiv.className = 'github-status error';
+                statusDiv.textContent = 'Invalid GitHub URL format. Please use: https://github.com/username/repo/tree/branch/path';
+                return;
+            }
+            
+            // Show loading status
+            statusDiv.className = 'github-status loading';
+            statusDiv.textContent = 'Loading vocabulary files from GitHub...';
+            loadBtn.disabled = true;
+            
+            try {
+                // Fetch directory contents from GitHub API
+                const response = await fetch(apiUrl);
+                
+                if (!response.ok) {
+                    throw new Error(`GitHub API error: ${response.status}`);
+                }
+                
+                const files = await response.json();
+                
+                // Filter for JSON files
+                const jsonFiles = files.filter(file => file.name.endsWith('.json'));
+                
+                if (jsonFiles.length === 0) {
+                    statusDiv.className = 'github-status error';
+                    statusDiv.textContent = 'No JSON files found in the specified directory';
+                    loadBtn.disabled = false;
+                    return;
+                }
+                
+                // Load each JSON file
+                let loadedCount = 0;
+                let totalWords = 0;
+                
+                for (const file of jsonFiles) {
+                    try {
+                        statusDiv.textContent = `Loading ${file.name}...`;
+                        
+                        // Fetch file content
+                        const contentResponse = await fetch(file.download_url);
+                        if (!contentResponse.ok) continue;
+                        
+                        const content = await contentResponse.text();
+                        const data = JSON.parse(content);
+                        
+                        // Process as if it was uploaded
+                        if (data.words && Array.isArray(data.words)) {
+                            const metadata = data.metadata || {};
+                            const languagePair = metadata.language_pair || currentVocabTab;
+                            
+                            // Create a fake File object for compatibility
+                            const fakeFile = { name: file.name };
+                            
+                            // Show preview for each file
+                            showUploadPreview(fakeFile, data, languagePair);
+                            loadedCount++;
+                            totalWords += data.words.length;
+                            
+                            // Store GitHub source info
+                            if (!window.githubSources) {
+                                window.githubSources = {};
+                            }
+                            if (!window.githubSources[languagePair]) {
+                                window.githubSources[languagePair] = [];
+                            }
+                            window.githubSources[languagePair].push({
+                                url: githubUrl,
+                                file: file.name,
+                                loadedAt: new Date().toISOString()
+                            });
+                            
+                            // Save GitHub source to localStorage
+                            localStorage.setItem('githubSources', JSON.stringify(window.githubSources));
+                        }
+                    } catch (error) {
+                        console.error(`Error loading ${file.name}:`, error);
+                    }
+                }
+                
+                if (loadedCount > 0) {
+                    statusDiv.className = 'github-status success';
+                    statusDiv.textContent = `Successfully loaded ${loadedCount} file(s) with ${totalWords} words total`;
+                    
+                    // Save the GitHub URL for future use
+                    localStorage.setItem('lastGitHubUrl', githubUrl);
+                } else {
+                    statusDiv.className = 'github-status error';
+                    statusDiv.textContent = 'No valid vocabulary files could be loaded';
+                }
+                
+            } catch (error) {
+                console.error('GitHub loading error:', error);
+                statusDiv.className = 'github-status error';
+                statusDiv.textContent = `Error: ${error.message}. Make sure the repository is public.`;
+            } finally {
+                loadBtn.disabled = false;
+            }
+        }
+
+        function parseGitHubUrl(url) {
+            // Parse various GitHub URL formats
+            // https://github.com/username/repo/tree/branch/path
+            // https://github.com/username/repo/tree/main/vocabulary
+            
+            const patterns = [
+                /github\.com\/([^\/]+)\/([^\/]+)\/tree\/([^\/]+)\/(.*)/,
+                /github\.com\/([^\/]+)\/([^\/]+)\/tree\/([^\/]+)$/,
+                /github\.com\/([^\/]+)\/([^\/]+)$/
+            ];
+            
+            for (const pattern of patterns) {
+                const match = url.match(pattern);
+                if (match) {
+                    const owner = match[1];
+                    const repo = match[2];
+                    const branch = match[3] || 'main';
+                    const path = match[4] || '';
+                    
+                    // Construct GitHub API URL
+                    let apiUrl = `https://api.github.com/repos/${owner}/${repo}/contents/`;
+                    if (path) {
+                        apiUrl += path;
+                    }
+                    apiUrl += `?ref=${branch}`;
+                    
+                    return apiUrl;
+                }
+            }
+            
+            return null;
+        }
+
+        // Auto-load from GitHub on startup if configured
+        window.addEventListener('load', async () => {
+            const lastGitHubUrl = localStorage.getItem('lastGitHubUrl');
+            if (lastGitHubUrl) {
+                const urlInput = document.getElementById('github-url');
+                if (urlInput) {
+                    urlInput.value = lastGitHubUrl;
+                    devLog(`Last GitHub URL found: ${lastGitHubUrl}`, 'info');
+                }
+            }
+        });
 
         // File upload handling - make globally accessible
         window.handleDragOver = function(e) {
