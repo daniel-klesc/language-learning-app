@@ -1,0 +1,504 @@
+/* src/css/07-library.css */
+/* Vocabulary Library System Styles */
+
+/* ============= LIBRARY SECTION ============= */
+.library-section {
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 12px;
+}
+
+.library-header {
+    margin-bottom: 20px;
+}
+
+.library-header h3 {
+    margin: 0 0 8px 0;
+    color: #333;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.library-header p {
+    margin: 0;
+    color: #666;
+    font-size: 14px;
+}
+
+/* ============= LIBRARY CONTENT ============= */
+.library-content {
+    max-height: 400px;
+    overflow-y: auto;
+    background: white;
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #dee2e6;
+}
+
+.library-loading {
+    text-align: center;
+    padding: 30px;
+    color: #666;
+    font-size: 14px;
+}
+
+/* ============= LIBRARY SOURCE ============= */
+.library-source {
+    margin-bottom: 15px;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    background: white;
+    transition: box-shadow 0.3s;
+}
+
+.library-source:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.library-source-header {
+    padding: 12px 15px;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 8px 8px 0 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    user-select: none;
+    transition: background 0.3s;
+}
+
+.library-source-header:hover {
+    background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 100%);
+}
+
+.library-source.expanded .library-source-header {
+    border-bottom: 1px solid #dee2e6;
+}
+
+.library-source-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.library-source-icon {
+    font-size: 20px;
+}
+
+.library-source-name {
+    font-weight: 600;
+    color: #333;
+    font-size: 15px;
+}
+
+.library-source-toggle {
+    font-size: 12px;
+    transition: transform 0.3s;
+    color: #666;
+}
+
+.library-source.expanded .library-source-toggle {
+    transform: rotate(90deg);
+}
+
+/* ============= SOURCE BODY ============= */
+.library-source-body {
+    display: none;
+    padding: 15px;
+    border-top: 1px solid #dee2e6;
+    animation: slideDown 0.3s ease;
+}
+
+.library-source.expanded .library-source-body {
+    display: block;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.library-source-description {
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 15px;
+    padding: 10px;
+    background: #f8f9fa;
+    border-radius: 6px;
+}
+
+/* ============= LIBRARY CATEGORY ============= */
+.library-category {
+    margin-bottom: 12px;
+}
+
+.library-category-name {
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 8px;
+    font-size: 14px;
+    padding-left: 5px;
+    border-left: 3px solid #667eea;
+}
+
+/* ============= LIBRARY GROUP ============= */
+.library-group {
+    margin-left: 15px;
+    margin-bottom: 10px;
+}
+
+.library-group-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+    padding: 8px;
+    background: #f8f9fa;
+    border-radius: 6px;
+    transition: background 0.2s;
+}
+
+.library-group-header:hover {
+    background: #e9ecef;
+}
+
+.library-group-checkbox {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    accent-color: #667eea;
+}
+
+.library-group-name {
+    flex: 1;
+    font-weight: 500;
+    color: #495057;
+    font-size: 14px;
+}
+
+.library-group-count {
+    font-size: 12px;
+    color: #6c757d;
+    background: white;
+    padding: 2px 8px;
+    border-radius: 12px;
+    border: 1px solid #dee2e6;
+}
+
+/* ============= LIBRARY FILES ============= */
+.library-files {
+    margin-left: 28px;
+}
+
+.library-file {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 8px;
+    margin-bottom: 4px;
+    border-radius: 4px;
+    transition: background 0.2s;
+}
+
+.library-file:hover {
+    background: #f8f9fa;
+}
+
+.library-file-checkbox {
+    width: 14px;
+    height: 14px;
+    cursor: pointer;
+    accent-color: #667eea;
+}
+
+.library-file-name {
+    flex: 1;
+    font-size: 13px;
+    color: #333;
+}
+
+.library-file-info {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.library-file-wordcount {
+    font-size: 12px;
+    color: #6c757d;
+    padding: 2px 6px;
+    background: #f8f9fa;
+    border-radius: 4px;
+}
+
+/* ============= FILE TAGS ============= */
+.library-file-tags {
+    display: flex;
+    gap: 4px;
+}
+
+.library-file-tag {
+    font-size: 11px;
+    padding: 2px 6px;
+    background: #e9ecef;
+    color: #495057;
+    border-radius: 3px;
+    transition: background 0.2s;
+}
+
+.library-file-tag:hover {
+    background: #dee2e6;
+}
+
+/* ============= DIFFICULTY INDICATORS ============= */
+.library-file-difficulty {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.library-file-difficulty.easy {
+    background: #28a745;
+    box-shadow: 0 0 4px rgba(40, 167, 69, 0.5);
+}
+
+.library-file-difficulty.medium {
+    background: #ffc107;
+    box-shadow: 0 0 4px rgba(255, 193, 7, 0.5);
+}
+
+.library-file-difficulty.hard {
+    background: #dc3545;
+    box-shadow: 0 0 4px rgba(220, 53, 69, 0.5);
+}
+
+/* ============= LIBRARY ACTIONS ============= */
+.library-actions {
+    display: flex;
+    justify-content: center;
+    padding-top: 10px;
+}
+
+.library-load-btn {
+    padding: 12px 24px;
+    background: #667eea;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+}
+
+.library-load-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.library-load-btn:hover::before {
+    left: 100%;
+}
+
+.library-load-btn:hover:not(:disabled) {
+    background: #5a72d8;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+}
+
+.library-load-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* ============= LIBRARY STATUS ============= */
+.library-status {
+    margin-bottom: 15px;
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 13px;
+    display: none;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.library-status.error {
+    display: block;
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.library-status.loading {
+    display: block;
+    background: #d1ecf1;
+    color: #0c5460;
+    border: 1px solid #bee5eb;
+    position: relative;
+}
+
+.library-status.loading::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    background: #0c5460;
+    animation: loadingBar 1.5s infinite;
+}
+
+@keyframes loadingBar {
+    0% {
+        width: 0;
+        left: 0;
+    }
+    50% {
+        width: 100%;
+        left: 0;
+    }
+    100% {
+        width: 0;
+        left: 100%;
+    }
+}
+
+.library-status.success {
+    display: block;
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+/* ============= GITHUB INTEGRATION ============= */
+.github-input-section {
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 12px;
+}
+
+.github-input-section label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #333;
+    font-size: 14px;
+}
+
+.github-input-section input {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+    margin-bottom: 10px;
+    transition: border-color 0.3s;
+}
+
+.github-input-section input:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.github-hint {
+    color: #666;
+    font-size: 13px;
+    margin-bottom: 15px;
+}
+
+.github-examples {
+    background: white;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #dee2e6;
+}
+
+.github-examples small {
+    color: #666;
+    font-weight: 600;
+}
+
+.github-examples ul {
+    margin: 5px 0 0 20px;
+    padding: 0;
+}
+
+.github-examples li {
+    color: #999;
+    font-size: 12px;
+    margin: 3px 0;
+    word-break: break-all;
+}
+
+.github-load-btn {
+    width: 100%;
+    padding: 12px;
+    background: #667eea;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.github-load-btn:hover {
+    background: #5a72d8;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+}
+
+.github-load-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.github-status {
+    margin-top: 15px;
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 13px;
+    display: none;
+}
+
+.github-status.loading {
+    display: block;
+    background: #d1ecf1;
+    color: #0c5460;
+    border: 1px solid #bee5eb;
+}
+
+.github-status.success {
+    display: block;
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.github-status.error {
+    display: block;
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}

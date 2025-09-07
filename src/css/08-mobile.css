@@ -1,0 +1,672 @@
+/* src/css/08-mobile.css */
+/* Mobile Responsive Styles */
+
+/* ============= TABLET STYLES (768px and below) ============= */
+@media (max-width: 768px) {
+    /* Container adjustments */
+    .container {
+        max-width: 100%;
+        margin: 10px;
+        padding: 20px;
+    }
+    
+    /* Settings menu */
+    .settings-menu {
+        width: 75%;
+        max-width: 320px;
+    }
+    
+    /* Session options */
+    .session-options {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+    }
+    
+    /* Stats grid */
+    .stats {
+        gap: 8px;
+    }
+    
+    .stat {
+        padding: 12px 8px;
+    }
+    
+    .stat-value {
+        font-size: 18px;
+    }
+    
+    /* Vocabulary manager */
+    .vocab-manager-content {
+        max-width: 95%;
+        margin: 10px;
+    }
+    
+    .vocab-tabs {
+        flex-direction: row;
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        gap: 5px;
+    }
+    
+    .vocab-tab {
+        flex-shrink: 0;
+        min-width: 120px;
+    }
+    
+    /* Upload preview */
+    .upload-preview-content {
+        max-width: 95%;
+        margin: 10px;
+    }
+    
+    /* Library groups */
+    .library-group-header {
+        flex-wrap: wrap;
+    }
+    
+    .library-group-count {
+        margin-top: 5px;
+        width: 100%;
+    }
+}
+
+/* ============= MOBILE STYLES (480px and below) ============= */
+@media (max-width: 480px) {
+    /* ===== GENERAL LAYOUT ===== */
+    body {
+        padding: 0;
+        min-height: 100vh;
+        overflow-x: hidden;
+    }
+    
+    .container {
+        width: 100%;
+        max-width: 100%;
+        border-radius: 0;
+        min-height: 100vh;
+        padding: 20px 15px;
+        box-shadow: none;
+        margin: 0;
+    }
+    
+    .container.study-mode {
+        padding: 12px;
+        height: 100vh;
+        max-height: 100vh;
+        border-radius: 0;
+        margin: 0;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: white;
+        z-index: 1000;
+    }
+    
+    /* ===== HEADER & NAVIGATION ===== */
+    .header {
+        padding-right: 20px;
+    }
+    
+    h1 {
+        font-size: 20px;
+    }
+    
+    .settings-icon {
+        top: 15px;
+        right: 15px;
+        width: 20px;
+        height: 20px;
+    }
+    
+    .settings-menu {
+        width: 85%;
+        max-width: none;
+        right: -85%;
+    }
+    
+    /* ===== SKILL SELECTOR ===== */
+    .skill-selector {
+        padding: 12px;
+    }
+    
+    .skill-levels {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 6px;
+    }
+    
+    .skill-level-btn {
+        padding: 8px 4px;
+        font-size: 11px;
+    }
+    
+    .skill-level-btn .emoji {
+        font-size: 18px;
+    }
+    
+    /* ===== DAILY GOAL CARD ===== */
+    .daily-goal {
+        padding: 15px;
+        margin-bottom: 15px;
+    }
+    
+    .goal-title {
+        font-size: 14px;
+    }
+    
+    .goal-numbers {
+        font-size: 20px;
+    }
+    
+    .goal-details {
+        font-size: 12px;
+    }
+    
+    /* ===== STATS ===== */
+    .stats {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 5px;
+    }
+    
+    .stat {
+        padding: 10px 5px;
+    }
+    
+    .stat-value {
+        font-size: 16px;
+    }
+    
+    .stat-label {
+        font-size: 10px;
+    }
+    
+    /* ===== LANGUAGE SELECTOR ===== */
+    .language-selector {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .language-btn {
+        width: 100%;
+        padding: 12px;
+    }
+    
+    /* ===== SESSION OPTIONS ===== */
+    .session-options {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+    }
+    
+    .session-btn {
+        padding: 15px 10px;
+    }
+    
+    .session-btn .words {
+        font-size: 20px;
+    }
+    
+    .session-btn .time {
+        font-size: 12px;
+    }
+    
+    /* ===== STUDY MODE ===== */
+    #study-screen {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        min-height: 0;
+        padding-bottom: 10px;
+        width: 100%;
+    }
+    
+    .session-progress-card {
+        padding: 12px;
+        margin-bottom: 12px;
+    }
+    
+    .session-progress-numbers {
+        font-size: 18px;
+        margin-right: 40px;
+    }
+    
+    .pause-button {
+        width: 28px;
+        height: 28px;
+        top: 10px;
+        right: 10px;
+    }
+    
+    .pause-icon {
+        width: 14px;
+        height: 14px;
+    }
+    
+    .pause-icon::before,
+    .pause-icon::after {
+        width: 3px;
+        height: 14px;
+    }
+    
+    /* ===== CARD DISPLAY ===== */
+    .card {
+        padding: 20px 15px;
+        margin-bottom: 12px;
+    }
+    
+    .word {
+        font-size: 28px;
+    }
+    
+    .romanization {
+        font-size: 16px;
+    }
+    
+    .category {
+        font-size: 11px;
+        padding: 4px 8px;
+    }
+    
+    /* ===== MULTIPLE CHOICE ===== */
+    .choice-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        margin-bottom: 12px;
+    }
+    
+    .choice-btn {
+        padding: 10px 8px;
+        min-height: 55px;
+    }
+    
+    .choice-text {
+        font-size: 14px;
+    }
+    
+    .choice-romanization {
+        font-size: 11px;
+    }
+    
+    /* ===== INPUT & FEEDBACK ===== */
+    .input-group {
+        margin-bottom: 12px;
+    }
+    
+    input {
+        padding: 10px;
+        font-size: 15px;
+    }
+    
+    .feedback {
+        padding: 10px;
+        margin-bottom: 12px;
+        font-size: 13px;
+    }
+    
+    .study-button {
+        padding: 12px;
+        font-size: 15px;
+        margin-bottom: 5px;
+        flex-shrink: 0;
+    }
+    
+    /* ===== VOCABULARY MANAGER MOBILE ===== */
+    .vocab-manager-content {
+        max-width: 100%;
+        max-height: 100%;
+        height: 100%;
+        border-radius: 0;
+    }
+    
+    .vocab-manager-header {
+        border-radius: 0;
+        padding: 15px;
+    }
+    
+    .vocab-manager-header h2 {
+        font-size: 18px;
+    }
+    
+    .vocab-manager-body {
+        padding: 15px;
+    }
+    
+    .upload-tabs {
+        flex-direction: column;
+        border-bottom: none;
+    }
+    
+    .upload-tab {
+        width: 100%;
+        border-bottom: 1px solid #dee2e6;
+        border-left: 3px solid transparent;
+    }
+    
+    .upload-tab.active {
+        border-left-color: #667eea;
+        border-bottom-color: transparent;
+    }
+    
+    .vocab-tabs {
+        flex-direction: column;
+    }
+    
+    .vocab-tab {
+        width: 100%;
+    }
+    
+    .vocab-list {
+        max-height: 300px;
+    }
+    
+    /* ===== UPLOAD PREVIEW MOBILE ===== */
+    .upload-preview-content {
+        max-width: 100%;
+        max-height: 100%;
+        height: 100%;
+        border-radius: 0;
+    }
+    
+    .upload-preview-header {
+        border-radius: 0;
+        padding: 15px;
+    }
+    
+    .upload-preview-header h3 {
+        font-size: 16px;
+    }
+    
+    .upload-summary {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    
+    .summary-item {
+        flex: 1;
+        min-width: 80px;
+        text-align: center;
+    }
+    
+    .upload-preview-controls {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .sort-controls {
+        width: 100%;
+        flex-wrap: wrap;
+    }
+    
+    .select-controls {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .upload-preview-list {
+        padding: 10px;
+    }
+    
+    .preview-item {
+        padding: 8px;
+    }
+    
+    .upload-preview-actions {
+        flex-direction: column;
+        gap: 10px;
+        padding: 12px;
+    }
+    
+    .duplicate-strategy {
+        width: 100%;
+        justify-content: space-between;
+    }
+    
+    .action-buttons {
+        width: 100%;
+        flex-direction: column-reverse;
+    }
+    
+    .action-buttons button {
+        width: 100%;
+    }
+    
+    /* ===== LIBRARY MOBILE ===== */
+    .library-content {
+        max-height: 350px;
+    }
+    
+    .library-source-name {
+        font-size: 14px;
+    }
+    
+    .library-category-name {
+        font-size: 13px;
+    }
+    
+    .library-group {
+        margin-left: 10px;
+    }
+    
+    .library-group-header {
+        padding: 6px;
+    }
+    
+    .library-group-name {
+        font-size: 13px;
+    }
+    
+    .library-files {
+        margin-left: 20px;
+    }
+    
+    .library-file {
+        padding: 4px 6px;
+    }
+    
+    .library-file-name {
+        font-size: 12px;
+    }
+    
+    .library-file-wordcount {
+        font-size: 11px;
+    }
+    
+    .library-load-btn {
+        padding: 10px 20px;
+        font-size: 14px;
+    }
+    
+    /* ===== GITHUB SECTION MOBILE ===== */
+    .github-input-section {
+        padding: 15px;
+    }
+    
+    .github-input-section input {
+        font-size: 14px;
+        padding: 8px;
+    }
+    
+    .github-examples {
+        font-size: 12px;
+    }
+    
+    /* ===== MODALS MOBILE ===== */
+    .modal-overlay {
+        padding: 10px;
+    }
+    
+    .modal-content {
+        width: 100%;
+        max-width: 100%;
+        border-radius: 10px;
+    }
+    
+    /* ===== HISTORY ===== */
+    .history {
+        padding: 12px;
+        margin-top: 15px;
+    }
+    
+    .history-title {
+        font-size: 13px;
+    }
+    
+    .history-item {
+        font-size: 12px;
+        padding: 6px 0;
+    }
+    
+    /* ===== COMPLETE SCREEN ===== */
+    .achievement {
+        padding: 15px;
+        margin-bottom: 15px;
+    }
+    
+    .achievement-title {
+        font-size: 18px;
+    }
+    
+    .achievement-desc {
+        font-size: 13px;
+    }
+    
+    .no-cards {
+        padding: 30px 20px;
+    }
+    
+    /* ===== DEVELOPMENT CONSOLE ===== */
+    .dev-console {
+        width: calc(100% - 20px);
+        right: 10px;
+        bottom: 10px;
+        max-height: 200px;
+        font-size: 10px;
+        padding: 8px;
+    }
+    
+    .dev-toggle {
+        bottom: 10px;
+        right: 10px;
+        font-size: 10px;
+        padding: 4px 8px;
+    }
+    
+    /* ===== UTILITY CLASSES ===== */
+    .hidden {
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
+        position: absolute !important;
+        left: -9999px !important;
+    }
+    
+    /* ===== SCREEN STATE MANAGEMENT ===== */
+    #start-screen:not(.hidden) {
+        display: block;
+    }
+    
+    #study-screen:not(.hidden) {
+        display: flex;
+    }
+    
+    #complete-screen:not(.hidden) {
+        display: block;
+    }
+}
+
+/* ============= SMALL MOBILE (360px and below) ============= */
+@media (max-width: 360px) {
+    /* Even smaller adjustments */
+    h1 {
+        font-size: 18px;
+    }
+    
+    .daily-goal {
+        padding: 12px;
+    }
+    
+    .goal-numbers {
+        font-size: 18px;
+    }
+    
+    .session-btn {
+        padding: 12px 8px;
+    }
+    
+    .session-btn .words {
+        font-size: 18px;
+    }
+    
+    .word {
+        font-size: 24px;
+    }
+    
+    .choice-btn {
+        padding: 8px 6px;
+        min-height: 50px;
+    }
+    
+    .choice-text {
+        font-size: 13px;
+    }
+}
+
+/* ============= LANDSCAPE MOBILE ============= */
+@media (max-height: 600px) and (orientation: landscape) {
+    .container.study-mode {
+        padding: 8px;
+    }
+    
+    .session-progress-card {
+        padding: 8px;
+        margin-bottom: 8px;
+    }
+    
+    .card {
+        padding: 12px;
+        margin-bottom: 8px;
+    }
+    
+    .word {
+        font-size: 24px;
+    }
+    
+    .choice-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 6px;
+    }
+    
+    .choice-btn {
+        padding: 8px 6px;
+        min-height: 45px;
+    }
+}
+
+/* ============= TOUCH OPTIMIZATIONS ============= */
+@media (hover: none) and (pointer: coarse) {
+    /* Touch-specific styles */
+    button,
+    .session-btn,
+    .choice-btn,
+    .language-btn,
+    .skill-level-btn {
+        -webkit-tap-highlight-color: rgba(102, 126, 234, 0.2);
+        touch-action: manipulation;
+    }
+    
+    /* Increase touch targets */
+    .vocab-item,
+    .library-file,
+    .preview-item {
+        min-height: 44px;
+    }
+    
+    /* Disable hover effects on touch devices */
+    .session-btn:hover,
+    .choice-btn:hover,
+    .language-btn:hover {
+        transform: none;
+        box-shadow: none;
+    }
+}
