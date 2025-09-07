@@ -1,0 +1,236 @@
+/* src/css/05-study.css
+   Study screen and session-specific styles */
+
+/* ============= STUDY SCREEN CONTAINER ============= */
+#study-screen {
+    display: none;
+    width: 100%;
+    height: 100%;
+}
+
+#study-screen:not(.hidden) {
+    display: flex;
+    flex-direction: column;
+}
+
+#study-screen > div {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+/* ============= SESSION PROGRESS SPECIFIC ============= */
+.session-progress-title {
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+.session-progress-numbers {
+    font-size: 20px;
+    font-weight: bold;
+    margin-right: 50px;
+}
+
+#current-word-num,
+#total-words {
+    font-weight: bold;
+}
+
+/* ============= PAUSE ICON ============= */
+.pause-icon {
+    width: 16px;
+    height: 16px;
+    position: relative;
+}
+
+.pause-icon::before,
+.pause-icon::after {
+    content: '';
+    position: absolute;
+    width: 4px;
+    height: 16px;
+    background: var(--white);
+    border-radius: 1px;
+}
+
+.pause-icon::before {
+    left: 3px;
+}
+
+.pause-icon::after {
+    right: 3px;
+}
+
+.pause-button:hover {
+    background: rgba(255,255,255,0.35);
+    transform: scale(1.1);
+}
+
+/* ============= WORD DISPLAY ============= */
+.word {
+    font-size: 36px;
+    font-weight: bold;
+    color: var(--text-primary);
+    margin-bottom: 12px;
+}
+
+.romanization {
+    font-size: 20px;
+    color: var(--text-secondary);
+    margin-bottom: 15px;
+}
+
+.romanization.hidden {
+    display: none;
+}
+
+/* ============= SKILL PILLS IN STUDY MODE ============= */
+#study-screen .skill-pills {
+    z-index: var(--z-dropdown);
+}
+
+/* ============= COMPLETE SCREEN ============= */
+#complete-screen {
+    display: none;
+    width: 100%;
+}
+
+#complete-screen:not(.hidden) {
+    display: block;
+}
+
+.no-cards {
+    text-align: center;
+    padding: 40px;
+    color: var(--text-secondary);
+}
+
+.no-cards h2 {
+    color: var(--text-primary);
+    margin-bottom: 20px;
+}
+
+.no-cards p {
+    margin: 20px 0;
+}
+
+.no-cards strong {
+    color: var(--text-primary);
+}
+
+#session-words,
+#session-accuracy-final,
+#session-time {
+    font-size: 18px;
+    color: var(--primary-gradient-start);
+}
+
+/* ============= STUDY MODE ANIMATIONS ============= */
+.card {
+    animation: fadeIn 0.3s ease;
+}
+
+.feedback {
+    animation: slideIn 0.3s ease;
+}
+
+.choice-btn {
+    animation: fadeIn 0.2s ease;
+    animation-fill-mode: both;
+}
+
+.choice-btn:nth-child(1) {
+    animation-delay: 0s;
+}
+
+.choice-btn:nth-child(2) {
+    animation-delay: 0.05s;
+}
+
+.choice-btn:nth-child(3) {
+    animation-delay: 0.1s;
+}
+
+.choice-btn:nth-child(4) {
+    animation-delay: 0.15s;
+}
+
+/* ============= SKILL SWITCH MENU ============= */
+.skill-switch-option {
+    padding: 8px 16px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: background var(--transition-fast);
+}
+
+.skill-switch-option:hover {
+    background: #f0f0f0;
+}
+
+.skill-switch-option.current {
+    background: #e3f2fd;
+    font-weight: bold;
+}
+
+/* ============= STUDY MODE SPECIFIC MOBILE ============= */
+@media (max-width: 480px) {
+    #study-screen {
+        padding-bottom: 10px;
+    }
+    
+    .word {
+        font-size: 28px;
+    }
+    
+    .romanization {
+        font-size: 16px;
+    }
+    
+    .session-progress-numbers {
+        font-size: 18px;
+        margin-right: 40px;
+    }
+    
+    .pause-button {
+        width: 28px;
+        height: 28px;
+        top: 10px;
+        right: 10px;
+    }
+    
+    .pause-icon {
+        width: 14px;
+        height: 14px;
+    }
+    
+    .pause-icon::before,
+    .pause-icon::after {
+        width: 3px;
+        height: 14px;
+    }
+    
+    .choice-text {
+        font-size: 14px;
+    }
+    
+    .choice-romanization {
+        font-size: 11px;
+    }
+    
+    .choice-btn {
+        padding: 10px 8px;
+        min-height: 55px;
+    }
+    
+    .feedback {
+        padding: 10px;
+        margin-bottom: 12px;
+        font-size: 13px;
+    }
+    
+    .study-button {
+        padding: 12px;
+        font-size: 15px;
+        margin-bottom: 5px;
+    }
+}

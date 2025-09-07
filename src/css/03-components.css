@@ -1,0 +1,531 @@
+/* src/css/03-components.css
+   Reusable UI components: Buttons, Cards, Forms, Inputs, etc. */
+
+/* ============= BUTTONS ============= */
+button {
+    flex: 1;
+    padding: 15px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: var(--radius-lg);
+    cursor: pointer;
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.btn-primary {
+    background: var(--primary-gradient-start);
+    color: var(--white);
+}
+
+.btn-secondary {
+    background: var(--gray-600);
+    color: var(--white);
+}
+
+.btn-success {
+    background: var(--success-color);
+    color: var(--white);
+}
+
+/* Session buttons */
+.session-btn {
+    padding: 20px;
+    background: var(--white);
+    border: 2px solid var(--gray-200);
+    border-radius: var(--radius-lg);
+    cursor: pointer;
+    transition: all var(--transition-base);
+    text-align: center;
+}
+
+.session-btn:hover {
+    border-color: var(--primary-gradient-start);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+}
+
+.session-btn .words {
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--text-primary);
+    margin-bottom: 5px;
+}
+
+.session-btn .time {
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.session-btn .badge {
+    display: inline-block;
+    background: var(--success-color);
+    color: var(--white);
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 11px;
+    margin-top: 5px;
+}
+
+/* Language buttons */
+.language-btn {
+    flex: 1;
+    padding: 10px;
+    border: 2px solid var(--gray-300);
+    background: var(--white);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all var(--transition-base);
+    font-size: 14px;
+}
+
+.language-btn.active {
+    background: var(--primary-gradient-start);
+    color: var(--white);
+    border-color: var(--primary-gradient-start);
+}
+
+/* Skill level buttons */
+.skill-level-btn {
+    padding: 10px 5px;
+    background: var(--white);
+    border: 2px solid var(--gray-300);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all var(--transition-base);
+    text-align: center;
+    font-size: 12px;
+}
+
+.skill-level-btn.active {
+    background: var(--primary-gradient-start);
+    color: var(--white);
+    border-color: var(--primary-gradient-start);
+}
+
+.skill-level-btn .emoji {
+    font-size: 20px;
+    display: block;
+    margin-bottom: 4px;
+}
+
+/* Continue session button */
+.continue-session {
+    width: 100%;
+    padding: 15px;
+    background: var(--success-color);
+    color: var(--white);
+    border: none;
+    border-radius: var(--radius-lg);
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-bottom: 10px;
+    transition: all var(--transition-base);
+}
+
+.continue-session:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
+}
+
+/* Study button */
+.study-button {
+    width: 100% !important;
+    padding: 14px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: var(--radius-lg);
+    cursor: pointer;
+    transition: all var(--transition-base);
+    background: var(--primary-gradient-start);
+    color: var(--white);
+    margin-top: auto;
+    margin-bottom: 10px;
+    display: block !important;
+    box-sizing: border-box;
+}
+
+.study-button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+}
+
+.study-button.next {
+    background: var(--success-color);
+}
+
+/* Upload buttons */
+.upload-btn {
+    background: var(--primary-gradient-start);
+    color: var(--white);
+    border: none;
+    padding: 10px 20px;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    font-weight: bold;
+    transition: transform var(--transition-fast);
+}
+
+.upload-btn:hover {
+    transform: translateY(-2px);
+}
+
+/* ============= CARDS ============= */
+.card {
+    background: var(--gray-100);
+    border-radius: var(--radius-lg);
+    padding: 25px 20px;
+    margin-bottom: 15px;
+    text-align: center;
+    flex-shrink: 0;
+    min-height: 120px;
+    width: 100%;
+}
+
+.daily-goal {
+    background: linear-gradient(135deg, var(--primary-gradient-start) 0%, var(--primary-gradient-end) 100%);
+    color: var(--white);
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.session-progress-card {
+    background: linear-gradient(135deg, var(--success-color) 0%, var(--success-dark) 100%);
+    color: var(--white);
+    border-radius: 15px;
+    padding: 15px;
+    margin-bottom: 20px;
+    position: relative;
+    width: 100%;
+}
+
+.stat {
+    text-align: center;
+    padding: 15px 10px;
+    background: var(--gray-100);
+    border-radius: var(--radius-lg);
+}
+
+.stat-value {
+    font-size: 20px;
+    font-weight: bold;
+    color: var(--primary-gradient-start);
+}
+
+.stat-label {
+    font-size: 11px;
+    color: var(--text-secondary);
+    margin-top: 5px;
+}
+
+/* Achievement card */
+.achievement {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    color: var(--white);
+    padding: 20px;
+    border-radius: 15px;
+    text-align: center;
+    margin-bottom: 20px;
+    animation: slideIn 0.5s ease;
+}
+
+.achievement-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.achievement-desc {
+    font-size: 14px;
+    opacity: 0.95;
+}
+
+/* ============= FORMS & INPUTS ============= */
+input {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    border: 2px solid var(--gray-300);
+    border-radius: var(--radius-lg);
+    transition: border-color var(--transition-base);
+}
+
+input:focus {
+    outline: none;
+    border-color: var(--primary-gradient-start);
+}
+
+input.error {
+    border-color: var(--danger-color);
+}
+
+select {
+    padding: 5px 10px;
+    border: 1px solid var(--gray-300);
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    background: var(--white);
+    cursor: pointer;
+}
+
+select:focus {
+    outline: none;
+    border-color: var(--primary-gradient-start);
+}
+
+.input-group {
+    margin-bottom: 15px;
+}
+
+/* ============= PROGRESS BARS ============= */
+.goal-progress,
+.session-progress-bar {
+    background: rgba(255,255,255,0.3);
+    height: 8px;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+.goal-progress-fill,
+.session-progress-fill {
+    background: var(--white);
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.5s ease;
+}
+
+.session-progress-bar {
+    height: 6px;
+    margin-bottom: 8px;
+}
+
+/* ============= BADGES & PILLS ============= */
+.category {
+    display: inline-block;
+    padding: 6px 12px;
+    background: var(--gray-200);
+    border-radius: 6px;
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-bottom: 15px;
+}
+
+.skill-pill {
+    width: 24px;
+    height: 24px;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.3);
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all var(--transition-base);
+    user-select: none;
+}
+
+.skill-pill.active {
+    background: var(--white);
+    color: var(--success-color);
+    transform: scale(1.1);
+}
+
+/* ============= FEEDBACK MESSAGES ============= */
+.feedback {
+    padding: 12px;
+    border-radius: var(--radius-lg);
+    margin-bottom: 15px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 14px;
+    width: 100%;
+}
+
+.feedback.correct {
+    background: #d4edda;
+    color: #155724;
+}
+
+.feedback.incorrect {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.feedback.partial {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.feedback .correct-spelling {
+    font-size: 14px;
+    margin-top: 8px;
+    font-weight: normal;
+}
+
+.feedback .user-answer {
+    font-size: 13px;
+    margin-top: 5px;
+    font-weight: normal;
+    opacity: 0.9;
+}
+
+/* ============= CHOICE BUTTONS ============= */
+.choice-btn {
+    padding: 12px 10px;
+    background: var(--white);
+    border: 2px solid var(--gray-200);
+    border-radius: var(--radius-lg);
+    cursor: pointer;
+    transition: all var(--transition-base);
+    text-align: center;
+    min-height: 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.choice-btn:hover:not(:disabled) {
+    border-color: var(--primary-gradient-start);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+}
+
+.choice-btn.selected {
+    border-color: var(--primary-gradient-start);
+    background: #f0f4ff;
+}
+
+.choice-btn.correct {
+    border-color: var(--success-color);
+    background: #d4edda;
+    animation: correctPulse 0.5s;
+}
+
+.choice-btn.incorrect {
+    border-color: var(--danger-color);
+    background: #f8d7da;
+    animation: shake 0.5s;
+}
+
+.choice-btn.dimmed {
+    opacity: 0.5;
+}
+
+.choice-text {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+    display: block;
+    margin-bottom: 2px;
+}
+
+.choice-romanization {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+/* ============= TABS ============= */
+.upload-tab,
+.vocab-tab {
+    flex: 1;
+    padding: 10px 15px;
+    background: transparent;
+    border: none;
+    border-bottom: 3px solid transparent;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    transition: all var(--transition-base);
+}
+
+.upload-tab:hover {
+    background: var(--gray-100);
+}
+
+.upload-tab.active {
+    color: var(--primary-gradient-start);
+    border-bottom-color: var(--primary-gradient-start);
+}
+
+.vocab-tab {
+    background: var(--gray-100);
+    border: none;
+    border-radius: var(--radius-md);
+    font-size: 13px;
+    min-width: 140px;
+}
+
+.vocab-tab.active {
+    background: var(--primary-gradient-start);
+    color: var(--white);
+}
+
+/* ============= LOADING INDICATOR ============= */
+.loading-indicator {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255,255,255,0.3);
+    border-radius: 50%;
+    border-top-color: var(--white);
+    animation: spin 1s ease-in-out infinite;
+}
+
+.loading-spinner {
+    text-align: center;
+    padding: 20px;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    margin: 0 auto 10px;
+    border: 4px solid var(--gray-300);
+    border-top-color: var(--primary-gradient-start);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+/* ============= NOTIFICATIONS ============= */
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 15px 20px;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    z-index: var(--z-notification);
+    animation: slideIn var(--transition-base);
+}
+
+.notification.success {
+    background: var(--success-color);
+    color: var(--white);
+}
+
+.notification.error {
+    background: var(--danger-color);
+    color: var(--white);
+}
+
+.notification.info {
+    background: var(--primary-gradient-start);
+    color: var(--white);
+}

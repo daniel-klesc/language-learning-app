@@ -1,0 +1,142 @@
+/* src/css/04-home.css
+   Home screen specific styles */
+
+/* ============= HOME CONTENT CONTAINER ============= */
+#home-content {
+    width: 100%;
+}
+
+/* ============= TIME ESTIMATE ============= */
+.time-estimate {
+    color: var(--text-secondary);
+    font-size: 14px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* ============= SKILL SELECTOR ============= */
+.skill-selector {
+    background: var(--gray-100);
+    border-radius: var(--radius-lg);
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+.skill-selector-title {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+/* ============= DAILY GOAL SPECIFIC ============= */
+.goal-title {
+    font-size: 16px;
+    opacity: 0.9;
+}
+
+.goal-numbers {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+/* ============= SESSION HISTORY ============= */
+.history {
+    margin-top: 20px;
+    padding: 15px;
+    background: var(--gray-100);
+    border-radius: var(--radius-lg);
+}
+
+.history-title {
+    font-size: 14px;
+    font-weight: bold;
+    color: var(--text-secondary);
+    margin-bottom: 10px;
+}
+
+.history-item:last-child {
+    border-bottom: none;
+}
+
+#session-history {
+    min-height: 50px;
+}
+
+/* ============= CONTINUE SESSION BUTTON ============= */
+#continue-session-btn {
+    margin-bottom: 15px;
+}
+
+#remaining-words {
+    font-weight: normal;
+}
+
+/* ============= START SCREEN ============= */
+#start-screen {
+    width: 100%;
+}
+
+/* ============= RECOMMENDED BADGE ============= */
+.session-btn.recommended {
+    position: relative;
+}
+
+.session-btn.recommended .badge {
+    background: var(--success-color);
+}
+
+/* ============= HOME SCREEN ANIMATIONS ============= */
+#home-content {
+    animation: fadeIn 0.3s ease;
+}
+
+.daily-goal {
+    transition: transform var(--transition-base);
+}
+
+.daily-goal:hover {
+    transform: scale(1.02);
+}
+
+.stat {
+    transition: transform var(--transition-base), box-shadow var(--transition-base);
+}
+
+.stat:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+/* ============= EMPTY STATES ============= */
+.no-sessions-message {
+    color: var(--text-muted);
+    font-size: 13px;
+    text-align: center;
+    padding: 20px;
+}
+
+/* ============= HOME SCREEN RESPONSIVE ============= */
+@media (max-width: 480px) {
+    .skill-levels {
+        grid-template-columns: repeat(2, 2fr);
+    }
+    
+    .skill-selector-title {
+        text-align: center;
+    }
+    
+    .session-options {
+        grid-template-columns: 1fr;
+    }
+    
+    .stats {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+    
+    .history {
+        margin-top: 15px;
+        padding: 12px;
+    }
+}
